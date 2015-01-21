@@ -338,6 +338,10 @@ $("#createFreelancer").submit(function(event){
     if (password.length < 1) {
         error += "<br>" + text106;
     }
+    
+    if (password.length < 5 || password.length > 8) {
+        error += "<br>" + text136;
+    }
 
     if (address.length < 1) {
         error += "<br>" + text107;
@@ -348,7 +352,7 @@ $("#createFreelancer").submit(function(event){
     }
     
     if(isNaN(zipCode)){
-        error += "<br>" + text108;
+        error += "<br>" + text137;
     }
 
     if (country.length < 1) {
@@ -361,6 +365,10 @@ $("#createFreelancer").submit(function(event){
 
     if (phone.length < 1) {
         error += "<br>" + text112;
+    }
+    
+    if(isNaN(phone)){
+        error += "<br>" + text138;
     }
     
     if (state.length < 1) {
@@ -389,18 +397,18 @@ $("#createFreelancer").submit(function(event){
 
             if (e) {
 
-                data = {
+                var data = {
                     "person.name" : name,
                     "person.email" : email,
                     "person.password" : password,
                     "person.lastName" : lastName,
                     "address.all" : address,
-                    "address.zipCode" : zipCode,
+                    "address.zipCode" : String(zipCode),
                     "address.city" : city,
                     "address.state" : state,
                     "address.country" : country,
                     "person.gender.id" : gender,
-                    "person.phone" : phone
+                    "person.phone" : String(phone)
                 };
 
                 $("#saveButton").attr("disabled","disabled");
@@ -409,20 +417,25 @@ $("#createFreelancer").submit(function(event){
                     url:"createFreelancerProcess.html",
                     type:"post",
                     data:data,
-                    success:function(data){  
-                        if(data.hasOwnProperty('error')){
-                            if(data.error == null || data.error.length < 1 || data.error == ''){
-                                alertify.error(text123);
-                            }else{
-                                alertify.error(data.error);
-                            }
-                        } else {
-                            alertify.alert(text115 + "<br>" + text117 + " " + data.id);
+                    success: function (data) {
+                        if (data.hasOwnProperty('exists')) {
+                            alertify.alert(text139);
+                            $("#saveButton").removeAttr("disabled");
+                            $("#saveButton").html(text92);
+                        }
+                        if (data.hasOwnProperty('error')) {
+                            alertify.error(text116);
+                            $("#saveButton").removeAttr("disabled");
+                            $("#saveButton").html(text92);
+                        }
+                        if (data.hasOwnProperty('key')) {
+                            alertify.alert(text115 + "<br>" + text117 + " " + data.key);
                             $("#saveButton").html(text118);
                         }
-                    },error:function(e1,e2,e3){
+                    }, error: function (e1, e2, e3) {
                         alertify.alert(e2);
                         $("#saveButton").removeAttr("disabled");
+                        $("#saveButton").html(text92);                
                     }
                 });
 

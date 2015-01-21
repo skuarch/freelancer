@@ -28,7 +28,7 @@ public class BaseController {
     //==========================================================================
     @ExceptionHandler(Throwable.class)
     public ModelAndView handleException(Throwable t, HttpServletRequest request, Exception exception) {
-        logger.error("error", t);
+        logger.error("error freelancer", t);
         ModelAndView mav = new ModelAndView();
         mav.addObject("exception", exception);
         mav.addObject("url", request.getRequestURL());

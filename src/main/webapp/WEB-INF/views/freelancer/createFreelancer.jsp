@@ -94,61 +94,67 @@
                                     <div class="col-lg-6">
                                         <div class="form-group"> 
                                             <label><spring:message code="text90" /></label>
-                                            <input name="email" id="email" placeholder="<spring:message code="text91" />" class="form-control" type="email" required="required" />
+                                            <input name="email" id="email" placeholder="<spring:message code="text91" />" maxlength="50" class="form-control" type="email" required="required" tabindex="1" />
                                         </div> 
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="form-group"> 
                                             <label><spring:message code="text74" /></label>
-                                            <input name="name" id="name" placeholder="<spring:message code="text75" />" class="form-control" type="text" required="required" />
+                                            <input name="name" id="name" placeholder="<spring:message code="text75" />" maxlength="60" class="form-control" type="text" required="required" tabindex="2"/>
                                         </div> 
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="form-group"> 
                                             <label><spring:message code="text76" /></label>
-                                            <input name="lastName" id="lastName" placeholder="<spring:message code="text77"/>" class="form-control" type="text" required="required" />
+                                            <input name="lastName" id="lastName" placeholder="<spring:message code="text77"/>" maxlength="60" class="form-control" type="text" required="required" tabindex="3"/>
                                         </div> 
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="form-group"> 
                                             <label><spring:message code="text94" /></label>
-                                            <input name="password" id="password" placeholder="<spring:message code="text95"/>" class="form-control" type="password" required="required" />
+                                            <input name="password" id="password" placeholder="<spring:message code="text95"/>" maxlength="8" class="form-control" type="password" required="required" tabindex="4" />
                                         </div> 
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="form-group"> 
                                             <label><spring:message code="text96" /></label>
-                                            <input name="password2" id="password2" placeholder="<spring:message code="text95"/>" class="form-control" type="password" required="required" />
+                                            <input name="password2" id="password2" placeholder="<spring:message code="text95"/>" maxlength="8" class="form-control" type="password" required="required" tabindex="5"/>
                                         </div> 
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="form-group"> 
                                             <label><spring:message code="text78" /></label>
-                                            <input name="address" id="address" placeholder="<spring:message code="text79"/>" class="form-control" type="text" required="required" />
-                                        </div> 
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="form-group"> 
-                                            <label><spring:message code="text80" /></label>
-                                            <input name="zipCode" id="zipCode" placeholder="<spring:message code="text81"/>" class="form-control" type="number" required="required" />
+                                            <input name="address" id="address" placeholder="<spring:message code="text79"/>" class="form-control" type="text" required="required" tabindex="6" />
                                         </div> 
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="form-group"> 
                                             <label><spring:message code="text82" /></label>
-                                            <input name="country" id="country" placeholder="<spring:message code="text83"/>" class="form-control" type="text" required="required" />
+                                            <input name="country" id="country" placeholder="<spring:message code="text83"/>" maxlength="25" class="form-control" type="text" required="required" tabindex="7" />
+                                        </div> 
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group"> 
+                                            <label><spring:message code="text121" /></label>
+                                            <input name="state" id="state" placeholder="" class="form-control" maxlength="35" type="text" required="required" tabindex="8" />
                                         </div> 
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="form-group"> 
                                             <label><spring:message code="text84" /></label>
-                                            <input name="city" id="city" placeholder="<spring:message code="text85"/>" class="form-control" type="text" required="required" />
+                                            <input name="city" id="city" placeholder="<spring:message code="text85"/>" maxlength="35" class="form-control" type="text" required="required" tabindex="9" />
+                                        </div> 
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group"> 
+                                            <label><spring:message code="text80" /></label>
+                                            <input name="zipCode" id="zipCode" placeholder="<spring:message code="text81"/>" min="1" max="99999999" class="form-control" type="number" required="required" tabindex="10" />
                                         </div> 
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="form-group"> 
                                             <label><spring:message code="text86" /></label>
-                                            <select id="gender" name="gender" class="form-control">
+                                            <select id="gender" name="gender" class="form-control" tabindex="11">
                                                 <option value="1"><spring:message code="text97" /></option>
                                                 <option value="2"><spring:message code="text98" /></option>
                                             </select>
@@ -157,15 +163,9 @@
                                     <div class="col-lg-6">
                                         <div class="form-group"> 
                                             <label><spring:message code="text88" /></label>
-                                            <input name="phone" id="phone" placeholder="<spring:message code="text89"/>" class="form-control" type="number" required="required" />
+                                            <input name="phone" id="phone" placeholder="<spring:message code="text89"/>" min="1" max="999999999999" class="form-control" type="number" required="required" tabindex="12" />
                                         </div> 
-                                    </div>                                                                        
-                                    <div class="col-lg-6">
-                                        <div class="form-group"> 
-                                            <label><spring:message code="text121" /></label>
-                                            <input name="state" id="state" placeholder="<spring:message code="text89"/>" class="form-control" type="text" required="required" />
-                                        </div> 
-                                    </div>                                                                        
+                                    </div>                                                                                                            
                                     <div class="col-lg-12">
                                         <button id="saveButton" class="btn btn-block btn-lg btn-success">
                                             <spring:message code="text92"/>

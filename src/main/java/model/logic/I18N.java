@@ -40,6 +40,7 @@ public class I18N {
         arrayList.add("text86");
         arrayList.add("text88");
         arrayList.add("text90");
+        arrayList.add("text92");
         arrayList.add("text97");
         arrayList.add("text98");
         arrayList.add("text101");
@@ -57,6 +58,7 @@ public class I18N {
         arrayList.add("text113");
         arrayList.add("text114");
         arrayList.add("text115");
+        arrayList.add("text116");
         arrayList.add("text117");
         arrayList.add("text118");
         arrayList.add("text119");
@@ -64,6 +66,10 @@ public class I18N {
         arrayList.add("text121");
         arrayList.add("text122");
         arrayList.add("text123");
+        arrayList.add("text136");
+        arrayList.add("text137");
+        arrayList.add("text138");
+        arrayList.add("text139");
     }
     
     private I18N(){
