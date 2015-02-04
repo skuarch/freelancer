@@ -87,23 +87,15 @@ $('#loginForm').submit(function(event){
         type: "POST",        
         success: function (response) {
             
-            if(response == null || response == undefined){                
+            if(response == null || response == undefined){
                 $('#message').html(text14);
                 $('#message').fadeIn();                        
                 return;
             }
             
-            if(response.verify == "true"){
-                $('#container').fadeOut();                
-                $('#welcome').slideUp(300).delay(450).fadeIn(400);
-                setTimeout(function() {
-                    window.location.href = "dashboard.html";
-                }, 2500);
-                
-                setTimeout(function() {
-                    $('#welcome').fadeOut();
-                }, 1900);                
-            }else{                                
+            if(response.verify == "true"){                                
+                window.location.href = "dashboard.html";
+            }else{ 
                 $('#message').html(text14);
                 $('#message').fadeIn();        
             };
@@ -271,7 +263,7 @@ function productDetail(id){
 
 (function(){ 
     l = window.location.pathname;
-    l = l.replace("/swiftrecord/","");
+    l = l.replace(ctx,"");
     l = l.replace(".html","");
     switch (l){        
         case "createNewProduct":  

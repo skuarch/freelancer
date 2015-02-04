@@ -14,6 +14,7 @@ model/database/TransactionTypeModel.class
 model/beans/Warehouse.class
 model/logic/StaticContext.class
 controllers/product/NewProductForm.class
+controllers/freelancer/Profile.class
 model/logic/CreateTransactionNewProduct.class
 controllers/application/BaseController.class
 controllers/product/ProductList.class
@@ -26,8 +27,8 @@ interceptors/Hibernate.class
 servlets/GlobalContext.class
 controllers/freelancer/CreateFreelancerProcess.class
 controllers/application/OldBrowser.class
-controllers/freelancer/CreateFreelancer.class
 controllers/application/Authentication.class
+controllers/freelancer/CreateFreelancer.class
 model/logic/NotificationBroadcast.class
 controllers/application/Error.class
 model/beans/User.class
@@ -43,8 +44,8 @@ controllers/application/Installer.class
 endpoints/Notification.class
 interceptors/Session.class
 controllers/application/Logout.class
-model/net/RestClient.class
 model/util/SessionUtil.class
+model/net/RestClient.class
 model/beans/AuthenticationBean.class
 controllers/product/ProductDetails.class
 model/beans/Category.class

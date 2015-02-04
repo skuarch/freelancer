@@ -61,27 +61,7 @@
                     </div>
                 </div>                
             </div>            
-        </div>
-        <div class="container">
-            <div id="welcome" class="row display-none">
-                <div class="col-md-4 col-md-offset-4"> 
-                    <div class="login-panel panel panel-default">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">
-                                <spring:message code="text1" />
-                            </h3>
-                        </div>
-                        <div class="panel-body text-center">
-                            <spring:message code="text10" />
-                            <br/>
-                            <img src="<c:url value="/resources/img/logo.jpg" />" alt="" height="200" width="200" />                                                                                                                
-                            <br/>                            
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
+        </div>        
         <script src="scriptI18N.html" type="text/javascript"></script>
         <jsp:include page="scripts.jsp" />
         <script>

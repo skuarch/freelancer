@@ -15,7 +15,7 @@ public class RestPostClient {
 
     }
 
-    //==========================================================================
+    //==========================================================================        
     public static String createFreelancer(HashMap<String, Object> parameters) throws IOException {
 
         String returnString = null;
@@ -23,6 +23,34 @@ public class RestPostClient {
                 Constants.API_URL
                 + Constants.API_VERSION
                 + Constants.URI_FREELANCER
+        );
+
+        try {
+
+            rc.initConnection();
+            rc.writeMessage(parameters);
+            returnString = rc.receiveMessage();
+            rc.connect();
+
+        } catch (IOException e) {
+            throw e;
+        } finally {
+            rc.disconnect();
+            rc.closeStreams();
+        }
+
+        return returnString;
+
+    }
+
+    //==========================================================================
+    public static String sendReceive(HashMap<String, Object> parameters, String uri) throws IOException {
+
+        String returnString = null;
+        RestClient rc = new RestClient(
+                Constants.API_URL
+                + Constants.API_VERSION
+                + uri
         );
 
         try {

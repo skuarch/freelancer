@@ -22,7 +22,9 @@
 /home/skuarch/NetBeansProjects/freelancer/src/main/java/model/database/AuthenticationModel.java
 /home/skuarch/NetBeansProjects/freelancer/src/main/java/model/logic/I18N.java
 /home/skuarch/NetBeansProjects/freelancer/src/main/java/controllers/application/TestNotificationsForm.java
+/home/skuarch/NetBeansProjects/freelancer/src/main/java/model/beans/Freelancer.java
 /home/skuarch/NetBeansProjects/freelancer/src/main/java/controllers/freelancer/CreateFreelancerProcess.java
+/home/skuarch/NetBeansProjects/freelancer/src/main/java/controllers/freelancer/Profile.java
 /home/skuarch/NetBeansProjects/freelancer/src/main/java/model/beans/Address.java
 /home/skuarch/NetBeansProjects/freelancer/src/main/java/controllers/product/CreateNewProductProcess.java
 /home/skuarch/NetBeansProjects/freelancer/src/main/java/controllers/application/Installer.java
@@ -41,8 +43,8 @@
 /home/skuarch/NetBeansProjects/freelancer/src/main/java/controllers/dashboard/Dashboard.java
 /home/skuarch/NetBeansProjects/freelancer/src/main/java/model/beans/ProductTransaction.java
 /home/skuarch/NetBeansProjects/freelancer/src/main/java/model/beans/AuthenticationBean.java
-/home/skuarch/NetBeansProjects/freelancer/src/main/java/model/beans/Product.java
 /home/skuarch/NetBeansProjects/freelancer/src/main/java/interceptors/Session.java
+/home/skuarch/NetBeansProjects/freelancer/src/main/java/model/beans/Product.java
 /home/skuarch/NetBeansProjects/freelancer/src/main/java/controllers/product/NewProductForm.java
 /home/skuarch/NetBeansProjects/freelancer/src/main/java/controllers/product/ProductDetails.java
 /home/skuarch/NetBeansProjects/freelancer/src/main/java/model/util/SessionUtil.java
@@ -50,8 +52,8 @@
 /home/skuarch/NetBeansProjects/freelancer/src/main/java/controllers/freelancer/CreateFreelancer.java
 /home/skuarch/NetBeansProjects/freelancer/src/main/java/model/logic/NotificationBroadcast.java
 /home/skuarch/NetBeansProjects/freelancer/src/main/java/model/util/DataBaseUtilities.java
-/home/skuarch/NetBeansProjects/freelancer/src/main/java/controllers/warehouse/CreateNewWarehouse.java
 /home/skuarch/NetBeansProjects/freelancer/src/main/java/controllers/application/Welcome.java
+/home/skuarch/NetBeansProjects/freelancer/src/main/java/controllers/warehouse/CreateNewWarehouse.java
 /home/skuarch/NetBeansProjects/freelancer/src/main/java/servlets/GlobalContext.java
 /home/skuarch/NetBeansProjects/freelancer/src/main/java/model/logic/CreateTransactionNewProduct.java
 /home/skuarch/NetBeansProjects/freelancer/src/main/java/model/beans/SystemConfiguration.java
