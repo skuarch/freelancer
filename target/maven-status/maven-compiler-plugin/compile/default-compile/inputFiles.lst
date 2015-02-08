@@ -51,6 +51,7 @@
 /home/skuarch/NetBeansProjects/freelancer/src/main/java/model/database/ProductModel.java
 /home/skuarch/NetBeansProjects/freelancer/src/main/java/controllers/freelancer/CreateFreelancer.java
 /home/skuarch/NetBeansProjects/freelancer/src/main/java/model/logic/NotificationBroadcast.java
+/home/skuarch/NetBeansProjects/freelancer/src/main/java/controllers/freelancer/UpdateFreelancerProcess.java
 /home/skuarch/NetBeansProjects/freelancer/src/main/java/model/util/DataBaseUtilities.java
 /home/skuarch/NetBeansProjects/freelancer/src/main/java/controllers/application/Welcome.java
 /home/skuarch/NetBeansProjects/freelancer/src/main/java/controllers/warehouse/CreateNewWarehouse.java

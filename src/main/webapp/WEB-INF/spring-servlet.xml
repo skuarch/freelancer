@@ -19,6 +19,8 @@
 	   		http://www.springframework.org/schema/aop/spring-aop-4.1.xsd"
        xmlns:jee="http://www.springframework.org/schema/jee">
     
+    <import resource="beans.xml" />
+    
     <context:component-scan base-package="controllers" />
          
     <bean id="viewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
@@ -45,12 +47,6 @@
             <ref bean="localeChangeInterceptor"></ref>
         </property>
     </bean>
-    
-    <bean id="authenticationBean" class="model.beans.AuthenticationBean" lazy-init="false">       
-    </bean>
-    
-    <bean id="product" class="model.beans.Product" lazy-init="false">       
-   </bean>
 
     <mvc:interceptors>
         <mvc:interceptor>

@@ -11,5 +11,6 @@ public class Constants {
     public static final String URI_FREELANCER = "/freelancer/create";
     public static final String URI_AUTHENTICATION = "/authentication";
     public static final String URI_FREELANCER_AUTHENTICATION = "/authentication/freelancer";
+    public static final String URI_FREELANCER_UPDATE = "/freelancer/update";
     
 }

@@ -77,7 +77,7 @@ public class Authentication extends BaseController {
                 jsonReturn = new JSONObject(tmp);                 
                 
                 if (jsonReturn.has("email") && jsonReturn.getString("email").equals(email)) {
-                    
+                    System.out.println("antes tmp: " + tmp);
                     f = new Gson().fromJson(tmp, Freelancer.class);
                     ab.setVerify("true");
                     createSession(f);

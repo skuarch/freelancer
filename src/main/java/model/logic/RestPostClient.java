@@ -16,6 +16,7 @@ public class RestPostClient {
     }
 
     //==========================================================================        
+    @Deprecated
     public static String createFreelancer(HashMap<String, Object> parameters) throws IOException {
 
         String returnString = null;

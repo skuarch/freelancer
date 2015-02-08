@@ -319,15 +319,15 @@ $("#createFreelancer").submit(function(event){
         error += "<br>" + text103;
     }
 
-    if (name.length < 1) {
+    if (name.length < 2) {
         error += "<br>" + text104;
     }
 
-    if (lastName.length < 1) {
+    if (lastName.length < 2) {
         error += "<br>" + text105;
     }
 
-    if (password.length < 1) {
+    if (password.length < 4) {
         error += "<br>" + text106;
     }
     
@@ -335,11 +335,11 @@ $("#createFreelancer").submit(function(event){
         error += "<br>" + text136;
     }
 
-    if (address.length < 1) {
+    if (address.length < 5) {
         error += "<br>" + text107;
     }
 
-    if (zipCode.length < 1) {
+    if (zipCode.length < 5) {
         error += "<br>" + text108;
     }
     
@@ -347,15 +347,15 @@ $("#createFreelancer").submit(function(event){
         error += "<br>" + text137;
     }
 
-    if (country.length < 1) {
+    if (country.length < 3) {
         error += "<br>" + text109;
     }
 
-    if (city.length < 1) {
+    if (city.length < 3) {
         error += "<br>" + text110;
     }
 
-    if (phone.length < 1) {
+    if (phone.length < 5) {
         error += "<br>" + text112;
     }
     
@@ -363,7 +363,7 @@ $("#createFreelancer").submit(function(event){
         error += "<br>" + text138;
     }
     
-    if (state.length < 1) {
+    if (state.length < 3) {
         error += "<br>" + text122;
     }
 
@@ -428,6 +428,147 @@ $("#createFreelancer").submit(function(event){
                         alertify.alert(e2);
                         $("#saveButton").removeAttr("disabled");
                         $("#saveButton").html(text92);                
+                    }
+                });
+
+            } else {
+                alertify.error(text102);
+                $("#saveButton").removeAttr("disabled");
+            }
+        });
+
+    }
+    
+});
+
+$("#profileFreelancerForm").submit(function(event){
+   
+    $("#profileFreelancerForm").attr("action","createNewFreelancer.html");  
+    $("#saveButton").removeAttr("disabled");
+   
+    if (event.preventDefault) {
+        event.preventDefault();
+    } else {
+        event.returnValue = false;
+    }  
+    
+    var error = "";
+    var email = $("#email").val();
+    var name = $("#name").val();
+    var lastName = $("#lastName").val();    
+    var address = $("#address").val();
+    var zipCode = $("#zipCode").val();
+    var country = $("#country").val();
+    var city = $("#city").val();
+    var gender = $("#gender").val();
+    var phone = $("#phone").val();
+    var state = $("#state").val();
+    
+    if(gender == 1){        
+        g = text97;
+    }else{
+        g = text98;
+    }    
+    
+    if (!isEmail(email)) {
+        error += "<br>" + text103;
+    }
+
+    if (name.length < 2) {
+        error += "<br>" + text104;
+    }
+
+    if (lastName.length < 2) {
+        error += "<br>" + text105;
+    }    
+
+    if (address.length < 5) {
+        error += "<br>" + text107;
+    }
+
+    if (zipCode.length < 4) {
+        error += "<br>" + text108;
+    }
+    
+    if(isNaN(zipCode)){
+        error += "<br>" + text137;
+    }
+
+    if (country.length < 4) {
+        error += "<br>" + text109;
+    }
+
+    if (city.length < 2) {
+        error += "<br>" + text110;
+    }
+
+    if (phone.length < 5) {
+        error += "<br>" + text112;
+    }
+    
+    if(isNaN(phone)){
+        error += "<br>" + text138;
+    }
+    
+    if (state.length < 4) {
+        error += "<br>" + text122;
+    }
+
+    if (error.length > 1) {
+        alertify.alert(text113 + "<br>" + error);
+    } else {
+
+        message = text101 +
+                "<br><div class='alert alert-warning'> " + text90 + ": " + email
+                + "<br> " + text74 + ": " + name
+                + "<br> " + text76 + ": " + lastName
+                + "<br> " + text78 + ": " + address
+                + "<br> " + text80 + ": " + zipCode
+                + "<br> " + text82 + ": " + country
+                + "<br> " + text84 + ": " + city
+                + "<br> " + text86 + ": " + g
+                + "<br> " + text88 + ": " + phone
+                + "<br> " + text121 + ": " + state
+                + "</div>";
+
+        alertify.confirm(message, function (e) {
+
+            if (e) {
+
+                var data = {
+                    "name" : name,
+                    "email" : email,                    
+                    "lastName" : lastName,
+                    "addressAll" : address,
+                    "zipCode" : String(zipCode),
+                    "city" : city,
+                    "state" : state,
+                    "country" : country,
+                    "gender" : gender,
+                    "phone" : String(phone)
+                };
+
+                $("#saveButton").attr("disabled","disabled");
+                $("#saveButton").html(text143);                
+                $.ajax({
+                    url:"updateFreelancerProfileProcess.html",
+                    type:"post",
+                    data:data,
+                    success: function (data) {
+                        if (data.hasOwnProperty('error')) {
+                            alertify.error(text116);
+                            $("#saveButton").removeAttr("disabled");
+                            $("#saveButton").html(text92);
+                        } 
+                        if (data.hasOwnProperty('updated') && data.updated == true) {                            
+                            alertify.success(text144);
+                        }else{
+                            alertify.error(text145);
+                        }
+                    }, error: function (e1, e2, e3) {
+                        alertify.error(e2);
+                        $("#saveButton").removeAttr("disabled");
+                        $("#saveButton").html(text143);                
                     }
                 });
 

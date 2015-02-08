@@ -70,6 +70,9 @@ public class I18N {
         arrayList.add("text137");
         arrayList.add("text138");
         arrayList.add("text139");
+        arrayList.add("text143");
+        arrayList.add("text144");
+        arrayList.add("text145");
     }
     
     private I18N(){
