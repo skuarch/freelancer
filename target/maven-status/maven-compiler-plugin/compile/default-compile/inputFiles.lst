@@ -2,8 +2,10 @@
 /home/skuarch/NetBeansProjects/freelancer/src/main/java/controllers/application/Error404.java
 /home/skuarch/NetBeansProjects/freelancer/src/main/java/model/util/HibernateUtil.java
 /home/skuarch/NetBeansProjects/freelancer/src/main/java/controllers/application/TestNotification.java
+/home/skuarch/NetBeansProjects/freelancer/src/main/java/controllers/application/SystemWelcome.java
 /home/skuarch/NetBeansProjects/freelancer/src/main/java/model/util/HandlerExceptionUtil.java
 /home/skuarch/NetBeansProjects/freelancer/src/main/java/model/database/DAO.java
+/home/skuarch/NetBeansProjects/freelancer/src/main/java/model/util/FreelancerUtil.java
 /home/skuarch/NetBeansProjects/freelancer/src/main/java/model/beans/Warehouse.java
 /home/skuarch/NetBeansProjects/freelancer/src/main/java/controllers/product/CreateNewProduct.java
 /home/skuarch/NetBeansProjects/freelancer/src/main/java/model/beans/Category.java

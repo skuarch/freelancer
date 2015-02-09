@@ -4,7 +4,7 @@
     <div class="sidebar-nav navbar-collapse">
         <ul class="nav" id="side-menu">            
             <li>
-                <a href="dashboard.html">
+                <a href="systemWelcome.html">
                     <i class="fa fa-star fa-fw">                        
                     </i>
                     <spring:message code="text23" />
@@ -20,15 +20,15 @@
                 </a>
                 <ul class="nav nav-second-level">
                     <li>
-                        <a href="createNewProduct.html">
-                            <spring:message code="text25" />
+                        <a href="profile.html">
+                            <spring:message code="text146" />
                         </a>
                     </li>
                     <li>
-                        <a href="profile.html">
-                            My Profile
+                        <a href="createNewProduct.html">
+                            <spring:message code="text25" />
                         </a>
-                    </li>
+                    </li>                    
                 </ul>
                 <!-- /.nav-second-level -->
             </li>
@@ -41,7 +41,7 @@
                 <ul class="nav nav-second-level">
                     <li>
                         <a href="createNewWarehouse.html">
-                            Create new Warehouse
+                            <spring:message code="text147" />
                         </a>
                     </li>
                     <li>

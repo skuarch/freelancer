@@ -94,7 +94,7 @@ $('#loginForm').submit(function(event){
             }
             
             if(response.verify == "true"){                                
-                window.location.href = "dashboard.html";
+                window.location.href = "systemWelcome.html";
             }else{ 
                 $('#message').html(text14);
                 $('#message').fadeIn();        
