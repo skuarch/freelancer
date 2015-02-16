@@ -11,12 +11,11 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
 /**
  * RestFul client, this class use HttpUrlConnection to open a remote connection
  * with the server.
+ *
  * @author skuarch
  */
 public class RestClient {
@@ -33,6 +32,7 @@ public class RestClient {
     //==========================================================================
     /**
      * creates a new instance of RestClient.
+     *
      * @param stringUrl url
      */
     public RestClient(String stringUrl) {
@@ -44,8 +44,9 @@ public class RestClient {
     //==========================================================================
     /**
      * start connection.
+     *
      * @throws MalformedURLException
-     * @throws IOException 
+     * @throws IOException
      */
     public void initConnection() throws MalformedURLException, IOException {
 
@@ -55,6 +56,8 @@ public class RestClient {
 
         url = new URL(stringUrl);
         hurlc = (HttpURLConnection) url.openConnection();
+        //hurlc.setRequestProperty("Content-Type", "application/json");
+        //hurlc.setRequestProperty("Accept", "application/json");
         hurlc.setReadTimeout(10000);
         hurlc.setConnectTimeout(15000);
         hurlc.setRequestMethod("POST");
@@ -66,8 +69,9 @@ public class RestClient {
     //==========================================================================
     /**
      * send message to remote server.
+     *
      * @param parameters HashMap<String,String>
-     * @throws IOException 
+     * @throws IOException
      */
     public void writeMessage(HashMap<String, Object> parameters) throws IOException {
 
@@ -93,8 +97,9 @@ public class RestClient {
     //==========================================================================
     /**
      * opens an output and receive message.
+     *
      * @return String
-     * @throws IOException 
+     * @throws IOException
      */
     public String receiveMessage() throws IOException {
 
@@ -120,7 +125,8 @@ public class RestClient {
     //==========================================================================
     /**
      * establish connection with remote host.
-     * @throws IOException 
+     *
+     * @throws IOException
      */
     public void connect() throws IOException {
         hurlc.connect();
@@ -129,7 +135,8 @@ public class RestClient {
     //==========================================================================
     /**
      * disconnect from remote host.
-     * @throws IOException 
+     *
+     * @throws IOException
      */
     public void disconnect() throws IOException {
         hurlc.disconnect();
@@ -140,28 +147,29 @@ public class RestClient {
      * close all streams.
      */
     public void closeStreams() {
-        closeBufferedReader(bufferedReader);        
+        closeBufferedReader(bufferedReader);
         closeInputStream(inputStream);
-        closeOutputStream(outputStream);        
+        closeOutputStream(outputStream);
         closeBufferedWriter(bufferedWriter);
     }
 
     //==========================================================================
     /**
      * creates a string key = value divided by &.
+     *
      * @param parameters
-     * @return 
+     * @return
      */
-    private String getQuery(HashMap<String,Object> parameters) {
+    private String getQuery(HashMap<String, Object> parameters) {
 
-        StringBuilder sb = new StringBuilder();        
-        
+        StringBuilder sb = new StringBuilder();
+
         parameters.entrySet().stream().forEach((entrySet) -> {
             String key = entrySet.getKey();
             Object value = entrySet.getValue();
             sb.append(key).append("=").append(value).append("&");
         });
-        
+
         return sb.toString();
 
     }

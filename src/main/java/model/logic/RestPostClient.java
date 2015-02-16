@@ -22,8 +22,8 @@ public class RestPostClient {
         String returnString = null;
         RestClient rc = new RestClient(
                 Constants.API_URL
-                + Constants.API_VERSION
-                + Constants.URI_FREELANCER
+                + Constants.API_FIRST_VERSION
+                + Constants.URI_FREELANCER_CREATE
         );
 
         try {
@@ -44,13 +44,42 @@ public class RestPostClient {
 
     }
 
-    //==========================================================================
+    //==========================================================================    
+    @Deprecated
     public static String sendReceive(HashMap<String, Object> parameters, String uri) throws IOException {
 
         String returnString = null;
         RestClient rc = new RestClient(
                 Constants.API_URL
-                + Constants.API_VERSION
+                + Constants.API_FIRST_VERSION
+                + uri
+        );
+
+        try {
+
+            rc.initConnection();
+            rc.writeMessage(parameters);
+            returnString = rc.receiveMessage();
+            rc.connect();
+
+        } catch (IOException e) {
+            throw e;
+        } finally {
+            rc.disconnect();
+            rc.closeStreams();
+        }
+
+        return returnString;
+
+    }
+    
+    //==========================================================================        
+    public static String sendReceive(HashMap<String, Object> parameters,String apiUrl,String version, String uri) throws IOException {
+        
+        String returnString = null;
+        RestClient rc = new RestClient(
+                apiUrl
+                + version
                 + uri
         );
 

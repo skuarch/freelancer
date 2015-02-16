@@ -12,7 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
  */
 public class BaseController {
 
-    private final static Logger logger = Logger.getLogger(BaseController.class);
+    private final static Logger logger = Logger.getLogger(BaseController.class);    
 
     //==========================================================================
     public void setHeaderNoChache(HttpServletResponse response) {
@@ -36,4 +36,9 @@ public class BaseController {
         return mav;
     }
 
+    //==========================================================================
+    public ModelAndView getModelAndViewJson() {
+        return new ModelAndView("application/json");
+    }
+    
 }

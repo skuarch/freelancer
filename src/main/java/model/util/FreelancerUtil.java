@@ -63,6 +63,27 @@ public class FreelancerUtil {
         return hm;
 
     }
+    
+    //==========================================================================
+    public static HashMap<String, Object> createHashMapFreelancerUpdatePassword(String currentPassword, String newPassword, String newPassword2, long personId) {
+
+        HashMap hm = new HashMap();
+
+        try {
+
+            //avoid some html tags            
+            hm.put("currentPassword", StringEscapeUtils.escapeHtml4(currentPassword));
+            hm.put("newPassword", StringEscapeUtils.escapeHtml4(newPassword));
+            hm.put("newPassword2", StringEscapeUtils.escapeHtml4(newPassword2));
+            hm.put("id", personId);
+
+        } catch (Exception e) {
+            throw e;
+        }
+        
+        return hm;
+
+    }
 
     //==========================================================================
     public static Freelancer getFreelancer(HttpSession session) {

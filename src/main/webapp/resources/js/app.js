@@ -27,6 +27,9 @@ if("undefined"==typeof jQuery)throw new Error("Bootstrap's JavaScript requires j
 
 //sourceMappingURL=alertify.js.map;
 
+//jquery redirect
+;(function(a){a.redirect=function(f,b,g){g=(g&&g.toUpperCase()=="GET")?"GET":"POST";if(!b){var e=a.parse_url(f);f=e.url;b=e.params}var d=a("<form>",{attr:{method:g,action:f}});for(var c in b){a("<input>",{attr:{type:"hidden",name:c,value:b[c]}}).appendTo(d)}a("body").append(d);console.log(d);d.submit()};a.parse_url=function(b){if(b.indexOf("?")==-1){return{url:b,params:{}}}var g=b.split("?");var b=g[0];var k=g[1];var d={};var c=k.split("&");var h={};for(var j in c){var e=c[j];var f=e.split("=");h[f[0]]=f[1]}d.url=b;d.params=h;return d}})(jQuery);
+
 /*sb admin*/
 $(function(){$("#side-menu").metisMenu()});$(function(){$(window).bind("load resize",function(){topOffset=50;width=(this.window.innerWidth>0)?this.window.innerWidth:this.screen.width;if(width<768){$("div.navbar-collapse").addClass("collapse");topOffset=100}else{$("div.navbar-collapse").removeClass("collapse")}height=(this.window.innerHeight>0)?this.window.innerHeight:this.screen.height;height=height-topOffset;if(height<1){height=1}if(height>topOffset){$("#page-wrapper").css("min-height",(height)+"px")}})});
 
@@ -392,7 +395,7 @@ $("#createFreelancer").submit(function(event){
                 var data = {
                     "person.name" : name,
                     "person.email" : email,
-                    "person.password" : password,
+                    "password" : password,
                     "person.lastName" : lastName,
                     "address.all" : address,
                     "address.zipCode" : String(zipCode),
@@ -560,7 +563,7 @@ $("#profileFreelancerForm").submit(function(event){
                             $("#saveButton").removeAttr("disabled");
                             $("#saveButton").html(text92);
                         } 
-                        if (data.hasOwnProperty('updated') && data.updated == true) {                            
+                        if (data.hasOwnProperty('updated') & data.updated == true) {                            
                             alertify.success(text144);
                         }else{
                             alertify.error(text145);
@@ -580,4 +583,227 @@ $("#profileFreelancerForm").submit(function(event){
 
     }
     
+});
+
+$("#updatePasswordForm").submit(function(event){        
+    
+    if (event.preventDefault) {
+        event.preventDefault();
+    } else {
+        event.returnValue = false;
+    }
+    
+    var error = "";
+    var currentPassword = $("#currentPassword").val();
+    var newPassword = $("#newPassword").val();
+    var newPassword2 = $("#newPassword2").val();           
+        
+    if(newPassword != newPassword2){
+        alertify.alert(text119);
+        return;
+    }
+    
+    if (currentPassword.length < 4) {
+        error += "<br>" + text106;
+    }
+    
+    if (currentPassword.length < 5 || newPassword.length > 8) {
+        error += "<br>" + text136;
+    }
+    
+    if (newPassword.length < 4) {
+        error += "<br>" + text106;
+    }
+    
+    if (newPassword.length < 5 || newPassword.length > 8) {
+        error += "<br>" + text136;
+    }
+    
+    if (newPassword2.length < 4) {
+        error += "<br>" + text106;
+    }
+    
+    if (newPassword2.length < 5 || newPassword2.length > 8) {
+        error += "<br>" + text136;
+    }  
+    
+    if (error.length > 1) {
+        alertify.alert(text113 + "<br>" + error);
+    } else {
+       $.ajax({           
+           type:"post",
+           url:"updateFreelancerPasswordProcess.html",
+           data:{currentPassword:$.md5(currentPassword), newPassword:$.md5(newPassword), newPassword2:$.md5(newPassword2)},
+           success:function(data){
+               if(data.hasOwnProperty("matched")){
+                   alertify.error("your current password is incorrect");  
+               } else if(data.updated == true){
+                   alertify.success("the password has been changed");
+               }else{                   
+                   alertify.error("the password was not changed");
+               }               
+           },error: function(e1,e2,e3){
+               alertify.error(e2);
+           }
+       });
+    }
+    
+});
+
+$("#createNewAffiliate").submit(function(event){        
+    
+    if (event.preventDefault) {
+        event.preventDefault();
+    } else {
+        event.returnValue = false;
+    }
+    
+    $("#createNewAffiliate").attr("action","createNewAffiliate.html");  
+    $("#saveButton").removeAttr("disabled");
+    
+    var error = "";
+    var email = $("#email").val();
+    var name = $("#name").val();
+    var lastName = $("#lastName").val();
+    var password = $("#password").val();
+    var password2 = $("#password2").val();
+    var address = $("#address").val();
+    var zipCode = $("#zipCode").val();
+    var country = $("#country").val();
+    var city = $("#city").val();
+    var gender = $("#gender").val();
+    var phone = $("#phone").val();
+    var state = $("#state").val();
+    
+    if(gender == 1){        
+        g = text97;
+    }else{
+        g = text98;
+    }
+    
+    if(password != password2){
+        alertify.alert(text119);
+        return;
+    }
+    
+    if (!isEmail(email)) {
+        error += "<br>" + text103;
+    }
+
+    if (name.length < 2) {
+        error += "<br>" + text104;
+    }
+
+    if (lastName.length < 2) {
+        error += "<br>" + text105;
+    }
+
+    if (password.length < 4) {
+        error += "<br>" + text106;
+    }
+    
+    if (password.length < 5 || password.length > 8) {
+        error += "<br>" + text136;
+    }
+
+    if (address.length < 5) {
+        error += "<br>" + text107;
+    }
+
+    if (zipCode.length < 5) {
+        error += "<br>" + text108;
+    }
+    
+    if(isNaN(zipCode)){
+        error += "<br>" + text137;
+    }
+
+    if (country.length < 3) {
+        error += "<br>" + text109;
+    }
+
+    if (city.length < 3) {
+        error += "<br>" + text110;
+    }
+
+    if (phone.length < 5) {
+        error += "<br>" + text112;
+    }
+    
+    if(isNaN(phone)){
+        error += "<br>" + text138;
+    }
+    
+    if (state.length < 3) {
+        error += "<br>" + text122;
+    }
+
+    if (error.length > 1) {
+        alertify.alert(text113 + "<br>" + error);
+    } else {
+
+        message = text101 +
+                "<br><div class='alert alert-warning'> " + text90 + ": " + email
+                + "<br> " + text74 + ": " + name
+                + "<br> " + text76 + ": " + lastName
+                + "<br> " + text78 + ": " + address
+                + "<br> " + text80 + ": " + zipCode
+                + "<br> " + text82 + ": " + country
+                + "<br> " + text84 + ": " + city
+                + "<br> " + text86 + ": " + g
+                + "<br> " + text88 + ": " + phone
+                + "<br> " + text121 + ": " + state
+                + "</div>";
+
+        alertify.confirm(message, function (e) {
+
+            if (e) {
+
+                var data = {
+                    "person.name" : name,
+                    "person.email" : email,
+                    "password" : password,
+                    "person.lastName" : lastName,
+                    "address.all" : address,
+                    "address.zipCode" : String(zipCode),
+                    "address.city" : city,
+                    "address.state" : state,
+                    "address.country" : country,
+                    "person.gender.id" : gender,
+                    "person.phone" : String(phone)
+                };
+
+                //$("#saveButton").attr("disabled","disabled");
+                $("#saveButton").html(text114);                
+                $.ajax({
+                    url:"createNewAffiliateProcess.html",
+                    type:"post",
+                    data:data,
+                    success: function (data) {
+                        if (data.hasOwnProperty("error")) {
+                            alertify.error(text145);
+                        }
+                        if (data.created == 'true') {                            
+                            alertify.success(text164);
+                            alertify.confirm(text164 + "<br/> establishment",function(e,str){
+                                if(e){
+                                    $.redirect('createEstablishment.html', {'id': data.id}, 'POST');
+                                }
+                            });
+                        } else {
+                            alertify.error(text165);
+                        }
+                    }, error: function (e1, e2, e3) {
+                        alertify.alert(e2);
+                        $("#saveButton").removeAttr("disabled");
+                        $("#saveButton").html(text92);                
+                    }
+                });
+
+            } else {
+                alertify.error(text102);
+                $("#saveButton").removeAttr("disabled");
+            }
+        });
+    }    
 });

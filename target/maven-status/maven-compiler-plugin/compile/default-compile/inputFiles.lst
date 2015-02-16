@@ -9,10 +9,12 @@
 /home/skuarch/NetBeansProjects/freelancer/src/main/java/model/beans/Warehouse.java
 /home/skuarch/NetBeansProjects/freelancer/src/main/java/controllers/product/CreateNewProduct.java
 /home/skuarch/NetBeansProjects/freelancer/src/main/java/model/beans/Category.java
+/home/skuarch/NetBeansProjects/freelancer/src/main/java/controllers/affiliate/CreateNewAffiliateProcess.java
 /home/skuarch/NetBeansProjects/freelancer/src/main/java/model/beans/User.java
 /home/skuarch/NetBeansProjects/freelancer/src/main/java/controllers/application/ScriptI18N.java
 /home/skuarch/NetBeansProjects/freelancer/src/main/java/controllers/application/BaseController.java
 /home/skuarch/NetBeansProjects/freelancer/src/main/java/model/beans/TransactionType.java
+/home/skuarch/NetBeansProjects/freelancer/src/main/java/controllers/freelancer/UpdateFreelancerPassword.java
 /home/skuarch/NetBeansProjects/freelancer/src/main/java/model/database/CategoryModel.java
 /home/skuarch/NetBeansProjects/freelancer/src/main/java/endpoints/Notification.java
 /home/skuarch/NetBeansProjects/freelancer/src/main/java/model/util/MD5Util.java
@@ -26,11 +28,13 @@
 /home/skuarch/NetBeansProjects/freelancer/src/main/java/controllers/application/TestNotificationsForm.java
 /home/skuarch/NetBeansProjects/freelancer/src/main/java/model/beans/Freelancer.java
 /home/skuarch/NetBeansProjects/freelancer/src/main/java/controllers/freelancer/CreateFreelancerProcess.java
+/home/skuarch/NetBeansProjects/freelancer/src/main/java/controllers/affiliate/CreateNewAffiliate.java
 /home/skuarch/NetBeansProjects/freelancer/src/main/java/controllers/freelancer/Profile.java
 /home/skuarch/NetBeansProjects/freelancer/src/main/java/model/beans/Address.java
 /home/skuarch/NetBeansProjects/freelancer/src/main/java/controllers/product/CreateNewProductProcess.java
 /home/skuarch/NetBeansProjects/freelancer/src/main/java/controllers/application/Installer.java
 /home/skuarch/NetBeansProjects/freelancer/src/main/java/controllers/warehouse/CreateNewWarehouseForm.java
+/home/skuarch/NetBeansProjects/freelancer/src/main/java/controllers/freelancer/UpdateFreelancerPasswordProcess.java
 /home/skuarch/NetBeansProjects/freelancer/src/main/java/controllers/application/Login.java
 /home/skuarch/NetBeansProjects/freelancer/src/main/java/interceptors/Hibernate.java
 /home/skuarch/NetBeansProjects/freelancer/src/main/java/controllers/application/Logout.java
@@ -40,6 +44,8 @@
 /home/skuarch/NetBeansProjects/freelancer/src/main/java/model/database/TransactionTypeModel.java
 /home/skuarch/NetBeansProjects/freelancer/src/main/java/controllers/application/Error.java
 /home/skuarch/NetBeansProjects/freelancer/src/main/java/model/logic/Approved.java
+/home/skuarch/NetBeansProjects/freelancer/src/main/java/controllers/freelancer/FreelancerCreateEstablishment.java
+/home/skuarch/NetBeansProjects/freelancer/src/main/java/model/util/ApplicationUtil.java
 /home/skuarch/NetBeansProjects/freelancer/src/main/java/controllers/application/Authentication.java
 /home/skuarch/NetBeansProjects/freelancer/src/main/java/model/logic/Constants.java
 /home/skuarch/NetBeansProjects/freelancer/src/main/java/controllers/dashboard/Dashboard.java

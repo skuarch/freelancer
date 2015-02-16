@@ -34,7 +34,7 @@ public class CreateFreelancerProcess extends BaseController {
             @RequestParam("person.email") String personEmail,
             @RequestParam("person.name") String personName,
             @RequestParam("person.lastName") String personLastName,
-            @RequestParam("person.password") String personPassword,
+            @RequestParam("password") String password,
             @RequestParam("person.phone") String personPhone,
             @RequestParam("person.gender.id") short personGenderId,
             @RequestParam("address.all") String address,
@@ -52,11 +52,10 @@ public class CreateFreelancerProcess extends BaseController {
 
         try {
 
-            parameters = createHashMapFreelancer(
-                    personEmail,
+            parameters = createHashMapFreelancer(personEmail,
                     personName,
                     personLastName,
-                    personPassword,
+                    password,
                     personPhone,
                     personGenderId,
                     address,
@@ -88,7 +87,7 @@ public class CreateFreelancerProcess extends BaseController {
             hm.put("person.email", StringEscapeUtils.escapeHtml4(String.valueOf(personEmail)));
             hm.put("person.name", StringEscapeUtils.escapeHtml4(String.valueOf(personName)));
             hm.put("person.lastName", StringEscapeUtils.escapeHtml4(String.valueOf(personLastName)));
-            hm.put("person.password", StringEscapeUtils.escapeHtml4(String.valueOf(personPassword)));
+            hm.put("password", StringEscapeUtils.escapeHtml4(String.valueOf(personPassword)));
             hm.put("person.phone", StringEscapeUtils.escapeHtml4(String.valueOf(personPhone)));
             hm.put("person.gender.id", personGenderId);
             hm.put("address.all", StringEscapeUtils.escapeHtml4(String.valueOf(address)));

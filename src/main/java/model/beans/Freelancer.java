@@ -23,6 +23,7 @@ public class Freelancer implements Serializable {
     private String registrationDate;
     private String state;
     private String key;
+    private long personId;
 
     public Freelancer() {
     }
@@ -145,6 +146,14 @@ public class Freelancer implements Serializable {
 
     public void setKey(String key) {
         this.key = key;
+    }
+
+    public long getPersonId() {
+        return personId;
+    }
+
+    public void setPersonId(long personId) {
+        this.personId = personId;
     }
 
 }

@@ -9,5 +9,5 @@
     
     <bean id="product" class="model.beans.Product" lazy-init="false">       
     </bean>
-    
+        
 </beans>

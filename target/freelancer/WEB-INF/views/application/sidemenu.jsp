@@ -25,7 +25,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="createNewProduct.html">
+                        <a href="updateFreelancerPassword.html">
                             <spring:message code="text25" />
                         </a>
                     </li>                    
@@ -40,13 +40,18 @@
                 </a>
                 <ul class="nav nav-second-level">
                     <li>
-                        <a href="createNewWarehouse.html">
+                        <a href="createNewAffiliate.html">
                             <spring:message code="text147" />
                         </a>
                     </li>
                     <li>
+                        <a href="createNewCompanyAffiliate.html">
+                            <spring:message code="text163" />
+                        </a>
+                    </li>
+                    <li>
                         <a href="productList.html">
-                            Warehouses List
+                            <spring:message code="text155" />
                         </a>
                     </li>
                 </ul>

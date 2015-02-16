@@ -22,7 +22,7 @@ public class NotificationBroadcast {
      * @param text String
      */
     public static void sendMessage(String text) {
-
+        
         if (text == null) {
             throw new NullPointerException("text is null");
         }
