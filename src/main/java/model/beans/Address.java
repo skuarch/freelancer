@@ -1,28 +1,57 @@
 package model.beans;
 
+import java.sql.Timestamp;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import org.hibernate.annotations.Type;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  *
  * @author skuarch
  */
 @Entity
-@Table(name ="address")
-public class Address {    
-    
+@Table(name = "address")
+public class Address {
+
     @Id
-    @Column(name = "address_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "address_id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)    
     private long id;    
-    @Column(name = "address_street")
-    private String street;
-    @Column(name = "address_number")
-    private int number;    
+    
+    @Column(name = "address_all", nullable = false)
+    private String all;            
+    
+    @Column(name = "address_zip_code")
+    private int zipCode;    
+    
+    @Column(name = "address_country", nullable = false)
+    private String country;    
+    
+    @Column(name = "address_state", nullable = false)
+    private String state;       
+    
+    @Column(name = "address_city")
+    private String city;
+    
+    @Column(name = "address_is_soft_deleted", columnDefinition = "int default 0")
+    private byte isSoftDeleted = 0;    
+    
+    @Type(type = "timestamp")
+    @Temporal(TemporalType.DATE)
+    @Column(name = "address_registration_date", nullable = false, columnDefinition = "TIMESTAMP default CURRENT_TIMESTAMP", updatable = false)
+    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
+    private Timestamp creationDate = new Timestamp(System.currentTimeMillis());
+    
+
+    public Address() {
+    }
 
     public long getId() {
         return id;
@@ -32,20 +61,62 @@ public class Address {
         this.id = id;
     }
 
-    public String getStreet() {
-        return street;
+    public String getAll() {
+        return all;
     }
 
-    public void setStreet(String street) {
-        this.street = street;
-    }
-
-    public int getNumber() {
-        return number;
-    }
-
-    public void setNumber(int number) {
-        this.number = number;
+    public void setAll(String all) {
+        this.all = all;
     }
     
+    public int getZipCode() {
+        return zipCode;
+    }
+
+    public void setZipCode(int zipCode) {
+        this.zipCode = zipCode;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public byte getIsSoftDeleted() {
+        return isSoftDeleted;
+    }
+
+    public void setIsSoftDeleted(byte isSoftDeleted) {
+        this.isSoftDeleted = isSoftDeleted;
+    }
+    
+    public Timestamp getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Timestamp creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    
+
 }

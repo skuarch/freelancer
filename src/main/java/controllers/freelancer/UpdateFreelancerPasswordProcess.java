@@ -54,11 +54,12 @@ public class UpdateFreelancerPasswordProcess extends BaseController {
                     currentPassword, 
                     newPassword, 
                     newPassword2,
-                    freelancer.getPersonId());
-            json = RestPostClient.sendReceive(parameters,
+                    freelancer.getId());
+            json = RestPostClient.sendReceive(
+                    parameters, 
                     Constants.API_URL, 
-                    Constants.API_FIRST_VERSION,
-                    Constants.URI_PERSON_UPDATE_PASSWORD);            
+                    Constants.API_FIRST_VERSION, 
+                    Constants.URI_FREELANCER_UPDATE_PASSWORD);
             jsono = new JSONObject(json);            
             mav.addObject("json", jsono);
             

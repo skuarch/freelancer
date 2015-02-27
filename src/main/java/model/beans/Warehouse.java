@@ -29,7 +29,7 @@ public class Warehouse {
     @OneToOne
     @JoinColumn(name = "address_id")
     @Basic(optional = false)
-    private Address address;
+    private Address_anteriror address;
 
     public long getId() {
         return id;
@@ -47,11 +47,11 @@ public class Warehouse {
         this.name = name;
     }
 
-    public Address getAddress() {
+    public Address_anteriror getAddress() {
         return address;
     }
 
-    public void setAddress(Address address) {
+    public void setAddress(Address_anteriror address) {
         this.address = address;
     }
 }

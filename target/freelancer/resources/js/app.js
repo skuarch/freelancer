@@ -27,8 +27,8 @@ if("undefined"==typeof jQuery)throw new Error("Bootstrap's JavaScript requires j
 
 //sourceMappingURL=alertify.js.map;
 
-//jquery redirect
-;(function(a){a.redirect=function(f,b,g){g=(g&&g.toUpperCase()=="GET")?"GET":"POST";if(!b){var e=a.parse_url(f);f=e.url;b=e.params}var d=a("<form>",{attr:{method:g,action:f}});for(var c in b){a("<input>",{attr:{type:"hidden",name:c,value:b[c]}}).appendTo(d)}a("body").append(d);console.log(d);d.submit()};a.parse_url=function(b){if(b.indexOf("?")==-1){return{url:b,params:{}}}var g=b.split("?");var b=g[0];var k=g[1];var d={};var c=k.split("&");var h={};for(var j in c){var e=c[j];var f=e.split("=");h[f[0]]=f[1]}d.url=b;d.params=h;return d}})(jQuery);
+//jquery post redirect
+(function(b){b.redirect=function(i,a,h){h=(h&&h.toUpperCase()=="GET")?"GET":"POST";if(!a){var j=b.parse_url(i);i=j.url;a=j.params}var k=b("<form>",{attr:{method:h,action:i}});for(var l in a){b("<input>",{attr:{type:"hidden",name:l,value:a[l]}}).appendTo(k)}b("body").append(k);console.log(k);k.submit()};b.parse_url=function(r){if(r.indexOf("?")==-1){return{url:r,params:{}}}var m=r.split("?");var r=m[0];var a=m[1];var p={};var q=a.split("&");var l={};for(var i in q){var o=q[i];var n=o.split("=");l[n[0]]=n[1]}p.url=r;p.params=l;return p}})(jQuery);
 
 /*sb admin*/
 $(function(){$("#side-menu").metisMenu()});$(function(){$(window).bind("load resize",function(){topOffset=50;width=(this.window.innerWidth>0)?this.window.innerWidth:this.screen.width;if(width<768){$("div.navbar-collapse").addClass("collapse");topOffset=100}else{$("div.navbar-collapse").removeClass("collapse")}height=(this.window.innerHeight>0)?this.window.innerHeight:this.screen.height;height=height-topOffset;if(height<1){height=1}if(height>topOffset){$("#page-wrapper").css("min-height",(height)+"px")}})});
@@ -41,6 +41,14 @@ $(document).ready(function(){
     $(document).on("contextmenu", function(evt) {return false;});         
     //notifications();
 });
+
+function preventDefaultForm(event){
+    if (event.preventDefault) {
+        event.preventDefault();
+    } else {
+        event.returnValue = false;
+    }    
+}
 
 //==============================================================================
 (function canvasHeight(){
@@ -58,7 +66,7 @@ $(document).ready(function(){
 //==============================================================================
 $('#loginForm').submit(function(event){        
    
-    event.preventDefault(); 
+    preventDefaultForm(event);
     
     var mail = $('#email').val();
     var pass = $('#password').val();
@@ -178,7 +186,7 @@ function testNotification(text){
 
 function createNewProductSubmit(event){    
     
-    event.preventDefault();
+    preventDefaultForm(event);
     $("#message").hide();
     var data = $("#createProduct").serializeArray();
     
@@ -272,14 +280,26 @@ function productDetail(id){
         case "createNewProduct":  
             createNewProductForm();
             break;
-        case "productList":  
-            productListAjax();
+        case "affiliatesList":  
+            affiliatesListAjax();
             break;
         case "createNewWarehouse":  
             createNewWarehouseForm();
+        case "createEstablishment":                        
             break;
     }
 })();
+
+function affiliatesListAjax(){    
+    $("#output").html(loader);        
+    $.ajax({
+        url:"affiliateListTable.html",
+        type:"post",        
+        success:function(data){            
+            $("#output").html(data);            
+        }
+    });  
+}
 
 
 $("#createFreelancer").submit(function(event){
@@ -287,11 +307,7 @@ $("#createFreelancer").submit(function(event){
     $("#createFreelancer").attr("action","createNewFreelancer.html");  
     $("#saveButton").removeAttr("disabled");
    
-    if (event.preventDefault) {
-        event.preventDefault();
-    } else {
-        event.returnValue = false;
-    }  
+    preventDefaultForm(event);
     
     var error = "";
     var email = $("#email").val();
@@ -449,11 +465,7 @@ $("#profileFreelancerForm").submit(function(event){
     $("#profileFreelancerForm").attr("action","createNewFreelancer.html");  
     $("#saveButton").removeAttr("disabled");
    
-    if (event.preventDefault) {
-        event.preventDefault();
-    } else {
-        event.returnValue = false;
-    }  
+    preventDefaultForm(event);
     
     var error = "";
     var email = $("#email").val();
@@ -587,11 +599,7 @@ $("#profileFreelancerForm").submit(function(event){
 
 $("#updatePasswordForm").submit(function(event){        
     
-    if (event.preventDefault) {
-        event.preventDefault();
-    } else {
-        event.returnValue = false;
-    }
+    preventDefaultForm(event);
     
     var error = "";
     var currentPassword = $("#currentPassword").val();
@@ -652,11 +660,7 @@ $("#updatePasswordForm").submit(function(event){
 
 $("#createNewAffiliate").submit(function(event){        
     
-    if (event.preventDefault) {
-        event.preventDefault();
-    } else {
-        event.returnValue = false;
-    }
+    preventDefaultForm(event);
     
     $("#createNewAffiliate").attr("action","createNewAffiliate.html");  
     $("#saveButton").removeAttr("disabled");
@@ -806,4 +810,150 @@ $("#createNewAffiliate").submit(function(event){
             }
         });
     }    
+});
+
+
+$("#createEstablishmentForm").submit(function (event) {
+    
+    preventDefaultForm(event);
+    var error = "";        
+    var data = $(this).serializeArray();    
+    
+    var name = $("#establishment_name").val();
+    if(name == "" || String(name).length < 2){
+        error += "<br>" + text201;
+    }
+    
+    var category = $("#category").val();    
+    if(category == "" || category == null || String(category).length < 1){
+        error += "<br>" + text193;
+    }
+    
+    var address = $("#establishment_address").val();
+    if(address == "" || address == null ||String(address).length < 5){
+        error += "<br>" + text206;
+    }
+    
+    var country = $("#country").val();
+    if(country == "" || country == null ||String(country).length < 2){
+        error += "<br>" + text207;
+    }
+    
+    var state = $("#state").val();
+    if(state == "" || state == null || String(state).length < 2){
+        error += "<br>" + text208;
+    }
+    
+    var city = $("#city").val();
+    if(city == "" || city == null || String(city).length < 2){
+        error += "<br>" + text209;
+    }
+    
+    var zipCode = $("#zipCode").val();
+    if(zipCode == "" || zipCode == null || String(zipCode).length < 2){
+        error += "<br>" + text210;
+    }
+    
+    var resName = $("#responsable_name").val();
+    if(resName == "" || resName == null || String(resName).length < 2){
+        error += "<br>" + text194;
+    }
+    
+    var resLastName = $("#responsable_lastName").val();
+    if(resLastName == "" || resLastName == null || String(resLastName).length < 2){
+        error += "<br>" + text195;
+    }
+    
+    var resPhone = $("#responsable_phone").val();
+    if(resPhone == "" || resPhone == null || String(resPhone).length < 2){
+        error += "<br>" + text211;
+    }
+    
+    var resEmail = $("#responsable_email").val();
+    if(!isEmail(resEmail)){
+        error += "<br>" + text212;
+    }
+    
+    var resPassword = $("#responsable_password").val();
+    if(resPassword == "" || String(resPassword).length < 4 || String(resPassword).length > 8){
+        error += "<br>" + text196;
+    }
+    
+    var resPassword2 = $("#responsable_password2").val();
+    if(resPassword != resPassword2){        
+        error += "<br>" + text213;
+    }
+    
+    var cashName = $("#cashier_name").val();
+    if(cashName == "" || cashName == null || String(cashName).length < 2){
+        error += "<br>" + text214;
+    }
+    
+    var cashLastName = $("#cashier_lastName").val();
+    if(cashLastName == "" || cashLastName == null || String(cashLastName).length < 2){
+        error += "<br>" + text215;
+    }
+    
+    var cashPhone = $("#cashier_phone").val();
+    if(cashPhone == "" || cashPhone == null || String(cashPhone).length < 2){
+        error += "<br>" + text216;
+    }
+    
+    var cashEmail = $("#cashier_email").val();
+    if(!isEmail(cashEmail)){
+        error += "<br>" + text219;
+    }
+    
+    var cashPassword = $("#cashier_password").val();
+    if(cashPassword == "" || String(cashPassword).length < 4 || String(cashPassword).length > 8){
+        error += "<br>" + text217;
+    }
+    
+    var cashPassword2 = $("#cashier_password2").val();
+    if(cashPassword != cashPassword2){        
+        error += "<br>" + text218;
+    }
+
+    if (error.length > 1) {
+        alertify.alert("<div style='text-align: left'>" + text113 + "<br>" + error  + "</div>");        
+    } else {
+        
+        message = text203;
+
+        alertify.confirm(message, function (e) {
+
+            if (e) {               
+
+                $("#saveButton").attr("disabled","disabled");
+                $("#saveButton").html(text220);                
+                $.ajax({
+                    url:"createEstablishmentProcess.html",
+                    type:"post",
+                    data:data,
+                    success: function (data) {
+                        if (data.hasOwnProperty("error")) {
+                            alertify.error(text221);
+                        }
+                        if(data.created == true){
+                            alertify.success(text204);                            
+                            $("#saveButton").html(text204);                
+                        }else{                            
+                            alertify.error(text205);
+                            $("#saveButton").removeAttr("disabled");
+                        }
+                        $("#saveButton").html(text221);                
+                    }, error: function (e1, e2, e3) {
+                        alertify.alert(e2);
+                        $("#saveButton").removeAttr("disabled");
+                        $("#saveButton").html(text221);                
+                    }
+                });
+
+            } else {
+                alertify.error(text102);
+                $("#saveButton").removeAttr("disabled");
+            }
+        });
+    }    
+    
 });

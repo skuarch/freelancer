@@ -48,6 +48,7 @@ controllers/freelancer/UpdateFreelancerPasswordProcess.class
 controllers/freelancer/FreelancerCreateEstablishment.class
 controllers/application/Installer.class
 endpoints/Notification.class
+controllers/affiliate/createEstablishmentProcess.class
 interceptors/Session.class
 controllers/application/Logout.class
 model/beans/Freelancer.class

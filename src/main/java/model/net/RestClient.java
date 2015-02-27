@@ -164,12 +164,12 @@ public class RestClient {
 
         StringBuilder sb = new StringBuilder();
 
-        parameters.entrySet().stream().forEach((entrySet) -> {
+        parameters.entrySet().stream().forEach((entrySet) -> {            
             String key = entrySet.getKey();
             Object value = entrySet.getValue();
             sb.append(key).append("=").append(value).append("&");
         });
-
+        
         return sb.toString();
 
     }

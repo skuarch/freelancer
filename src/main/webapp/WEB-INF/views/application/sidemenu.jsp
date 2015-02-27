@@ -50,7 +50,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="productList.html">
+                        <a href="affiliatesList.html">
                             <spring:message code="text155" />
                         </a>
                     </li>

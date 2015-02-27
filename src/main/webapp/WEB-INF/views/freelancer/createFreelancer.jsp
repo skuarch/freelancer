@@ -7,12 +7,12 @@
     response.setDateHeader("Expires", 0);
 %>
 <!DOCTYPE html>
-<html lang="es">
+<html>
     <head>
         <title><spring:message code="text1" /></title>
         <jsp:include page="../application/head.jsp"/>      
         <link href="<c:url value="/resources/css/freelancer.css" />" rel="stylesheet">        
-        <link href="http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
+        <link href="http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">        
 
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->

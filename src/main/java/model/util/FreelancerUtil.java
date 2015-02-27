@@ -84,6 +84,25 @@ public class FreelancerUtil {
         return hm;
 
     }
+    
+    //==========================================================================
+    public static HashMap<String, Object> createHashMapFreelancerGetAffiliates(long freelancerId) {
+
+        HashMap hm = new HashMap();
+
+        try {
+
+            //avoid some html tags                        
+            hm.put("id", freelancerId);
+            hm.put("other", "other");
+
+        } catch (Exception e) {
+            throw e;
+        }
+        
+        return hm;
+
+    }
 
     //==========================================================================
     public static Freelancer getFreelancer(HttpSession session) {

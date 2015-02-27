@@ -47,6 +47,7 @@
 /home/skuarch/NetBeansProjects/freelancer/src/main/java/controllers/freelancer/FreelancerCreateEstablishment.java
 /home/skuarch/NetBeansProjects/freelancer/src/main/java/model/util/ApplicationUtil.java
 /home/skuarch/NetBeansProjects/freelancer/src/main/java/controllers/application/Authentication.java
+/home/skuarch/NetBeansProjects/freelancer/src/main/java/controllers/affiliate/createEstablishmentProcess.java
 /home/skuarch/NetBeansProjects/freelancer/src/main/java/model/logic/Constants.java
 /home/skuarch/NetBeansProjects/freelancer/src/main/java/controllers/dashboard/Dashboard.java
 /home/skuarch/NetBeansProjects/freelancer/src/main/java/model/beans/ProductTransaction.java

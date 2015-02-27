@@ -27,7 +27,7 @@ public class RestPostClient {
         );
 
         try {
-
+            
             rc.initConnection();
             rc.writeMessage(parameters);
             returnString = rc.receiveMessage();
@@ -87,6 +87,33 @@ public class RestPostClient {
 
             rc.initConnection();
             rc.writeMessage(parameters);
+            returnString = rc.receiveMessage();
+            rc.connect();
+
+        } catch (IOException e) {
+            throw e;
+        } finally {
+            rc.disconnect();
+            rc.closeStreams();
+        }
+
+        return returnString;
+
+    }
+    
+    //==========================================================================        
+    public static String sendReceive(String apiUrl,String version, String uri) throws IOException {
+        
+        String returnString = null;
+        RestClient rc = new RestClient(
+                apiUrl
+                + version
+                + uri
+        );
+
+        try {
+
+            rc.initConnection();            
             returnString = rc.receiveMessage();
             rc.connect();
 
