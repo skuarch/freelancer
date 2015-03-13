@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import model.beans.Freelancer;
+import model.beans.FreelancerBasic;
 import model.logic.Constants;
 import model.logic.RestPostClient;
 import model.util.FreelancerUtil;
@@ -43,18 +43,17 @@ public class UpdateFreelancerPasswordProcess extends BaseController {
         HashMap<String, Object> parameters = null;
         String json = null;
         JSONObject jsono = null;
-        Freelancer freelancer = null;
+        FreelancerBasic freelancerBasic = null;
         
         try {
             
             setHeaderNoChache(response);
             
-            freelancer = FreelancerUtil.getFreelancer(session);
-            parameters = FreelancerUtil.createHashMapFreelancerUpdatePassword(
-                    currentPassword, 
+            freelancerBasic = FreelancerUtil.getFreelancerBasic(session);
+            parameters = FreelancerUtil.createHashMapFreelancerUpdatePassword(currentPassword, 
                     newPassword, 
                     newPassword2,
-                    freelancer.getId());
+                    freelancerBasic.getId());
             json = RestPostClient.sendReceive(
                     parameters, 
                     Constants.API_URL, 

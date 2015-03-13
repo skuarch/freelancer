@@ -3,7 +3,7 @@ package controllers.freelancer;
 import controllers.application.BaseController;
 import java.util.Locale;
 import javax.servlet.http.HttpSession;
-import model.beans.Freelancer;
+import model.beans.FreelancerBasic;
 import model.util.HandlerExceptionUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ public class Profile extends BaseController {
     private HttpSession session;
     @Autowired
     MessageSource messageSource;
-    private Freelancer freelancer = null;
+    private FreelancerBasic freelancerBasic = null;
 
     //==========================================================================
     @RequestMapping(value = {"/profile", "profile"})
@@ -35,8 +35,8 @@ public class Profile extends BaseController {
         
         try {            
             
-            freelancer = (Freelancer) session.getAttribute("freelancer");
-            mav.addObject("freelancer", freelancer);
+            freelancerBasic = (FreelancerBasic) session.getAttribute("freelancerBasic");
+            mav.addObject("freelancerBasic", freelancerBasic);
             
             
         } catch (Exception e) {

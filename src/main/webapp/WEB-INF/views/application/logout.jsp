@@ -1,22 +1,32 @@
 <%-- 
-    Document   : logout
-    Created on : Oct 21, 2014, 3:04:10 PM
+    Document   : index
+    Created on : Oct 19, 2014, 6:12:09 PM
     Author     : skuarch
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%
-    response.setHeader("Pragma", "no-cache");
-    response.setHeader("Cache-Control", "no-cache");
-    response.setDateHeader("Expires", 0);
-%>
+<%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<jsp:include page="../application/noCache.jsp"/>
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+    <head>        
+        <jsp:include page="../application/head.jsp"/>        
     </head>
     <body>
-        <h1>se temino</h1>
+        <div id="wrapper">            
+            <div id="page-wrapper">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1 class="page-header">
+                            <spring:message code="text229" />
+                        </h1>
+                        <a class="btn btn-default" href="login.html">login</a>
+                    </div>
+                </div>
+            </div>
+        </div><!-- /#page-wrapper -->    
+        <script src="scriptI18N.html" type="text/javascript"></script>
+        <jsp:include page="../application/scripts.jsp"/>
     </body>
 </html>

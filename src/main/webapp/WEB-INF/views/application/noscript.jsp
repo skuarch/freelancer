@@ -8,7 +8,9 @@
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html>
-    <jsp:include page="head.jsp" />
+    <head>
+        <jsp:include page="head.jsp" />
+    </head>    
     <body>
         <h1><spring:message code="text18" /></h1>
         <jsp:include page="scripts.jsp" />

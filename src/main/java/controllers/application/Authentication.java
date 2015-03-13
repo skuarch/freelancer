@@ -6,7 +6,7 @@ import java.util.HashMap;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.beans.AuthenticationBean;
-import model.beans.Freelancer;
+import model.beans.FreelancerBasic;
 import model.logic.Constants;
 import model.logic.RestPostClient;
 import org.apache.commons.lang3.StringEscapeUtils;
@@ -42,7 +42,7 @@ public class Authentication extends BaseController {
         JSONObject jsono = null;
         JSONObject jsonReturn = null;
         String tmp = null;
-        Freelancer f = null;
+        FreelancerBasic freelancerBasic = null;
 
         try {
 
@@ -78,9 +78,9 @@ public class Authentication extends BaseController {
                 
                 if (jsonReturn.has("email") && jsonReturn.getString("email").equals(email)) {
                     
-                    f = new Gson().fromJson(tmp, Freelancer.class);
+                    freelancerBasic = new Gson().fromJson(tmp, FreelancerBasic.class);
                     ab.setVerify("true");
-                    createSession(f);
+                    createSession(freelancerBasic);
                     
                 } else {
                     
@@ -104,9 +104,9 @@ public class Authentication extends BaseController {
     }
 
     //==========================================================================
-    private void createSession(Freelancer f) {
+    private void createSession(FreelancerBasic f) {
         session.setAttribute("logged", "true");
-        session.setAttribute("freelancer", f);
+        session.setAttribute("freelancerBasic", f);
     }
 
 }

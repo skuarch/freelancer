@@ -7,11 +7,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%
-    response.setHeader("Pragma", "no-cache");
-    response.setHeader("Cache-Control", "no-cache");
-    response.setDateHeader("Expires", 0);
-%>
+<jsp:include page="../application/noCache.jsp"/>
 <!DOCTYPE html>
 <html>
     <head>        
@@ -119,12 +115,20 @@
                                                 <label><spring:message code="text162" /></label>
                                                 <input name="phone" id="phone" placeholder="<spring:message code="text89"/>" min="1" max="999999999999" class="form-control" type="number" required="required" tabindex="12" />
                                             </div> 
-                                        </div>                                                                                                            
+                                        </div>
+
+                                        <!--<div class="col-lg-12">
+                                            <div class="form-group">
+                                                <label>Affiliate Logo</label>
+                                                <input class="btn btn-default btn-block" id="file" name="file" type="file" />                                                  
+                                            </div>
+                                        </div>-->
+
                                         <div class="col-lg-12">
                                             <button id="saveButton" class="btn btn-block btn-lg btn-success">
                                                 <spring:message code="text156"/>
                                             </button>
-                                        </div>
+                                        </div>                                            
                                     </div>
                                 </form>
 
@@ -133,10 +137,9 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div><!-- /#wrapper -->            
-    <script src="scriptI18N.html" type="text/javascript"></script>
-    <jsp:include page="../application/scripts.jsp"/>
-    <script type="text/javascript">eval("${js}");</script>        
-</body>
+        </div><!-- /#wrapper -->                    
+        <script src="scriptI18N.html" type="text/javascript"></script>
+        <jsp:include page="../application/scripts.jsp"/>
+        <script type="text/javascript">eval("${js}");</script>        
+    </body>
 </html>

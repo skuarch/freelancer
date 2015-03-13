@@ -51,19 +51,6 @@ function preventDefaultForm(event){
 }
 
 //==============================================================================
-(function canvasHeight(){
-    allcanvas = document.getElementsByTagName("canvas");
-    //var ctx = document.getElementById("myChart").getContext("2d");    
-    for(var i=0; i < allcanvas.length;i++){
-       var container = $(allcanvas[i]).parent();        
-       $(allcanvas[i]).width = $(container).width();
-       $(allcanvas[i]).height = $(container).height();
-       //allcanvas[i].width = $(container).width();
-       //allcanvas[i].height = $(container).height();
-    }
-})();
-
-//==============================================================================
 $('#loginForm').submit(function(event){        
    
     preventDefaultForm(event);
@@ -174,6 +161,7 @@ function testNotification(text){
    $.ajax({       
        url: "testNotifications.html",
        type:"GET",
+       cache:false,
        data:{text:text},
        async:false,
        success:function(data){           
@@ -184,96 +172,8 @@ function testNotification(text){
    
 }
 
-function createNewProductSubmit(event){    
-    
-    preventDefaultForm(event);
-    $("#message").hide();
-    var data = $("#createProduct").serializeArray();
-    
-    if(data[0].value === "" || data[0].value === undefined || data[0].value.length < 1){
-        $("#message").html(text21);
-        return;
-    }    
-    
-    $.ajax({
-        
-        url:"createNewProductProcess.html",
-        type:"post",        
-        dataType: "json",
-        data:data,
-        success:function(data){
-          if(data.hasOwnProperty("error")){           
-           $("#message").html(data.error);
-           $("#message").fadeIn();            
-           alertify.error(data.error);
-          }else{
-            alertify.alert(data.message.toString());
-          }
-        },
-        error:function(){
-            alertify.error(text15);
-            $("#message").html(text15);
-            $("#message").fadeIn();            
-        }
-        
-    });
-}
-
-function createNewProductForm(){
-    $("#output").html(loader);
-    $.ajax({
-        url:"createNewProductForm.html",
-        success:function(data){
-            $("#output").html(data);             
-            document.getElementById('createProduct')
-                    .addEventListener('submit', function(event) {
-                        createNewProductSubmit(event);
-                    });
-        }
-    });
-}
-
-function createNewWarehouseForm(){
-    $("#output").html(loader);
-    $.ajax({
-        url:"createNewWarehouseForm.html",
-        success:function(data){
-            $("#output").html(data);             
-            document.getElementById('createWarehouse')
-                    .addEventListener('submit', function(event) {
-                        createNewProductSubmit(event);
-                    });
-        },error:function(e1,e2,e3){
-            console.log(e2);
-        }
-    });
-}
-
-function productListAjax(){
-    $("#output").html(loader);
-    $.ajax({
-        url:"productListTable.html",
-        success:function(data){
-            $("#output").html(data);
-            $('#tableProductList').DataTable();
-        }
-    });
-}
-
-function productDetail(id){
-    $("#outputProducModalDetail").html(loader);
-    $.ajax({
-        url:"productDetails.html",
-        type:"post",
-        data:{id:id},
-        success:function(data){            
-            $("#outputProducModalDetail").html(data);            
-        }
-    });        
-}
-
 (function(){ 
-    l = window.location.pathname;
+    var l = window.location.pathname;
     l = l.replace(ctx,"");
     l = l.replace(".html","");
     switch (l){        
@@ -283,22 +183,83 @@ function productDetail(id){
         case "affiliatesList":  
             affiliatesListAjax();
             break;
-        case "createNewWarehouse":  
+        case "createNewWarehouse":
             createNewWarehouseForm();
+            break;
+        case "affiliateDetails":
+            affiliateDetailsForm();
+            break;
+        case "establishmentDetails":
+            establishmentDetailsForm();
+            break;
         case "createEstablishment":                        
             break;
     }
 })();
 
-function affiliatesListAjax(){    
-    $("#output").html(loader);        
+function redirectData(url, parameters){
+    $.redirect(url, parameters, 'GET');    
+}
+
+function establishmentDetailsForm(){
+    $("#output").html(loader);      
     $.ajax({
-        url:"affiliateListTable.html",
+        cache:false,
+        url:"establishmentDetailsForm.html",
+        data: {id:$("#id").val()},
         type:"post",        
-        success:function(data){            
-            $("#output").html(data);            
+        success:function(data){
+            $("#output").html(data);  
+            $(".selectpicker").selectpicker("refresh");   
+            bindEstablishmentDetailsForms();
+        },error:function(e1,e2,e3){
+            alertify.alert(e2);
         }
-    });  
+    });
+}
+
+function bindEstablishmentDetailsForms(){
+    $("#updateEstablishmentForm").bind("submit", function (event) {
+        updateEstablishmentFormSubmit(event);
+    });            
+    $("#updateResponsableForm").bind("submit", function (event) {
+        updateResponsableFormSubmit(event);
+    });
+    $("#updatePasswordCashierForm").bind("submit", function (event) {
+        updatePasswordCashierFormSubmit(event);
+    });
+}
+
+function affiliateDetailsForm(){
+    $("#output").html(loader);      
+    $.ajax({
+        cache:false,
+        url:"affiliateDetailsForm.html",
+        data: {id:$("#id").val()},
+        type:"post",        
+        success:function(data){
+            $("#output").html(data);     
+            $("#updateAffiliate").bind("submit",function(event){
+                updateAffiliateSubmit(event);
+            });
+        },error:function(e1,e2,e3){
+            alertify.alert(e2);
+        }
+    });
+}
+
+function affiliatesListAjax(){    
+    $("#output").html(loader);     
+    $.ajax({
+        cache:false,
+        url:"affiliateListTable.html",
+        type:"post",
+        success:function(data){
+            $("#output").html(data);            
+        },error:function(e1,e2,e3){
+            alertify.alert(e2);
+        }
+    });
 }
 
 
@@ -425,6 +386,7 @@ $("#createFreelancer").submit(function(event){
                 $("#saveButton").attr("disabled","disabled");
                 $("#saveButton").html(text114);                
                 $.ajax({
+                    cache:false,
                     url:"createFreelancerProcess.html",
                     type:"post",
                     data:data,
@@ -566,6 +528,7 @@ $("#profileFreelancerForm").submit(function(event){
                 $("#saveButton").attr("disabled","disabled");
                 $("#saveButton").html(text143);                
                 $.ajax({
+                    cache:false,
                     url:"updateFreelancerProfileProcess.html",
                     type:"post",
                     data:data,
@@ -638,7 +601,8 @@ $("#updatePasswordForm").submit(function(event){
     if (error.length > 1) {
         alertify.alert(text113 + "<br>" + error);
     } else {
-       $.ajax({           
+       $.ajax({ 
+           cache:false,
            type:"post",
            url:"updateFreelancerPasswordProcess.html",
            data:{currentPassword:$.md5(currentPassword), newPassword:$.md5(newPassword), newPassword2:$.md5(newPassword2)},
@@ -657,10 +621,20 @@ $("#updatePasswordForm").submit(function(event){
     }
     
 });
-
+/*$(':file').change(function(){
+    var file = this.files[0];
+    var name = file.name;
+    var size = file.size;
+    var type = file.type;
+    //Your validation
+    alert(name);
+});*/
 $("#createNewAffiliate").submit(function(event){        
     
-    preventDefaultForm(event);
+    preventDefaultForm(event);    
+    
+    var formData = new FormData();
+    //formData.append('file', $('#file')[0].files[0]);    
     
     $("#createNewAffiliate").attr("action","createNewAffiliate.html");  
     $("#saveButton").removeAttr("disabled");
@@ -763,7 +737,7 @@ $("#createNewAffiliate").submit(function(event){
 
             if (e) {
 
-                var data = {
+                /*var data = {
                     "person.name" : name,
                     "person.email" : email,
                     "password" : password,
@@ -775,32 +749,49 @@ $("#createNewAffiliate").submit(function(event){
                     "address.country" : country,
                     "person.gender.id" : gender,
                     "person.phone" : String(phone)
-                };
+                };*/
+                
+                
+                    formData.append("person.name", name);
+                    formData.append("person.email", email);
+                    formData.append("password",password);
+                    formData.append("person.lastName",lastName);
+                    formData.append("address.all",address);
+                    formData.append("address.zipCode",String(zipCode));
+                    formData.append("address.city", city);
+                    formData.append("address.state", state);
+                    formData.append("address.country", country);
+                    formData.append("person.gender.id", gender);
+                    formData.append("person.phone", String(phone));                
 
-                //$("#saveButton").attr("disabled","disabled");
+                $("#saveButton").attr("disabled","disabled");
                 $("#saveButton").html(text114);                
                 $.ajax({
+                    cache:false,
                     url:"createNewAffiliateProcess.html",
                     type:"post",
-                    data:data,
+                    data:formData,  
+                    processData: false,
+                    contentType: false,
                     success: function (data) {
                         if (data.hasOwnProperty("error")) {
                             alertify.error(text145);
                         }
-                        if (data.created == 'true') {                            
+                        if (data.created == 'true') { 
+                            $("#saveButton").html(text228);                
                             alertify.success(text164);
-                            alertify.confirm(text164 + "<br/> establishment",function(e,str){
+                            alertify.confirm(text164 + "<br/> "+ text257,function(e,str){
                                 if(e){
-                                    $.redirect('createEstablishment.html', {'id': data.id}, 'POST');
+                                    $.redirect('createEstablishment.html', {'id': data.id}, 'GET');
                                 }
                             });
                         } else {
                             alertify.error(text165);
                         }
                     }, error: function (e1, e2, e3) {
-                        alertify.alert(e2);
+                        alertify.alert(text15);
                         $("#saveButton").removeAttr("disabled");
-                        $("#saveButton").html(text92);                
+                        $("#saveButton").html(text15);                
                     }
                 });
 
@@ -927,6 +918,7 @@ $("#createEstablishmentForm").submit(function (event) {
                 $("#saveButton").attr("disabled","disabled");
                 $("#saveButton").html(text220);                
                 $.ajax({
+                    cache:false,
                     url:"createEstablishmentProcess.html",
                     type:"post",
                     data:data,
@@ -957,3 +949,630 @@ $("#createEstablishmentForm").submit(function (event) {
     }    
     
 });
+
+$("#updateAffiliate").submit(function(event){
+    updateAffiliateSubmit(event);    
+});
+
+function updateAffiliateSubmit(event){    
+    
+    $("#updateAffiliate").attr("action","updateAffiliateProccess.html");  
+    $("#saveButton").removeAttr("disabled");
+   
+    preventDefaultForm(event);
+    
+    var error = "";
+    var email = $("#email").val();
+    var name = $("#name").val();
+    var lastName = $("#lastName").val();
+    var password = $("#password").val();
+    var password2 = $("#password2").val();
+    var address = $("#address").val();
+    var zipCode = $("#zipCode").val();
+    var country = $("#country").val();
+    var city = $("#city").val();
+    var gender = $("#gender").val();
+    var phone = $("#phone").val();
+    var state = $("#state").val();
+    
+    if(gender == 1){        
+        g = text97;
+    }else{
+        g = text98;
+    }
+    
+    if(password != password2){
+        alertify.alert(text119);
+        return;
+    }
+    
+    if (!isEmail(email)) {
+        error += "<br>" + text103;
+    }
+
+    if (name.length < 2) {
+        error += "<br>" + text104;
+    }
+
+    if (lastName.length < 2) {
+        error += "<br>" + text105;
+    }
+
+    if (password.length < 4) {
+        error += "<br>" + text106;
+    }
+    
+    if (password.length < 5 || password.length > 8) {
+        error += "<br>" + text136;
+    }
+
+    if (address.length < 5) {
+        error += "<br>" + text107;
+    }
+
+    if (zipCode.length < 5) {
+        error += "<br>" + text108;
+    }
+    
+    if(isNaN(zipCode)){
+        error += "<br>" + text137;
+    }
+
+    if (country.length < 3) {
+        error += "<br>" + text109;
+    }
+
+    if (city.length < 3) {
+        error += "<br>" + text110;
+    }
+
+    if (phone.length < 5) {
+        error += "<br>" + text112;
+    }
+    
+    if(isNaN(phone)){
+        error += "<br>" + text138;
+    }
+    
+    if (state.length < 3) {
+        error += "<br>" + text122;
+    }
+
+    if (error.length > 1) {
+        alertify.alert(text113 + "<br>" + error);
+    } else {
+
+        message = text101 +
+                "<br><div class='alert alert-warning'> " + text90 + ": " + email
+                + "<br> " + text74 + ": " + name
+                + "<br> " + text76 + ": " + lastName
+                + "<br> " + text78 + ": " + address
+                + "<br> " + text80 + ": " + zipCode
+                + "<br> " + text82 + ": " + country
+                + "<br> " + text84 + ": " + city
+                + "<br> " + text86 + ": " + g
+                + "<br> " + text88 + ": " + phone
+                + "<br> " + text121 + ": " + state
+                + "</div>";
+
+        alertify.confirm(message, function (e) {
+
+            if (e) {
+
+                var data = {
+                    "person.name" : name,
+                    "person.email" : email,
+                    "password" : $.md5(password),
+                    "person.lastName" : lastName,
+                    "address.all" : address,
+                    "address.zipCode" : String(zipCode),
+                    "address.city" : city,
+                    "address.state" : state,
+                    "address.country" : country,
+                    "person.gender.id" : gender,
+                    "person.phone" : String(phone),
+                    "id" : $("#id").val()
+                };
+
+                $("#saveButton").attr("disabled","disabled");
+                $("#saveButton").html(text114);                
+                $.ajax({
+                    cache:false,
+                    url:"updateAffiliateProccess.html",
+                    type:"post",
+                    data:data,
+                    success: function (data) {                        
+                        if (data.hasOwnProperty('error')) {
+                            alertify.error(text116);
+                            $("#saveButton").removeAttr("disabled");
+                            $("#saveButton").html(text92);
+                        }
+                        if (data.hasOwnProperty('updated')) {
+                            alertify.alert(text228);
+                            $("#saveButton").html(text228);
+                        }
+                    }, error: function (e1, e2, e3) {
+                        alertify.alert(e2);
+                        $("#saveButton").removeAttr("disabled");
+                        $("#saveButton").html(text92);                
+                    }
+                });
+
+            } else {
+                alertify.error(text102);
+                $("#saveButton").removeAttr("disabled");
+            }
+        });
+
+    }
+    
+}
+
+function updateEstablishmentFormSubmit(event){
+    
+    $("#updateEstablishmentForm").attr("action","updateEstablishmentFormProccess.html");  
+    $("#saveButtonEstablishment").removeAttr("disabled");
+    
+    preventDefaultForm(event);
+    
+    var error = "";        
+    var data = $("#updateEstablishmentForm").serializeArray();    
+    
+    var name = $("#name").val();
+    if(name == "" || String(name).length < 2){
+        error += "<br>" + text201;
+    }
+    
+    var category = $("#category").val();    
+    if(category == "" || category == null || String(category).length < 1){
+        error += "<br>" + text193;
+    }
+    
+    var address = $("#address").val();
+    if(address == "" || address == null ||String(address).length < 5){
+        error += "<br>" + text206;
+    }
+    
+    var country = $("#country").val();
+    if(country == "" || country == null ||String(country).length < 2){
+        error += "<br>" + text207;
+    }
+    
+    var state = $("#state").val();
+    if(state == "" || state == null || String(state).length < 2){
+        error += "<br>" + text208;
+    }
+    
+    var city = $("#city").val();
+    if(city == "" || city == null || String(city).length < 2){
+        error += "<br>" + text209;
+    }
+    
+    var zipCode = $("#zipCode").val();
+    if(zipCode == "" || zipCode == null || String(zipCode).length < 2){
+        error += "<br>" + text210;
+    }   
+   
+
+    if (error.length > 1) {
+        alertify.alert("<div style='text-align: left'>" + text113 + "<br>" + error  + "</div>");        
+    } else {
+        
+        message = text260;
+
+        alertify.confirm(message, function (e) {
+
+            if (e) {               
+
+                $("#saveButtonEstablishment").attr("disabled","disabled");
+                $("#saveButtonEstablishment").html(text220);                
+                $.ajax({
+                    cache:false,
+                    url:"updateEstablishmentFormProccess.html",
+                    type:"post",
+                    data:data,
+                    success: function (data) {
+                        if (data.hasOwnProperty("error")) {
+                            alertify.error(text221);
+                        }
+                        if(data.updated == true){
+                            alertify.success(text228);                            
+                            $("#saveButtonEstablishment").html(text228);
+                            establishmentDetailsForm();
+                        }else{                            
+                            alertify.error(text205);
+                            $("#saveButtonEstablishment").removeAttr("disabled");
+                        }
+                        $("#saveButtonEstablishment").html(text221);                
+                    }, error: function (e1, e2, e3) {
+                        alertify.alert(e2);
+                        $("#saveButtonEstablishment").removeAttr("disabled");
+                        $("#saveButtonEstablishment").html(text221);                
+                    }
+                });
+
+            } else {
+                alertify.error(text102);
+                $("#saveButtonEstablishment").removeAttr("disabled");
+            }
+        });
+    }    
+    
+}
+
+$("#updateEstablishmentForm").submit(function (event) {
+    updateEstablishmentFormSubmit(event);
+});
+
+$("#updateResponsableForm").submit(function (event) {
+    updateResponsableFormSubmit(event);
+});
+
+function updateResponsableFormSubmit(event){
+    
+    $("#updateResponsableForm").attr("action","updateResponsableFormProccess.html");  
+    $("#saveButtonResponsable").removeAttr("disabled");
+    
+    preventDefaultForm(event);
+    
+    var error = "";        
+    var data = $("#updateResponsableForm").serializeArray();    
+    
+    var resName = $("#responsable_name").val();
+    if(resName == "" || resName == null || String(resName).length < 2){
+        error += "<br>" + text194;
+    }
+    
+    var resLastName = $("#responsable_lastName").val();
+    if(resLastName == "" || resLastName == null || String(resLastName).length < 2){
+        error += "<br>" + text195;
+    }
+    
+    var resPhone = $("#responsable_phone").val();
+    if(resPhone == "" || resPhone == null || String(resPhone).length < 2){
+        error += "<br>" + text211;
+    }
+    
+    var resEmail = $("#responsable_email").val();
+    if(!isEmail(resEmail)){
+        error += "<br>" + text212;
+    }
+    
+    var resPassword = $("#responsable_password").val();
+    if(resPassword == "" || String(resPassword).length < 4 || String(resPassword).length > 8){
+        error += "<br>" + text196;
+    }
+    
+    var resPassword2 = $("#responsable_password2").val();
+    if(resPassword != resPassword2){        
+        error += "<br>" + text213;
+    }
+
+    if (error.length > 1) {
+        alertify.alert("<div style='text-align: left'>" + text113 + "<br>" + error  + "</div>");        
+    } else {
+        
+        message = text261;
+
+        alertify.confirm(message, function (e) {
+
+            if (e) {               
+
+                $("#saveButtonResponsable").attr("disabled","disabled");
+                $("#saveButtonResponsable").html(text220);                
+                $.ajax({
+                    cache:false,
+                    url:"updateResponsableFormProccess.html",
+                    type:"post",
+                    data:data,
+                    success: function (data) {
+                        if (data.hasOwnProperty("error")) {
+                            alertify.error(text221);
+                        }
+                        if(data.updated == true){
+                            alertify.success(text228);                            
+                            $("#saveButtonResponsable").html(text228);
+                            establishmentDetailsForm();
+                        }else{                            
+                            alertify.error(text205);
+                            $("#saveButtonResponsable").removeAttr("disabled");
+                        }
+                        $("#saveButtonEstablishment").html(text221);                
+                    }, error: function (e1, e2, e3) {
+                        alertify.alert(e2);
+                        $("#saveButtonResponsable").removeAttr("disabled");
+                        $("#saveButtonResponsable").html(text221);                
+                    }
+                });
+
+            } else {
+                alertify.error(text102);
+                $("#saveButtonResponsable").removeAttr("disabled");
+            }
+        });
+    }    
+    
+}
+
+function cashierDetails(cashierId){
+    $("#outputDetail").html(loader);
+    $.ajax({  
+        cache:false,
+        url:"cashierDetails.html",
+        data:{cashierId:cashierId},
+        success: function (data, textStatus, jqXHR) {
+            $("#outputDetail").html(data);
+            $("#updateCashierForm").bind("submit", function (event) {
+                updateCashierInfomation(event);
+            });            
+        },error: function (jqXHR, textStatus, errorThrown) {
+            alertify.alert(text15);
+        }       
+    });
+}
+
+$("#updateCashierForm").submit(function (event) {
+    updateCashierInfomation(event);
+});
+
+function updateCashierInfomation(event){        
+    
+    preventDefaultForm(event);  
+    
+    var error = "";        
+    var data = $("#updateCashierForm").serializeArray();    
+    
+    var cashName = $("#cashier_name").val();
+    if(cashName == "" || cashName == null || String(cashName).length < 2){
+        error += "<br>" + text214;
+    }
+    
+    var cashLastName = $("#cashier_lastName").val();
+    if(cashLastName == "" || cashLastName == null || String(cashLastName).length < 2){
+        error += "<br>" + text215;
+    }
+    
+    var cashPhone = $("#cashier_phone").val();
+    if(cashPhone == "" || cashPhone == null || String(cashPhone).length < 2){
+        error += "<br>" + text216;
+    }
+    
+    var cashEmail = $("#cashier_email").val();
+    if(!isEmail(cashEmail)){
+        error += "<br>" + text219;
+    }
+
+    if (error.length > 1) {
+        alertify.alert("<div style='text-align: left'>" + text113 + "<br>" + error  + "</div>");        
+    } else {
+        
+        message = text259;
+
+        alertify.confirm(message, function (e) {
+
+            if (e) {               
+
+                $("#updateCahierButton").attr("disabled","disabled");
+                $("#updateCahierButton").html(text220);                
+                $.ajax({
+                    cache:false,
+                    url:"updateCashierProcess.html",
+                    type:"post",
+                    data:data,
+                    success: function (data) {
+                        if (data.hasOwnProperty("error")) {
+                            alertify.error(text221);
+                        }
+                        if(data.updated == true){
+                            alertify.success(text228);                            
+                            $("#updateCahierButton").html(text228);                            
+                        }else{                            
+                            alertify.error(text205);
+                            $("#updateCahierButton").removeAttr("disabled");
+                        }                        
+                    }, error: function (e1, e2, e3) {
+                        alertify.alert(e2);
+                        $("#updateCahierButton").removeAttr("disabled");
+                        $("#updateCahierButton").html(text221);                
+                    }
+                });
+
+            } else {
+                alertify.error(text102);
+                $("#updateCahierButton").removeAttr("disabled");
+            }
+        });
+    }    
+    
+}
+
+function cashierUpdatePassword(cashierId){
+    $("#outputDetail").html(loader);
+    $.ajax({   
+        cache:false,
+        url:"updatePasswordCashier.html",
+        data:{id:cashierId},
+        success: function (data, textStatus, jqXHR) {
+            $("#outputUpdatePassword").html(data);
+            $("#updatePasswordCashierForm").bind("submit", function (event) {
+                updatePasswordCashierFormSubmit(event);
+            });            
+        },error: function (jqXHR, textStatus, errorThrown) {
+            alertify.alert(text15);
+        }       
+    });
+}
+
+$("#updatePasswordCashierForm").submit(function (event) {
+    updatePasswordCashierFormSubmit(event);
+});
+
+function updatePasswordCashierFormSubmit(event) {
+    
+    preventDefaultForm(event);
+    var error = "";   
+   
+    var cashPassword = $("#cashier_password").val();
+    if(cashPassword == "" || String(cashPassword).length < 4 || String(cashPassword).length > 8){
+        error += "<br>" + text217;
+    }
+    
+    var cashPassword2 = $("#cashier_password2").val();
+    if(cashPassword != cashPassword2){        
+        error += "<br>" + text218;
+    }
+    
+     if (error.length > 1) {
+        alertify.alert("<div style='text-align: left'>" + text113 + "<br>" + error  + "</div>");        
+    } else {
+        message = text258;
+
+        alertify.confirm(message, function (e) {
+
+            if (e) {
+
+                var data = {password1:$.md5(cashPassword),password2:$.md5(cashPassword2),id:$("#cashier_id").val()};                
+
+                $("#updatePasswordCashierButton").attr("disabled", "disabled");
+                $("#updatePasswordCashierButton").html(text220);
+                $.ajax({
+                    cache:false,
+                    url: "updatePasswordCashierProcess.html",
+                    type: "post",
+                    data:data,
+                    success: function (data) {
+                        if (data.hasOwnProperty("error")) {
+                            alertify.error(text221);
+                        }
+                        if (data.updated == true) {
+                            alertify.success(text228);
+                            $("#updatePasswordCashierButton").html(text228);
+                        } else {
+                            alertify.error(text205);
+                            $("#updatePasswordCashierButton").removeAttr("disabled");
+                        }                        
+                    }, error: function (e1, e2, e3) {
+                        alertify.alert(e2);
+                        $("#updatePasswordCashierButton").removeAttr("disabled");
+                        $("#updatePasswordCashierButton").html(text221);
+                    }
+                });
+
+            } else {
+                alertify.error(text102);
+                $("#updatePasswordCashierButton").removeAttr("disabled");
+            }
+        });     
+    }
+    
+}
+
+function createCashier(eId){
+    
+    $("#myModalLabel").html(text263)    
+    $("#outputDetail").html(loader);
+    
+    $.ajax({  
+        cache:false,
+        url:"createCashierForm.html",
+        data: {eId: eId},
+        success: function (data, textStatus, jqXHR) {
+            $("#outputDetail").html(data);
+            $("#createCashierForm").bind("submit", function (event) {
+                createCashierFormSubmit(event);
+            });
+        }, error: function (jqXHR, textStatus, errorThrown) {
+            alertify.alert(text15);
+        }
+    });
+    
+}
+
+function createCashierFormSubmit(event){
+    
+    preventDefaultForm(event);
+    var error = '';
+    
+    var cashName = $("#cashier_name").val();
+    if(cashName == "" || cashName == null || String(cashName).length < 2){
+        error += "<br>" + text214;
+    }
+    
+    var cashLastName = $("#cashier_lastName").val();
+    if(cashLastName == "" || cashLastName == null || String(cashLastName).length < 2){
+        error += "<br>" + text215;
+    }
+    
+    var cashPhone = $("#cashier_phone").val();
+    if(cashPhone == "" || cashPhone == null || String(cashPhone).length < 2){
+        error += "<br>" + text216;
+    }
+    
+    var cashEmail = $("#cashier_email").val();
+    if(!isEmail(cashEmail)){
+        error += "<br>" + text219;
+    }
+    
+    var cashPassword = $("#cashier_password").val();
+    if(cashPassword == "" || String(cashPassword).length < 4 || String(cashPassword).length > 8){
+        error += "<br>" + text217;
+    }
+    
+    var cashPassword2 = $("#cashier_password2").val();
+    if(cashPassword != cashPassword2){        
+        error += "<br>" + text218;
+    }
+    
+     if (error.length > 1) {
+        alertify.alert("<div style='text-align: left'>" + text113 + "<br>" + error  + "</div>");        
+    } else {
+        
+        message = text264;
+        alertify.confirm(message, function (e) {
+
+            if (e) {
+
+                var data = {
+                    cashier_password:$.md5(cashPassword),
+                    cashier_password2:$.md5(cashPassword2),
+                    id:$("#id").val(),
+                    cashier_phone:cashPhone, 
+                    cashier_email:cashEmail, 
+                    cashier_name:cashName, 
+                    cashier_lastName:cashLastName,
+                    cashier_gender:$("#cashier_gender").val()
+                };                
+
+                $("#createCashierButton").attr("disabled", "disabled");
+                $("#createCashierButton").html(text220);
+                $.ajax({
+                    cache:false,
+                    url: "createCashierFormProccess.html",
+                    type: "post",
+                    data:data,
+                    success: function (data) {
+                        if (data.hasOwnProperty("error")) {
+                            alertify.error(text221);
+                        }
+                        if (data.created == true) {
+                            alertify.success(text228);
+                            $("#createCashierButton").html(text228);
+                        } else {
+                            alertify.error(text15);
+                            $("#createCashierButton").removeAttr("disabled");
+                        }                        
+                    }, error: function (e1, e2, e3) {
+                        alertify.alert(text15);
+                        $("#createCashierButton").removeAttr("disabled");
+                        $("#createCashierButton").html(text265);
+                    }
+                });
+
+            } else {
+                alertify.error(text102);
+                $("#createCashierButton").removeAttr("disabled");
+            }
+        });    
+    }
+    
+}

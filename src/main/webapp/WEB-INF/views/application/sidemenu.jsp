@@ -44,11 +44,11 @@
                             <spring:message code="text147" />
                         </a>
                     </li>
-                    <li>
+                    <!-- <li>
                         <a href="createNewCompanyAffiliate.html">
                             <spring:message code="text163" />
                         </a>
-                    </li>
+                    </li> -->
                     <li>
                         <a href="affiliatesList.html">
                             <spring:message code="text155" />
@@ -57,13 +57,13 @@
                 </ul>
                 <!-- /.nav-second-level -->
             </li>
-            <li>
+            <!-- <li>
                 <a href="forms.html">
                     <i class="fa fa-edit fa-fw"></i> 
                     <spring:message code="text141" />
                 </a>                
-            </li>            
-        </ul>
+            </li>
+        </ul> -->
     </div>
     <!-- /.sidebar-collapse -->
 </div>

@@ -7,11 +7,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%
-    response.setHeader("Pragma", "no-cache");
-    response.setHeader("Cache-Control", "no-cache");
-    response.setDateHeader("Expires", 0);
-%>
+<jsp:include page="../application/noCache.jsp"/>
 <!DOCTYPE html>
 <html>
     <head>        
@@ -31,8 +27,9 @@
                         </h1>
                     </div>
                 </div>
-            </div><!-- /#page-wrapper -->            
-            <script src="scriptI18N.html" type="text/javascript"></script>
-            <jsp:include page="../application/scripts.jsp"/>
+            </div>
+        </div><!-- /#page-wrapper -->            
+        <script src="scriptI18N.html" type="text/javascript"></script>
+        <jsp:include page="../application/scripts.jsp"/>
     </body>
 </html>

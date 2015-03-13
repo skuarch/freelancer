@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Locale;
 import javax.servlet.http.HttpSession;
-import model.beans.Freelancer;
+import model.beans.FreelancerBasic;
 import model.logic.Constants;
 import model.logic.RestPostClient;
 import model.util.FreelancerUtil;
@@ -34,17 +34,17 @@ public class UpdateFreelancerProcess {
 
     //==========================================================================    
     @RequestMapping(value = {"/updateFreelancerProfileProcess", "updateFreelancerProfileProcess"})
-    public ModelAndView updateFreelancerProcess(@ModelAttribute Freelancer freelancer, Locale locale) {
+    public ModelAndView updateFreelancerProcess(@ModelAttribute FreelancerBasic freelancer, Locale locale) {
         
         HashMap<String, Object> parameters = null;
         String json = null;
         ModelAndView mav = new ModelAndView("application/json");
         JSONObject jsono = null;
-        Freelancer freelancerSession = null;
+        FreelancerBasic freelancerSession = null;
 
         try {
 
-            freelancerSession = FreelancerUtil.getFreelancer(session);
+            freelancerSession = FreelancerUtil.getFreelancerBasic(session);
             freelancer.setId(freelancerSession.getId());
             freelancer.setKey(freelancerSession.getKey());
             
@@ -53,7 +53,7 @@ public class UpdateFreelancerProcess {
             jsono = new JSONObject(json);            
             mav.addObject("json", jsono);
             
-            FreelancerUtil.resetFreelancerSession(session, freelancer);
+            FreelancerUtil.resetFreelancerBasicSession(session, freelancer);
 
         } catch (IOException | JSONException e) {
             HandlerExceptionUtil.json(mav, messageSource, e, logger, locale, "text116");

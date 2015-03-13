@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class TestNotification {
 
+    //==========================================================================
     @RequestMapping(value = {"/testNotifications","testNotifications"})
     public @ResponseBody void testNotification(@RequestParam("text") String text) {
 

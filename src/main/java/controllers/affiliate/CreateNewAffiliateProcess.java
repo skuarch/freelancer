@@ -1,12 +1,15 @@
 package controllers.affiliate;
 
 import controllers.application.BaseController;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Locale;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import model.beans.Freelancer;
+import model.beans.FreelancerBasic;
 import model.logic.Constants;
 import model.logic.RestPostClient;
 import model.util.ApplicationUtil;
@@ -20,6 +23,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -48,6 +52,7 @@ public class CreateNewAffiliateProcess extends BaseController {
             @RequestParam("address.country") String addressCountry,
             @RequestParam("address.city") String addressCity,
             @RequestParam("address.state") String addressState,
+            @RequestParam(value = "file", required = false) MultipartFile file,
             HttpServletResponse response,
             Locale locale) {
 
@@ -55,12 +60,37 @@ public class CreateNewAffiliateProcess extends BaseController {
         HashMap<String, Object> parameters = null;
         String json = null;
         JSONObject jsono = null;
-        Freelancer freelancer = null;
+        FreelancerBasic freelancerBasic = null;
 
         try {
 
+            //upload file
+            if (file != null) {
+
+                byte[] bytes = file.getBytes();
+
+                // Creating the directory to store file
+                String rootPath = "/home/skuarch/Documents/";
+                File dir = new File(rootPath + File.separator);
+                if (!dir.exists()) {
+                    dir.mkdirs();
+                }
+
+                // Create the file on server
+                File serverFile = new File(dir.getAbsolutePath()
+                        + File.separator + "elArchivo");
+                BufferedOutputStream stream = new BufferedOutputStream(
+                        new FileOutputStream(serverFile));
+                stream.write(bytes);
+                stream.close();
+
+                logger.info("Server File Location="
+                        + serverFile.getAbsolutePath());
+
+            }
+
             setHeaderNoChache(response);
-            freelancer = FreelancerUtil.getFreelancer(session);
+            freelancerBasic = FreelancerUtil.getFreelancerBasic(session);
 
             parameters = ApplicationUtil.createParameters(personEmail,
                     personName,
@@ -73,7 +103,7 @@ public class CreateNewAffiliateProcess extends BaseController {
                     addressCountry,
                     addressCity,
                     addressState,
-                    freelancer.getId()
+                    freelancerBasic.getId()
             );
 
             json = RestPostClient.sendReceive(
@@ -88,7 +118,7 @@ public class CreateNewAffiliateProcess extends BaseController {
             HandlerExceptionUtil.json(mav, messageSource, e, logger, locale, "text116");
         } finally {
             parameters = null;
-            freelancer = null;
+            freelancerBasic = null;
         }
 
         return mav;

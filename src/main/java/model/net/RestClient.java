@@ -147,10 +147,16 @@ public class RestClient {
      * close all streams.
      */
     public void closeStreams() {
-        closeBufferedReader(bufferedReader);
-        closeInputStream(inputStream);
-        closeOutputStream(outputStream);
-        closeBufferedWriter(bufferedWriter);
+
+        try {
+            closeBufferedReader(bufferedReader);
+            closeInputStream(inputStream);
+            closeOutputStream(outputStream);
+            closeBufferedWriter(bufferedWriter);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     //==========================================================================
@@ -164,12 +170,12 @@ public class RestClient {
 
         StringBuilder sb = new StringBuilder();
 
-        parameters.entrySet().stream().forEach((entrySet) -> {            
+        parameters.entrySet().stream().forEach((entrySet) -> {
             String key = entrySet.getKey();
             Object value = entrySet.getValue();
             sb.append(key).append("=").append(value).append("&");
         });
-        
+
         return sb.toString();
 
     }
@@ -180,7 +186,7 @@ public class RestClient {
      *
      * @param inputStream
      */
-    private void closeInputStream(InputStream inputStream) {
+    private void closeInputStream(InputStream inputStream) throws Exception {
 
         try {
 
@@ -189,7 +195,7 @@ public class RestClient {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            throw e;
         }
 
     } // end closeInputStream
@@ -200,7 +206,7 @@ public class RestClient {
      *
      * @param outputStream
      */
-    private void closeOutputStream(OutputStream outputStream) {
+    private void closeOutputStream(OutputStream outputStream) throws Exception {
 
         try {
 
@@ -209,7 +215,7 @@ public class RestClient {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            throw e;
         }
 
     } // end closeOutputStream
@@ -220,7 +226,7 @@ public class RestClient {
      *
      * @param bufferedWriter
      */
-    public static void closeBufferedWriter(BufferedWriter bufferedWriter) {
+    public static void closeBufferedWriter(BufferedWriter bufferedWriter) throws Exception {
 
         try {
 
@@ -229,7 +235,7 @@ public class RestClient {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            throw e;
         }
 
     } // end closeFileWriter        
@@ -238,7 +244,7 @@ public class RestClient {
     /**
      * close BufferedReader.
      */
-    public static void closeBufferedReader(BufferedReader bufferedReader) {
+    public static void closeBufferedReader(BufferedReader bufferedReader) throws Exception {
 
         try {
 
@@ -247,7 +253,7 @@ public class RestClient {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            throw e;
         }
 
     } //closeServerSocket

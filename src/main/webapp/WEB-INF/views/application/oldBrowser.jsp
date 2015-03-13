@@ -7,8 +7,10 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
-<html>    
-    <jsp:include page="head.jsp"/>
+<html>   
+    <head>
+        <jsp:include page="head.jsp" />
+    </head>    
     <body>
         <h1><spring:message code="text16" /></h1>
         <spring:message code="text17" />

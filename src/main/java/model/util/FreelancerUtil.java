@@ -2,7 +2,7 @@ package model.util;
 
 import java.util.HashMap;
 import javax.servlet.http.HttpSession;
-import model.beans.Freelancer;
+import model.beans.FreelancerBasic;
 import org.apache.commons.lang3.StringEscapeUtils;
 
 /**
@@ -16,17 +16,17 @@ public class FreelancerUtil {
     }
 
     //==========================================================================
-    public static void resetFreelancerSession(HttpSession session, Freelancer freelancer) {
+    public static void resetFreelancerBasicSession(HttpSession session, FreelancerBasic freelancerBasic) {
 
         try {
             if (session != null) {
 
-                Object object = session.getAttribute("freelancer");
+                Object object = session.getAttribute("freelancerBasic");
 
                 if (object != null) {
-                    session.removeAttribute("freelancer");
+                    session.removeAttribute("freelancerBasic");
                     object = null;
-                    session.setAttribute("freelancer", freelancer);
+                    session.setAttribute("freelancerBasic", freelancerBasic);
                 }
 
             }
@@ -37,7 +37,7 @@ public class FreelancerUtil {
     }
 
     //==========================================================================
-    public static HashMap<String, Object> createHashMapFreelancer(Freelancer freelancer) {
+    public static HashMap<String, Object> createHashMapFreelancer(FreelancerBasic freelancer) {
 
         HashMap hm = new HashMap();
 
@@ -105,14 +105,14 @@ public class FreelancerUtil {
     }
 
     //==========================================================================
-    public static Freelancer getFreelancer(HttpSession session) {
-        Freelancer freelancer = null;
+    public static FreelancerBasic getFreelancerBasic(HttpSession session) {
+        FreelancerBasic freelancerBasic = null;
         if (session != null) {
-            freelancer = (Freelancer) session.getAttribute("freelancer");
+            freelancerBasic = (FreelancerBasic) session.getAttribute("freelancerBasic");
         } else {
             throw new NullPointerException("session is null");
         }
-        return freelancer;
+        return freelancerBasic;
     }
 
 }

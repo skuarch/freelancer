@@ -7,11 +7,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%
-    response.setHeader("Pragma", "no-cache");
-    response.setHeader("Cache-Control", "no-cache");
-    response.setDateHeader("Expires", 0);
-%>
+<jsp:include page="../application/noCache.jsp"/>
 <!DOCTYPE html>
 <html>
     <head>        
@@ -19,7 +15,6 @@
         <script src="<c:url value="/resources/js/Chart.js"/>"></script>
     </head>
     <body>
-
         <div id="wrapper">
             <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
                 <jsp:include page="../application/topmenu.jsp" />
@@ -50,7 +45,7 @@
                                         <div class="col-lg-12">
                                             <div class="form-group">
                                                 <label for="currentPassword">
-                                                    Current password
+                                                    <spring:message code="text268" />
                                                 </label>
                                                 <input id="currentPassword" name="currentPassword" type="password" class="form-control" required="required" placeholder="<spring:message code="text151" />" maxlength="8" tabindex="1" />
                                             </div>
@@ -58,7 +53,7 @@
                                         <div class="col-lg-12">
                                             <div class="form-group">
                                                 <label for="newPassword">
-                                                    New password
+                                                    <spring:message code="text269" />
                                                 </label>
                                                 <input id="newPassword" name="newPassword" type="password" class="form-control" required="required" placeholder="<spring:message code="text152" />" maxlength="8" tabindex="2" />
                                             </div>
@@ -66,7 +61,7 @@
                                         <div class="col-lg-12">
                                             <div class="form-group">
                                                 <label for="newPassword2">
-                                                    Repeat new password
+                                                    <spring:message code="text270" />
                                                 </label>
                                                 <input id="newPassword2" name="newPassword2" type="password" class="form-control" required="required" placeholder="<spring:message code="text153" />" maxlength="8" tabindex="3" />
                                             </div>
@@ -86,9 +81,9 @@
                     </div>
                 </div>
             </div>
-            <!-- /#wrapper -->
-            <script src="scriptI18N.html" type="text/javascript"></script>            
-            <jsp:include page="../application/scripts.jsp"/>
-            <script src="<c:url value="/resources/js/md5.js"/>" type="text/javascript"></script>
+        </div><!-- /#wrapper -->
+        <script src="scriptI18N.html" type="text/javascript"></script>            
+        <jsp:include page="../application/scripts.jsp"/>
+        <script src="<c:url value="/resources/js/md5.js"/>" type="text/javascript"></script>
     </body>
 </html>

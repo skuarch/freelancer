@@ -8,7 +8,9 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
-    <jsp:include page="../application/head.jsp"/>
+    <head>
+        <jsp:include page="../application/head.jsp"/>
+    </head>    
     <body>
         <h1>Test Notification</h1>
         <input id="text" type="text" value="hello !!!" />

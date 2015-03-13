@@ -10,6 +10,7 @@ public class Category {
     private String name;
     private String nameEn;    
     private byte isSoftDeleted = 0;
+    private boolean isSelected = false;
     
     public Category() {
     }
@@ -45,5 +46,19 @@ public class Category {
     public void setNameEn(String nameEn) {
         this.nameEn = nameEn;
     }    
+
+    public boolean isIsSelected() {
+        return isSelected;
+    }
+
+    public void setIsSelected(boolean isSelected) {
+        this.isSelected = isSelected;
+    }
+
+    @Override
+    public String toString() {
+        return "name=" + name;
+    }
+    
     
 }

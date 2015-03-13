@@ -1,0 +1,41 @@
+package model.beans;
+
+/**
+ *
+ * @author skuarch
+ */
+public class EstablishmentType {
+
+    
+    private long id;    
+    private String name;
+    private byte isSoftDeleted;
+    
+    public EstablishmentType() {
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public byte getIsSoftDeleted() {
+        return isSoftDeleted;
+    }
+
+    public void setIsSoftDeleted(byte isSoftDeleted) {
+        this.isSoftDeleted = isSoftDeleted;
+    }
+
+}

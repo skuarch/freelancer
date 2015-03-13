@@ -103,6 +103,16 @@ public class I18N {
         arrayList.add("text219");
         arrayList.add("text220");
         arrayList.add("text221");
+        arrayList.add("text225");
+        arrayList.add("text228");
+        arrayList.add("text257");
+        arrayList.add("text258");
+        arrayList.add("text259");
+        arrayList.add("text260");
+        arrayList.add("text261");
+        arrayList.add("text263");
+        arrayList.add("text264");
+        arrayList.add("text265");
     }
     
     private I18N(){
