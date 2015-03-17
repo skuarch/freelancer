@@ -35,7 +35,6 @@
         </div><!-- /#page-wrapper -->            
         <script src="scriptI18N.html" type="text/javascript"></script>
         <jsp:include page="../application/scripts.jsp"/>
-        <script src="<c:url value="/resources/js/bootstrap-select.min.js"/>" type="text/javascript"></script>                        
-        <script src="<c:url value="/resources/js/md5.js"/>" type="text/javascript"></script>                        
+        <script src="<c:url value="/resources/js/bootstrap-select.min.js"/>" type="text/javascript"></script>                                
     </body>
 </html>

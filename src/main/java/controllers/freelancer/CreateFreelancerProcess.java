@@ -64,6 +64,8 @@ public class CreateFreelancerProcess extends BaseController {
                     addressCity,
                     addressState
             );
+            
+            System.out.println("password " + password); 
             json = RestPostClient.createFreelancer(parameters);
             jsono = new JSONObject(json);
             mav.addObject("json", jsono);

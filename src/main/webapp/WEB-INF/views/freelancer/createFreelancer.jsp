@@ -176,7 +176,7 @@
         </div>
         <jsp:include page="../application/applicationFooter.jsp"/>
         <script src="scriptI18N.html" type="text/javascript"></script>
-        <jsp:include page="../application/scripts.jsp"/>        
+        <jsp:include page="../application/scripts.jsp"/>           
         <script type="text/javascript">eval("${js}");</script>        
     </body>
 </html>

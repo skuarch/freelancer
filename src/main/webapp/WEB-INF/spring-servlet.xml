@@ -39,7 +39,7 @@
     </bean>
  
     <bean class="org.springframework.web.servlet.i18n.CookieLocaleResolver" id="localeResolver">
-        <property name="defaultLocale" value="en"></property>
+        <property name="defaultLocale" value="es"></property>
     </bean>
  
     <bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping" id="handlerMapping">

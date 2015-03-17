@@ -67,7 +67,6 @@
                     window.location.href = "oldBrowser.html";
                 }
             }(jQuery));
-        </script>   
-        <script src="<c:url value="/resources/js/md5.js"/>" type="text/javascript"></script>
+        </script>           
     </body>
 </html>
