@@ -10,7 +10,33 @@ import model.beans.User;
  */
 public class SessionUtil {
 
+    private static final String FREELANCER_BASIC_BEAN = "freelancerBasic";
+
+    //==========================================================================
     private SessionUtil() {
+    }
+
+    //==========================================================================
+    public static boolean isValidSession(HttpSession session) {
+
+        if (session == null) {
+            throw new IllegalArgumentException("session is null");
+        }
+
+        Object object = null;
+        boolean isValid = false;
+
+        try {
+
+            object = session.getAttribute(FREELANCER_BASIC_BEAN);
+            isValid = object != null;
+
+        } catch (Exception e) {
+            throw e;
+        }
+
+        return isValid;
+
     }
 
     //==========================================================================
@@ -24,7 +50,7 @@ public class SessionUtil {
 
         try {
 
-            fb = (FreelancerBasic) session.getAttribute("freelancerBasic");
+            fb = (FreelancerBasic) session.getAttribute(FREELANCER_BASIC_BEAN);
 
         } catch (Exception e) {
             throw e;
@@ -33,7 +59,94 @@ public class SessionUtil {
         return fb;
 
     }
-    
+
+    //==========================================================================
+    public static String getStringParameter(HttpSession session, String attibute) {
+
+        String parameter = "0";
+        Object object = null;
+
+        try {
+
+            if (isValidSession(session)) {
+
+                object = session.getAttribute(attibute);
+
+                if (object != null) {
+                    parameter = (String) session.getAttribute(attibute);
+                }
+
+            }
+
+        } catch (Exception e) {
+            throw e;
+        }
+
+        return parameter;
+
+    }
+
+    //==========================================================================
+    public static short getShortParameter(HttpSession session, String attribute) throws Exception {
+
+        short parameter = 0;
+        Object object = null;
+
+        try {
+
+            if (isValidSession(session)) {
+
+                object = session.getAttribute(attribute);
+
+                if (object != null) {
+                    parameter = Short.parseShort(object.toString());
+                } else {
+                    throw new Exception("attribute " + attribute + " doesn't exists");
+                }
+
+            }
+
+        } catch (Exception e) {
+            throw e;
+        }
+
+        return parameter;
+
+    }
+
+    //==========================================================================
+    public static long getLongParameter(HttpSession session, String attribute) throws Exception {
+
+        long parameter = 0;
+        Object object = null;
+
+        try {
+
+            if (isValidSession(session)) {
+
+                object = session.getAttribute(attribute);
+                
+                if (object != null) {                    
+                    parameter = Long.parseLong(object.toString());
+                } else {
+                    throw new Exception("attribute " + attribute + " doesn't exists");
+                }
+
+            }
+
+        } catch (Exception e) {
+            throw e;
+        }
+
+        return parameter;
+
+    }
+
+    //==========================================================================
+    public static void cleanAttributeSession(HttpSession session, String attibute) {
+        session.removeAttribute(attibute);
+    }
+
     //==========================================================================
     public static User getUser(HttpSession session) {
 

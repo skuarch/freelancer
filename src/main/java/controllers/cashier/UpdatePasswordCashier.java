@@ -24,14 +24,14 @@ public class UpdatePasswordCashier extends BaseController{
     
     //==========================================================================
     @RequestMapping(value = {"/updatePasswordCashier" , "updatePasswordCashier"})
-    public ModelAndView methodName(@RequestParam long id, Locale locale){
+    public ModelAndView methodName(@RequestParam long cashierId, Locale locale){
 
         ModelAndView mav = null;
 
         try {
             
             mav = new ModelAndView("cashier/updatePasswordCashier");
-            mav.addObject("id", id);
+            mav.addObject("cashierId", cashierId);
             
         } catch (Exception e) {
             HandlerExceptionUtil.alert(mav, messageSource, e, logger, locale);

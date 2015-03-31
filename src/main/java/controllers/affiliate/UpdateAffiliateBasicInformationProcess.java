@@ -23,59 +23,53 @@ import org.springframework.web.servlet.ModelAndView;
  * @author skuarch
  */
 @Controller
-public class UpdateAffiliateProccess extends BaseController {
+public class UpdateAffiliateBasicInformationProcess extends BaseController {
 
     @Autowired
     private MessageSource messageSource;
-    private static final Logger logger = Logger.getLogger(UpdateAffiliateProccess.class);
+    private static final Logger logger = Logger.getLogger(UpdateAffiliateBasicInformationProcess.class);
 
     //==========================================================================
-    @RequestMapping(value = {"updateAffiliateProccess", "/updateAffiliateProccess"})
-    public ModelAndView methodName(
-            @RequestParam("person.email") String personEmail,
+    @RequestMapping(value = {"updateAffiliateBasicInformationProcess", "/updateAffiliateBasicInformationProcess"})
+    public ModelAndView updateAffiliateBasicInformation (
+            @RequestParam("affiliateId") long affiliateId,
             @RequestParam("person.name") String personName,
             @RequestParam("person.lastName") String personLastName,
-            @RequestParam("password") String password,
+            @RequestParam("person.email") String personEmail,
             @RequestParam("person.phone") String personPhone,
+            @RequestParam("password") String password,
             @RequestParam("person.gender.id") short personGenderId,
-            @RequestParam("address.all") String address,
-            @RequestParam("address.zipCode") String addressZipCode,
-            @RequestParam("address.country") String addressCountry,
-            @RequestParam("address.city") String addressCity,
-            @RequestParam("address.state") String addressState,
-            @RequestParam("id") long id,
+            @RequestParam("brand") String brand,
+            @RequestParam String category,
             Locale locale) {
-
+        
         HashMap<String, Object> parameters = null;
         String json = null;
         ModelAndView mav = new ModelAndView("application/json");
         JSONObject jsono = new JSONObject();
 
         try {
-            
+
             parameters = ApplicationUtil.createParameters(
-                    id,
-                    personEmail,
+                    affiliateId,
                     personName,
                     personLastName,
-                    password,
+                    personEmail,
                     personPhone,
+                    password,
                     personGenderId,
-                    address,
-                    addressZipCode,
-                    addressCountry,
-                    addressCity,
-                    addressState
+                    brand,
+                    category
             );
             json = RestPostClient.sendReceive(
-                    parameters, 
-                    Constants.API_URL, 
-                    Constants.API_FIRST_VERSION, 
-                    Constants.URI_AFFILIATE_UPDATE);            
+                    parameters,
+                    Constants.API_URL,
+                    Constants.API_FIRST_VERSION,
+                    Constants.URI_AFFILIATE_UPDATE_BASIC_INFORMATION);
             jsono = new JSONObject(json);
             mav.addObject("json", jsono);
 
-        } catch (IOException | JSONException e) {
+        } catch (Exception e) {
             HandlerExceptionUtil.json(mav, messageSource, e, logger, locale, "text116");
         }
 

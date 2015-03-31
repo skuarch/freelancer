@@ -25,7 +25,7 @@
             </li>
             <li><a href="?lang=en"><i class="fa fa-language fa-fw"></i> English</a>
             </li>
-            <li><a href="logout.html"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+            <li><a href="closeSession.html"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
             </li>
         </ul>
         <!-- /.dropdown-user -->

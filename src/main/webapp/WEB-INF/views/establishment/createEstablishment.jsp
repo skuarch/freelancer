@@ -30,6 +30,7 @@
                 </div>
                 <form action="" role="form" method="post" id="createEstablishmentForm" name="createEstablishmentForm" data-toggle="validator">
                     <input type="hidden" name="id" id="id" value="${id}"/>
+                    <input type="hidden" name="type" id="type" value="${type}"/>
                     <div class="row">
                         <div class="col-lg-12">
                             <div id="message" class="alert alert-warning">
@@ -91,6 +92,18 @@
                                             <div class="form-group"> 
                                                 <label><spring:message code="text80" /></label>
                                                 <input name="zipCode" id="zipCode" placeholder="<spring:message code="text81"/>" min="1" max="99999999" class="form-control" type="number" required="required" tabindex="8" />
+                                            </div> 
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group"> 
+                                                <label>Latitude</label>
+                                                <input name="latitude" id="latitude" class="form-control" type="number" tabindex="8" />
+                                            </div> 
+                                        </div>
+                                            <div class="col-lg-6">
+                                            <div class="form-group"> 
+                                                <label>Longitude</label>
+                                                <input name="longitude" id="longitude" class="form-control" type="number" tabindex="8" />
                                             </div> 
                                         </div>
                                     </div>                                

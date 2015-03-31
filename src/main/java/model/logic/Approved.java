@@ -12,6 +12,8 @@ public class Approved {
     
     static{    
         urls.put("login", "login");
+        urls.put("closeSession", "closeSession");
+        urls.put("logout", "logout");
         urls.put("authentication", "authentication");
         urls.put("scriptI18N", "scriptI18N");
         urls.put("logout", "logout");        
@@ -24,6 +26,7 @@ public class Approved {
         urls.put("welcome", "welcome");        
         urls.put("createFreelancer", "createFreelancer");        
         urls.put("createFreelancerProcess", "createFreelancerProcess");        
+        urls.put("redirector", "redirector");        
         //urls.put("testNotifications", "testNotifications");                
         //urls.put("testNotificationsForm", "testNotificationsForm");                
     }

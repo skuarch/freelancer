@@ -44,14 +44,19 @@
                             <spring:message code="text147" />
                         </a>
                     </li>
-                    <!-- <li>
+                    <li>
                         <a href="createNewCompanyAffiliate.html">
                             <spring:message code="text163" />
                         </a>
-                    </li> -->
+                    </li>
                     <li>
                         <a href="affiliatesList.html">
                             <spring:message code="text155" />
+                        </a>
+                    </li>
+                    <li>
+                        <a href="companiesList.html">
+                            <spring:message code="text285" />
                         </a>
                     </li>
                 </ul>

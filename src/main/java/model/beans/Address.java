@@ -26,7 +26,7 @@ public class Address {
     private String all;            
     
     @Column(name = "address_zip_code")
-    private int zipCode;    
+    private int zipCode = 0;    
     
     @Column(name = "address_country", nullable = false)
     private String country;    

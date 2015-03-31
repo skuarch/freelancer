@@ -1,7 +1,6 @@
 package controllers.establishment;
 
 import controllers.application.BaseController;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Locale;
 import model.logic.Constants;
@@ -9,7 +8,6 @@ import model.logic.RestPostClient;
 import model.util.ApplicationUtil;
 import model.util.HandlerExceptionUtil;
 import org.apache.log4j.Logger;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -31,8 +29,8 @@ public class UpdateEstablishmentFormProccess extends BaseController {
     
     //==========================================================================
     @RequestMapping(value = {"/updateEstablishmentFormProccess", "updateEstablishmentFormProccess"})
-    public ModelAndView methodName(
-            @RequestParam long id,
+    public ModelAndView updateEstablishmentFormProccess(
+            @RequestParam long establishmentId,
             @RequestParam String name, 
             @RequestParam int[] category,
             @RequestParam String subcategory,
@@ -41,6 +39,8 @@ public class UpdateEstablishmentFormProccess extends BaseController {
             @RequestParam String state,
             @RequestParam String city,
             @RequestParam String zipCode,
+            @RequestParam String latitude,
+            @RequestParam String longitude,
             Locale locale){
         
         ModelAndView mav = getModelAndViewJson();
@@ -50,8 +50,8 @@ public class UpdateEstablishmentFormProccess extends BaseController {
 
         try {            
             
-            parameters = ApplicationUtil.createParameters(
-                    id, 
+            parameters = ApplicationUtil.createParametersUpdateEstablishment(
+                    establishmentId, 
                     name, 
                     category, 
                     subcategory, 
@@ -59,18 +59,19 @@ public class UpdateEstablishmentFormProccess extends BaseController {
                     country, 
                     state, 
                     city, 
-                    zipCode);
+                    zipCode,
+                    latitude,
+                    longitude);
             
-            json = RestPostClient.sendReceive(
-                    parameters, 
+            json = RestPostClient.sendReceive(parameters, 
                     Constants.API_URL, 
                     Constants.API_FIRST_VERSION, 
-                    Constants.ESTABLISHMENT_UPDATE);
+                    Constants.URI_ESTABLISHMENT_UPDATE);
             
             jsono = new JSONObject(json);            
             mav.addObject("json", jsono);            
             
-        } catch (IOException | JSONException e) {
+        } catch (Exception e) {
             HandlerExceptionUtil.json(mav, messageSource, e, logger, locale, "text114");
         }
 

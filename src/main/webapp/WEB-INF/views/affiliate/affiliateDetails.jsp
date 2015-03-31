@@ -12,6 +12,7 @@
 <html>
     <head>        
         <jsp:include page="../application/head.jsp"/>                
+        <link href="<c:url value="/resources/css/bootstrap-select.min.css" />" rel="stylesheet">        
     </head>
     <body>
         <div id="wrapper">
@@ -27,12 +28,13 @@
                         </h1>
                     </div>
                 </div>                
-                <input type="hidden" id="id" name="id" value="${id}" />
+                <input type="hidden" id="affiliateId" name="affiliateId" value="${affiliateId}" />
                 <div id="output"></div>
             </div>
         </div><!-- /#page-wrapper --> 
         <script src="scriptI18N.html" type="text/javascript"></script>
         <jsp:include page="../application/scripts.jsp"/>        
+        <script src="<c:url value="/resources/js/bootstrap-select.min.js"/>" type="text/javascript"></script>                                
         <script type="text/javascript">eval("${js}");</script>        
     </body>
 </html>

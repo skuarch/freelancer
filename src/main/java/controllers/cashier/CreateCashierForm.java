@@ -23,14 +23,14 @@ public class CreateCashierForm {
     
     //==========================================================================
     @RequestMapping(value = {"/createCashierForm", "createCashierForm"})
-    public ModelAndView methodName(@RequestParam long eId, Locale locale){        
+    public ModelAndView methodName(@RequestParam long establishmentId, Locale locale){        
         
         ModelAndView mav = null;
 
         try {
             
             mav = new ModelAndView("cashier/newCashier");
-            mav.addObject("id", eId);
+            mav.addObject("establishmentid", establishmentId);
             
         } catch (Exception e) {
             HandlerExceptionUtil.alert(mav, messageSource, e, logger, locale);

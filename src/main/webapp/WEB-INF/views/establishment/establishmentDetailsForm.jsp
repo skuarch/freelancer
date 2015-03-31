@@ -10,10 +10,10 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <jsp:include page="../application/noCache.jsp"/>
 <div class="row">
-    <div class="col-lg-12">
-        <input type="hidden" name="id" id="id" value="${id}"/>
+    <div class="col-lg-12">        
         <div class="row">
             <form action="" role="form" method="post" id="updateEstablishmentForm" name="updateEstablishmentForm" data-toggle="validator">
+                <input type="hidden" name="establishmentId" id="establishmentId" value="${establishmentId}"/>
                 <div class="col-lg-12">
                     <div id="message" class="alert alert-warning">
                         <spring:message code="text100" />
@@ -76,8 +76,19 @@
                                         <input name="zipCode" id="zipCode" value="${establishment.address.getZipCode()}" placeholder="<spring:message code="text81"/>" min="1" max="99999999" class="form-control" type="number" required="required" tabindex="8" />
                                     </div> 
                                 </div>
-                            </div> 
-                            <input type="hidden" id="id" name="id" value="${id}" />
+                                <div class="col-lg-6">
+                                    <div class="form-group"> 
+                                        <label><spring:message code="text320" /></label>
+                                        <input name="latitude" id="latitude" value="${establishment.latitude}" class="form-control" type="number" required="required" tabindex="8" />
+                                    </div> 
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group"> 
+                                        <label><spring:message code="text321" /></label>
+                                        <input name="longitude" id="longitude" value="${establishment.longitude}" class="form-control" type="number" required="required" tabindex="8" />
+                                    </div> 
+                                </div>
+                            </div>                             
                             <button type="submit" id="saveButtonEstablishment" class="btn btn-block btn-success btn-lg" tabindex="23">
                                 <spring:message code="text251" />                                
                             </button>     
@@ -94,6 +105,7 @@
                     </div>    
                     <div class="panel-body">
                         <form action="" method="post" id="updateResponsableForm" name="updateResponsableForm">
+                            <input type="hidden" id="responsable_id" name="responsable_id" value="${establishment.responsable.id}" />
                             <div class="row">                                    
                                 <div class="col-lg-6">
                                     <div class="form-group"> 
@@ -140,9 +152,8 @@
                                             </select>
                                         </div> 
                                     </div>
-                                </div>
-                                <input type="hidden" id="id" name="id" value="${establishment.responsable.id}" />
-                            <button type="submit" id="saveButtonResponsable" class="btn btn-block btn-success btn-lg" tabindex="23">
+                                </div>                                
+                                <button type="submit" id="saveButtonResponsable" class="btn btn-block btn-success btn-lg" tabindex="23">
                                 <spring:message code="text252" />
                             </button> 
                         </form>
@@ -201,7 +212,7 @@
                             </tbody>
                         </table>
                         <button type="button" class="btn btn-block btn-success btn-lg" onclick="createCashier(${establishment.getId()})" data-toggle="modal" data-target="#DetailModal">
-                           <spring:message code="text254" /> 
+                            <spring:message code="text254" /> 
                         </button>
                     </c:otherwise>
                 </c:choose>

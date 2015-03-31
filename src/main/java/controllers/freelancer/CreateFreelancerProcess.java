@@ -15,7 +15,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-import org.apache.commons.lang3.StringEscapeUtils;
 
 /**
  *
@@ -51,7 +50,7 @@ public class CreateFreelancerProcess extends BaseController {
         JSONObject jsono = new JSONObject();
 
         try {
-
+            
             parameters = createHashMapFreelancer(personEmail,
                     personName,
                     personLastName,
@@ -63,9 +62,8 @@ public class CreateFreelancerProcess extends BaseController {
                     addressCountry,
                     addressCity,
                     addressState
-            );
+            );            
             
-            System.out.println("password " + password); 
             json = RestPostClient.createFreelancer(parameters);
             jsono = new JSONObject(json);
             mav.addObject("json", jsono);
@@ -86,17 +84,17 @@ public class CreateFreelancerProcess extends BaseController {
         try {
 
             //avoid some html tags
-            hm.put("person.email", StringEscapeUtils.escapeHtml4(String.valueOf(personEmail)));
-            hm.put("person.name", StringEscapeUtils.escapeHtml4(String.valueOf(personName)));
-            hm.put("person.lastName", StringEscapeUtils.escapeHtml4(String.valueOf(personLastName)));
-            hm.put("password", StringEscapeUtils.escapeHtml4(String.valueOf(personPassword)));
-            hm.put("person.phone", StringEscapeUtils.escapeHtml4(String.valueOf(personPhone)));
+            hm.put("person.email", String.valueOf(personEmail));
+            hm.put("person.name", String.valueOf(personName));
+            hm.put("person.lastName", String.valueOf(personLastName));
+            hm.put("password", String.valueOf(personPassword));
+            hm.put("person.phone", String.valueOf(personPhone));
             hm.put("person.gender.id", personGenderId);
-            hm.put("address.all", StringEscapeUtils.escapeHtml4(String.valueOf(address)));
+            hm.put("address.all", String.valueOf(address));
             hm.put("address.zipCode", Integer.parseInt(addressZipCode));
-            hm.put("address.country", StringEscapeUtils.escapeHtml4(String.valueOf(addressCountry)));
-            hm.put("address.city", StringEscapeUtils.escapeHtml4(String.valueOf(addressCity)));
-            hm.put("address.state", StringEscapeUtils.escapeHtml4(String.valueOf(addressState)));
+            hm.put("address.country", String.valueOf(addressCountry));
+            hm.put("address.city", String.valueOf(addressCity));
+            hm.put("address.state", String.valueOf(addressState));
 
         } catch (Exception e) {
             throw e;

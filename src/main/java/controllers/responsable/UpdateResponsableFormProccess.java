@@ -30,12 +30,13 @@ public class UpdateResponsableFormProccess extends BaseController {
     //==========================================================================
     @RequestMapping(value = {"/updateResponsableFormProccess","updateResponsableFormProccess"})
     public ModelAndView methodName(
-            @RequestParam long id,
+            @RequestParam long responsable_id,
             @RequestParam String responsable_name, 
             @RequestParam String responsable_lastName,
             @RequestParam String responsable_phone,
             @RequestParam String responsable_email,
             @RequestParam String responsable_password,
+            @RequestParam String responsable_password2,
             @RequestParam int responsable_gender,
             Locale locale){
 
@@ -43,11 +44,11 @@ public class UpdateResponsableFormProccess extends BaseController {
         JSONObject jsono = null;
         HashMap parameters = null;
         String json = null;
-
+        
         try {
 
-            parameters = ApplicationUtil.createParameters(
-                    id,
+            parameters = ApplicationUtil.createParametersUpdateResponsable(
+                    responsable_id,
                     responsable_name,
                     responsable_lastName,
                     responsable_phone,
@@ -55,7 +56,8 @@ public class UpdateResponsableFormProccess extends BaseController {
                     responsable_password,
                     responsable_gender
             );
-            json = RestPostClient.sendReceive(parameters, 
+            json = RestPostClient.sendReceive(
+                    parameters, 
                     Constants.API_URL, 
                     Constants.API_FIRST_VERSION, 
                     Constants.URI_RESPONSABLE_UPDATE);

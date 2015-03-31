@@ -4,7 +4,6 @@ import controllers.application.BaseController;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Locale;
 import javax.servlet.http.HttpServletResponse;
@@ -16,7 +15,6 @@ import model.util.ApplicationUtil;
 import model.util.FreelancerUtil;
 import model.util.HandlerExceptionUtil;
 import org.apache.log4j.Logger;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -41,17 +39,30 @@ public class CreateNewAffiliateProcess extends BaseController {
 
     @RequestMapping(value = {"createNewAffiliateProcess", "/createNewAffiliateProcess"})
     public ModelAndView createNewAffiliate(
-            @RequestParam("person.email") String personEmail,
             @RequestParam("person.name") String personName,
             @RequestParam("person.lastName") String personLastName,
-            @RequestParam("password") String password,
+            @RequestParam("person.email") String personEmail,
             @RequestParam("person.phone") String personPhone,
+            @RequestParam("password") String personPassword,
             @RequestParam("person.gender.id") short personGenderId,
+            @RequestParam("brand") String brand,
+            @RequestParam String category,
+            @RequestParam("tax.contact.person.name") String taxContactPersonName,
+            @RequestParam("tax.contact.person.lastName") String taxContactPersonLastName,
+            @RequestParam("tax.contact.person.email") String taxContactPersonEmail,
+            @RequestParam("tax.contact.person.phone") String taxContactPersonPhone,
+            @RequestParam("tax.contact.person.gender.id") short taxContactPersonGender,
+            @RequestParam("tax.id") String taxId,
+            @RequestParam("tax.company.name") String taxCompanyName,
             @RequestParam("address.all") String address,
-            @RequestParam("address.zipCode") String addressZipCode,
             @RequestParam("address.country") String addressCountry,
             @RequestParam("address.city") String addressCity,
             @RequestParam("address.state") String addressState,
+            @RequestParam("address.zipCode") String addressZipCode,
+            @RequestParam("owner.account.bank") String ownerAccountBank,
+            @RequestParam("bank") String bank,
+            @RequestParam("clabe") String clabe,
+            @RequestParam("email.notifications") String emailNotifications,
             @RequestParam(value = "file", required = false) MultipartFile file,
             HttpServletResponse response,
             Locale locale) {
@@ -64,7 +75,7 @@ public class CreateNewAffiliateProcess extends BaseController {
 
         try {
 
-            //upload file
+            //upload file //change this
             if (file != null) {
 
                 byte[] bytes = file.getBytes();
@@ -92,17 +103,31 @@ public class CreateNewAffiliateProcess extends BaseController {
             setHeaderNoChache(response);
             freelancerBasic = FreelancerUtil.getFreelancerBasic(session);
 
-            parameters = ApplicationUtil.createParameters(personEmail,
+            parameters = ApplicationUtil.createParameters(
                     personName,
                     personLastName,
-                    password,
+                    personEmail,
                     personPhone,
+                    personPassword,
                     personGenderId,
+                    brand,
+                    category,
+                    taxContactPersonName,
+                    taxContactPersonLastName,
+                    taxContactPersonEmail,
+                    taxContactPersonGender,
+                    taxId,
+                    taxCompanyName,
+                    taxContactPersonPhone,
                     address,
-                    addressZipCode,
                     addressCountry,
-                    addressCity,
                     addressState,
+                    addressCity,
+                    addressZipCode,
+                    ownerAccountBank,
+                    bank,
+                    clabe,
+                    emailNotifications,
                     freelancerBasic.getId()
             );
 
@@ -114,7 +139,7 @@ public class CreateNewAffiliateProcess extends BaseController {
             jsono = new JSONObject(json);
             mav.addObject("json", jsono);
 
-        } catch (IOException | JSONException e) {
+        } catch (Exception e) {
             HandlerExceptionUtil.json(mav, messageSource, e, logger, locale, "text116");
         } finally {
             parameters = null;

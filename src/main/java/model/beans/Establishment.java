@@ -16,9 +16,11 @@ public class Establishment implements Serializable {
     private Address address;
     private String name;
     private String subcategory;
-    private Responsable responsable;
+    private Responsable responsable;    
+    private String latitude;
+    private String longitude;
     private List<Cashier> cashier = new ArrayList<>();    
-    private List<Category> category = new ArrayList<>();
+    private List<Category> category = new ArrayList<>();    
     private String registrationDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
     private byte isSoftDeleted = 0;
 
@@ -92,6 +94,22 @@ public class Establishment implements Serializable {
 
     public void setSubcategory(String subcategory) {
         this.subcategory = subcategory;
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
     }
 
     @Override

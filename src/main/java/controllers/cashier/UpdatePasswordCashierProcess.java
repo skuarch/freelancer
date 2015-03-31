@@ -30,7 +30,7 @@ public class UpdatePasswordCashierProcess extends BaseController {
     //==========================================================================
     @RequestMapping(value = {"updatePasswordCashierProcess", "/updatePasswordCashierProcess"})
     public ModelAndView updateCashierPassword(
-            @RequestParam long id, 
+            @RequestParam long cashierId, 
             @RequestParam String password1, 
             @RequestParam String password2, 
             Locale locale){
@@ -50,7 +50,7 @@ public class UpdatePasswordCashierProcess extends BaseController {
             }
             
             parameters = ApplicationUtil.createParameters(
-                    id,
+                    cashierId,
                     password1, 
                     password2);
             json = RestPostClient.sendReceive(

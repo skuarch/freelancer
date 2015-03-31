@@ -1,24 +1,23 @@
 package controllers.establishment;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
+import javax.servlet.http.HttpSession;
 import model.beans.Category;
 import model.beans.Establishment;
 import model.logic.Constants;
 import model.logic.RestPostClient;
 import model.util.ApplicationUtil;
 import model.util.HandlerExceptionUtil;
+import model.util.SessionUtil;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -30,11 +29,13 @@ public class EstablishmentDetailsForm {
 
     @Autowired
     private MessageSource messageSource;
+    @Autowired
+    private HttpSession session;
     private static final Logger logger = Logger.getLogger(EstablishmentDetailsForm.class);
 
     //==========================================================================
     @RequestMapping(value = {"/establishmentDetailsForm", "establishmentDetailsForm"})
-    public ModelAndView establishmentDetialsForm(@RequestParam long id, Locale locale) {
+    public ModelAndView establishmentDetialsForm(Locale locale) {
 
         ModelAndView mav = new ModelAndView();
         String json = null;
@@ -44,21 +45,23 @@ public class EstablishmentDetailsForm {
         Category[] categories = null;
         JSONArray jsona = null;
         ArrayList<Category> selectedCategories = null;
-
+        short establishmentId;
         try {
 
-            if (id < 1) {
+            establishmentId = SessionUtil.getShortParameter(session, "establishmentId");
+            
+            if (establishmentId < 1) {
                 mav.setViewName("application/systemWelcome");
                 return mav;
             }
 
-            parameters = ApplicationUtil.createParameters(id);
+            parameters = ApplicationUtil.createParameters(establishmentId);
             json = RestPostClient.sendReceive(
                     parameters,
                     Constants.API_URL,
                     Constants.API_FIRST_VERSION,
                     Constants.URI_ESTABLISHMENT_GET);
-
+            
             jsonCategories = RestPostClient.sendReceive(
                     Constants.API_URL,
                     Constants.API_FIRST_VERSION,
@@ -69,37 +72,19 @@ public class EstablishmentDetailsForm {
 
             establishment = new Gson().fromJson(json, Establishment.class);
             selectedCategories = new ArrayList<>(establishment.getCategory());
-            categories = selectCategory(categories, selectedCategories);
+            categories = ApplicationUtil.selectCategory(categories, selectedCategories);
 
             mav = new ModelAndView("establishment/establishmentDetailsForm");
-            mav.addObject("id", id);
+            mav.addObject("establishmentId", establishmentId);
             mav.addObject("establishment", establishment);
             mav.addObject("categories", categories);
 
-        } catch (IOException | JsonSyntaxException e) {
+        } catch (Exception e) {
             HandlerExceptionUtil.alert(mav, messageSource, e, logger, locale);
         }
 
         return mav;
-
+        
     }
-
-    //==========================================================================
-    private Category[] selectCategory(Category[] categories, ArrayList<Category> selectedCategories) {
-
-        for (Category categorie : categories) {
-            selectedCategories.stream()
-                    .filter(
-                            (selectedCategory) -> 
-                                    (categorie.getName().equalsIgnoreCase(selectedCategory.getName()))
-                    )
-                    .forEach((item) -> {                        
-                        categorie.setIsSelected(true);
-                    });
-        }
-
-        return categories;
-
-    }
-
+    
 }

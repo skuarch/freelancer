@@ -32,7 +32,7 @@
         <input name="cashier_password2" id="cashier_password2" placeholder="<spring:message code="text95"/>" maxlength="8" class="form-control" type="password" required="required" tabindex="21"/>
     </div> 
 
-    <input type="hidden" id="id" value="${id}"/>
+    <input type="hidden" id="establishmentId" value="${establishmentId}"/>
     <div class="form-group"> 
         <label><spring:message code="text86" /></label>
         <select id="cashier_gender" name="cashier_gender" class="form-control" tabindex="22">

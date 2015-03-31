@@ -41,7 +41,8 @@ var loader = "<i class='fa fa-refresh fa-spin'></i>";
 //==============================================================================
 $(document).ready(function(){
     $(document).on("contextmenu", function(evt) {return false;});         
-    //notifications();    
+    intervalCounter();    
+    //notifications();
 });
 
 function preventDefaultForm(event){
@@ -50,6 +51,20 @@ function preventDefaultForm(event){
     } else {
         event.returnValue = false;
     }    
+}
+
+function intervalCounter(){
+    pathName = getPathName();
+    if(pathName === '' || pathName === 'createFreelancer' || pathName === 'welcome' || pathName === 'login'){
+        return;
+    }
+    var counter = 0;    
+    setInterval(function(){
+        counter += increaseCounter;        
+        if(counter >= maxCounter){             
+            $.redirect('redirector.html', {'url':'login.html'},'POST');
+        }        
+    },intervalCheck);    
 }
 
 //==============================================================================
@@ -104,7 +119,7 @@ $('#loginForm').submit(function(event){
             $('#loginButton').prop('disabled', false);            
         },
         error: function (jqXHR, status, error) {
-            alertify.error(text15);            
+            showError();
         }
     });     
    
@@ -168,31 +183,57 @@ function testNotification(text){
        async:false,
        success:function(data){           
        },error:function(e1,e2,e3){
-           alert('error ' + e3);
+           showError();
        }       
    });
    
 }
 
-(function(){ 
+function showError(){
+    alertify.alert(text15);
+    alertify.error(text293);
+}
+
+function showSuccess(){
+    alertify.alert(text291);
+    alertify.success(text291);                            
+}
+
+function checkAndShowErrorRequest(data){
+    if(data.hasOwnProperty("error")){
+        showError();
+    }
+}
+
+function getPathName(){
     var l = window.location.pathname;
     l = l.replace(ctx,"");
     l = l.replace(".html","");
-    switch (l){                
-        case "affiliatesList":  
+    return l;
+}
+
+(function(){     
+    switch (getPathName()) {
+        case "affiliatesList":
             affiliatesListAjax();
-            break;        
+            break;
         case "affiliateDetails":
             affiliateDetailsForm();
             break;
         case "establishmentDetails":
             establishmentDetailsForm();
-            break;        
+            break;
+        case "companiesList":
+            companiesListAjax();
+            break;
+        case "companyDetails":
+            companyDetailsAjax();
+            break;
     }
 })();
 
 function redirectData(url, parameters){
-    $.redirect(url, parameters, 'GET');    
+    $.redirect(url, parameters, 'POST');     
 }
 
 function establishmentDetailsForm(){
@@ -200,14 +241,14 @@ function establishmentDetailsForm(){
     $.ajax({
         cache:false,
         url:"establishmentDetailsForm.html",
-        data: {id:$("#id").val()},
+        data: {establishmentId:$("#establishmentId").val()},
         type:"post",        
         success:function(data){
             $("#output").html(data);  
             $(".selectpicker").selectpicker("refresh");   
             bindEstablishmentDetailsForms();
         },error:function(e1,e2,e3){
-            alertify.alert(e2);
+            showError();
         }
     });
 }
@@ -224,20 +265,44 @@ function bindEstablishmentDetailsForms(){
     });
 }
 
+function bindAffiliateDetailsForms(){
+    $("#updateAffiliateBasicInformationForm").bind("submit", function (event) {
+        updateAffiliateBasicInformationFormSubmit(event);
+    });            
+    $("#updateAffiliateTaxForm").bind("submit", function (event) {
+        updateAffiliateTaxFormSubmit(event);
+    });
+    $("#updateAffiliateBankForm").bind("submit", function (event) {
+        updateAffiliateBankFormSubmit(event);
+    });
+}
+
+function bindCompanyDetailsForms(){
+    $("#updateCompanyBasicInformationForm").bind("submit", function (event) {
+        updateCompanyBasicInformationFormSubmit(event);
+    });            
+    $("#updateCompanyTaxForm").bind("submit", function (event) {
+        updateCompanyTaxFormSubmit(event);
+    });
+    $("#updateCompanyBankForm").bind("submit", function (event) {
+        updateCompanyBankFormSubmit(event);
+    });
+}
+
 function affiliateDetailsForm(){
-    $("#output").html(loader);      
+    $("#output").html(loader); 
     $.ajax({
         cache:false,
         url:"affiliateDetailsForm.html",
-        data: {id:$("#id").val()},
+        data: {affiliateId:$("#affiliateId").val()},
         type:"post",        
         success:function(data){
-            $("#output").html(data);     
-            $("#updateAffiliate").bind("submit",function(event){
-                updateAffiliateSubmit(event);
-            });
+            checkAndShowErrorRequest(data);
+            $("#output").html(data);
+            $(".selectpicker").selectpicker("refresh"); 
+            bindAffiliateDetailsForms();
         },error:function(e1,e2,e3){
-            alertify.alert(e2);
+            showError();
         }
     });
 }
@@ -249,9 +314,25 @@ function affiliatesListAjax(){
         url:"affiliateListTable.html",
         type:"post",
         success:function(data){
+            checkAndShowErrorRequest(data);
             $("#output").html(data);            
         },error:function(e1,e2,e3){
-            alertify.alert(e2);
+            showError();
+        }
+    });
+}
+
+function companiesListAjax(){
+    $("#output").html(loader);     
+    $.ajax({
+        cache:false,
+        url:"companyListTable.html",
+        type:"post",
+        success:function(data){
+            checkAndShowErrorRequest(data);
+            $("#output").html(data);            
+        },error:function(e1,e2,e3){
+            showError();
         }
     });
 }
@@ -259,11 +340,11 @@ function affiliatesListAjax(){
 
 $("#createFreelancer").submit(function(event){
    
-    $("#createFreelancer").attr("action","createNewFreelancer.html");  
-    $("#saveButton").removeAttr("disabled");
-   
     preventDefaultForm(event);
-    
+
+    $("#createFreelancer").attr("action", "createNewFreelancer.html");
+    $("#saveButton").removeAttr("disabled");
+
     var error = "";
     var email = $("#email").val();
     var name = $("#name").val();
@@ -277,18 +358,18 @@ $("#createFreelancer").submit(function(event){
     var gender = $("#gender").val();
     var phone = $("#phone").val();
     var state = $("#state").val();
-    
-    if(gender == 1){        
+
+    if (gender == 1) {
         g = text97;
-    }else{
+    } else {
         g = text98;
     }
-    
-    if(password != password2){
+
+    if (password != password2) {
         alertify.alert(text119);
         return;
     }
-    
+
     if (!isEmail(email)) {
         error += "<br>" + text103;
     }
@@ -304,7 +385,7 @@ $("#createFreelancer").submit(function(event){
     if (password.length < 4) {
         error += "<br>" + text106;
     }
-    
+
     if (password.length < 5 || password.length > 8) {
         error += "<br>" + text136;
     }
@@ -316,8 +397,8 @@ $("#createFreelancer").submit(function(event){
     if (zipCode.length < 5) {
         error += "<br>" + text108;
     }
-    
-    if(isNaN(zipCode)){
+
+    if (isNaN(zipCode)) {
         error += "<br>" + text137;
     }
 
@@ -332,11 +413,11 @@ $("#createFreelancer").submit(function(event){
     if (phone.length < 5) {
         error += "<br>" + text112;
     }
-    
-    if(isNaN(phone)){
+
+    if (isNaN(phone)) {
         error += "<br>" + text138;
     }
-    
+
     if (state.length < 3) {
         error += "<br>" + text122;
     }
@@ -364,31 +445,31 @@ $("#createFreelancer").submit(function(event){
             if (e) {
 
                 var data = {
-                    "person.name" : name,
-                    "person.email" : email,
-                    "password" : $.md5(String(password)),
-                    "person.lastName" : lastName,
-                    "address.all" : address,
-                    "address.zipCode" : String(zipCode),
-                    "address.city" : city,
-                    "address.state" : state,
-                    "address.country" : country,
-                    "person.gender.id" : gender,
-                    "person.phone" : String(phone)
+                    "person.name": name,
+                    "person.email": email,
+                    "password": $.md5(String(password)),
+                    "person.lastName": lastName,
+                    "address.all": address,
+                    "address.zipCode": String(zipCode),
+                    "address.city": city,
+                    "address.state": state,
+                    "address.country": country,
+                    "person.gender.id": gender,
+                    "person.phone": String(phone)
                 };
 
-                $("#saveButton").attr("disabled","disabled");
-                $("#saveButton").html(text114);                
+                $("#saveButton").attr("disabled", "disabled");
+                $("#saveButton").html(text114);
                 $.ajax({
-                    cache:false,
-                    url:"createFreelancerProcess.html",
-                    type:"post",
-                    data:data,
+                    cache: false,
+                    url: "createFreelancerProcess.html",
+                    type: "post",
+                    data: data,
                     success: function (data) {
-                        if (data.hasOwnProperty('exists')) {
+                        checkAndShowErrorRequest(data);
+                        if (data.exists == 'true') {
                             alertify.alert(text139);
                             $("#saveButton").removeAttr("disabled");
-                            $("#saveButton").html(text92);
                         }
                         if (data.hasOwnProperty('error')) {
                             alertify.error(text116);
@@ -396,19 +477,15 @@ $("#createFreelancer").submit(function(event){
                             $("#saveButton").html(text92);
                         }
                         if (data.hasOwnProperty('key')) {
-                            alertify.alert(text115 + "<br>" + text117 + " " + data.key);
+                            alertify.alert(text115);
                             $("#saveButton").html(text118);
                         }
                     }, error: function (e1, e2, e3) {
-                        alertify.alert(e2);
+                        showError();
                         $("#saveButton").removeAttr("disabled");
-                        $("#saveButton").html(text92);                
+                        $("#saveButton").html(text92);
                     }
                 });
-
-            } else {
-                alertify.error(text102);
-                $("#saveButton").removeAttr("disabled");
             }
         });
 
@@ -487,22 +564,9 @@ $("#profileFreelancerForm").submit(function(event){
 
     if (error.length > 1) {
         alertify.alert(text113 + "<br>" + error);
-    } else {
+    } else {       
 
-        message = text101 +
-                "<br><div class='alert alert-warning'> " + text90 + ": " + email
-                + "<br> " + text74 + ": " + name
-                + "<br> " + text76 + ": " + lastName
-                + "<br> " + text78 + ": " + address
-                + "<br> " + text80 + ": " + zipCode
-                + "<br> " + text82 + ": " + country
-                + "<br> " + text84 + ": " + city
-                + "<br> " + text86 + ": " + g
-                + "<br> " + text88 + ": " + phone
-                + "<br> " + text121 + ": " + state
-                + "</div>";
-
-        alertify.confirm(message, function (e) {
+        alertify.confirm(text290, function (e) {
 
             if (e) {
 
@@ -519,34 +583,25 @@ $("#profileFreelancerForm").submit(function(event){
                     "phone" : String(phone)
                 };
 
-                $("#saveButton").attr("disabled","disabled");
-                $("#saveButton").html(text143);                
                 $.ajax({
-                    cache:false,
-                    url:"updateFreelancerProfileProcess.html",
-                    type:"post",
-                    data:data,
+                    cache: false,
+                    url: "updateFreelancerProfileProcess.html",
+                    type: "post",
+                    data: data,
+                    beforeSend: function (xhr) {
+                        $("#saveButton").attr("disabled", "disabled");
+                    },
                     success: function (data) {
-                        if (data.hasOwnProperty('error')) {
-                            alertify.error(text116);
-                            $("#saveButton").removeAttr("disabled");
-                            $("#saveButton").html(text92);
-                        } 
-                        if (data.hasOwnProperty('updated') & data.updated == true) {                            
-                            alertify.success(text144);
-                        }else{
-                            alertify.error(text145);
+                        checkAndShowErrorRequest(data);
+                        if (data.hasOwnProperty('updated') & data.updated == true) {
+                            showSuccess();
                         }
                     }, error: function (e1, e2, e3) {
-                        alertify.error(e2);
+                        showError();
+                    }, complete: function (jqXHR, textStatus) {
                         $("#saveButton").removeAttr("disabled");
-                        $("#saveButton").html(text143);                
                     }
                 });
-
-            } else {
-                alertify.error(text102);
-                $("#saveButton").removeAttr("disabled");
             }
         });
 
@@ -601,6 +656,7 @@ $("#updatePasswordForm").submit(function(event){
            url:"updateFreelancerPasswordProcess.html",
            data:{currentPassword:$.md5(String(currentPassword)), newPassword:$.md5(String(newPassword)), newPassword2:$.md5(String(newPassword2))},
            success:function(data){
+               checkAndShowErrorRequest(data);
                if(data.hasOwnProperty("matched")){
                    alertify.error("your current password is incorrect");  
                } else if(data.updated == true){
@@ -609,7 +665,7 @@ $("#updatePasswordForm").submit(function(event){
                    alertify.error("the password was not changed");
                }               
            },error: function(e1,e2,e3){
-               alertify.error(e2);
+               showError();
            }
        });
     }
@@ -628,40 +684,37 @@ $("#createNewAffiliate").submit(function(event){
     preventDefaultForm(event);    
     
     var formData = new FormData();
-    //formData.append('file', $('#file')[0].files[0]);    
-    
-    $("#createNewAffiliate").attr("action","createNewAffiliate.html");  
-    $("#saveButton").removeAttr("disabled");
+    //formData.append('file', $('#file')[0].files[0]);       
     
     var error = "";
-    var email = $("#email").val();
     var name = $("#name").val();
     var lastName = $("#lastName").val();
-    var password = $("#password").val();
-    var password2 = $("#password2").val();
-    var address = $("#address").val();
-    var zipCode = $("#zipCode").val();
-    var country = $("#country").val();
-    var city = $("#city").val();
-    var gender = $("#gender").val();
+    var email = $("#email").val();    
     var phone = $("#phone").val();
+    var password = $("#password").val();
+    var password2 = $("#password2").val();    
+    var gender = $("#gender").val();   
+    var brand = $("#brand").val();
+    var category = $("#category").val();    
+    
+    var taxContactName = $("#taxContactName").val();
+    var taxContactLastName = $("#taxContactLastName").val();
+    var taxContactEmail = $("#taxContactEmail").val();    
+    var taxContactPhone = $("#taxContactPhone").val();
+    var taxContactGender = $("#taxContactGender").val();   
+    var taxId = $("#taxId").val();    
+    var taxCompanyName = $("#taxCompanyName").val();        
+    var address = $("#address").val();
+    var country = $("#country").val();
     var state = $("#state").val();
+    var city = $("#city").val();
+    var zipCode = $("#zipCode").val();   
     
-    if(gender == 1){        
-        g = text97;
-    }else{
-        g = text98;
-    }
+    var ownerAccountBank = $("#ownerAccountBank").val();    
+    var bank = $("#bank").val();    
+    var clabe = $("#clabe").val();    
+    var emailNotifications = $("#emailNotifications").val();        
     
-    if(password != password2){
-        alertify.alert(text119);
-        return;
-    }
-    
-    if (!isEmail(email)) {
-        error += "<br>" + text103;
-    }
-
     if (name.length < 2) {
         error += "<br>" + text104;
     }
@@ -669,129 +722,174 @@ $("#createNewAffiliate").submit(function(event){
     if (lastName.length < 2) {
         error += "<br>" + text105;
     }
-
-    if (password.length < 4) {
-        error += "<br>" + text106;
-    }
     
-    if (password.length < 5 || password.length > 8) {
-        error += "<br>" + text136;
-    }
-
-    if (address.length < 5) {
-        error += "<br>" + text107;
-    }
-
-    if (zipCode.length < 5) {
-        error += "<br>" + text108;
-    }
-    
-    if(isNaN(zipCode)){
-        error += "<br>" + text137;
-    }
-
-    if (country.length < 3) {
-        error += "<br>" + text109;
-    }
-
-    if (city.length < 3) {
-        error += "<br>" + text110;
-    }
-
-    if (phone.length < 5) {
-        error += "<br>" + text112;
+    if (!isEmail(email)) {
+        error += "<br>" + text103;
     }
     
     if(isNaN(phone)){
         error += "<br>" + text138;
     }
     
+    if (phone.length < 5) {
+        error += "<br>" + text112;
+    }
+    
+    if(password != password2){
+        alertify.alert(text119);
+        return;
+    }
+    
+    if (password.length < 4) {
+        error += "<br>" + text106;
+    }
+    
+    if (password.length < 5 || password.length > 8) {
+        error += "<br>" + text136;
+    }    
+    
+    if(gender == 1){        
+        g = text97;
+    }else{
+        g = text98;
+    }
+    
+    if (brand.length < 2) {
+        error += "<br>" + text272;
+    }
+    
+    if(category == "" || category == null || String(category).length < 1){
+        error += "<br>" + text193;
+    }
+    
+    if (taxContactName.length < 2) {
+        error += "<br>" + text286;
+    }
+
+    if (taxContactLastName.length < 2) {
+        error += "<br>" + text287;
+    }
+    
+    if (!isEmail(taxContactEmail)) {
+        error += "<br>" + text288;
+    }
+    
+    if(isNaN(taxContactPhone)){
+        error += "<br>" + text289;
+    }
+    
+    if (taxContactPhone.length < 5) {
+        error += "<br>" + text112;
+    }    
+
+    if (taxId.length != 13) {
+        error += "<br>" + text273;
+    }
+    
+    if (taxCompanyName.length < 3) {
+        error += "<br>" + text274;
+    }
+
+    if (address.length < 5) {
+        error += "<br>" + text107;
+    }
+    
+    if (country.length < 3) {
+        error += "<br>" + text109;
+    }
+
+    if (city.length < 3) {
+        error += "<br>" + text110;
+    }    
+    
     if (state.length < 3) {
         error += "<br>" + text122;
+    }
+
+    if(isNaN(zipCode)){
+        error += "<br>" + text137;
+    }
+
+    if (zipCode.length < 5) {
+        error += "<br>" + text108;
+    }
+    
+    if (ownerAccountBank.length < 3) {
+        error += "<br>" + text275;
+    }
+    
+    if (bank.length < 3) {
+        error += "<br>" + text276;
+    }
+    
+    if (clabe.length < 10) {
+        error += "<br>" + text277;
+    }
+    
+    if (!isEmail(emailNotifications)) {
+        error += "<br>" + text278;
     }
 
     if (error.length > 1) {
         alertify.alert(text113 + "<br>" + error);
     } else {
-
-        message = text101 +
-                "<br><div class='alert alert-warning'> " + text90 + ": " + email
-                + "<br> " + text74 + ": " + name
-                + "<br> " + text76 + ": " + lastName
-                + "<br> " + text78 + ": " + address
-                + "<br> " + text80 + ": " + zipCode
-                + "<br> " + text82 + ": " + country
-                + "<br> " + text84 + ": " + city
-                + "<br> " + text86 + ": " + g
-                + "<br> " + text88 + ": " + phone
-                + "<br> " + text121 + ": " + state
-                + "</div>";
-
-        alertify.confirm(message, function (e) {
+        
+        alertify.confirm(text290, function (e) {
 
             if (e) {
 
-                /*var data = {
-                    "person.name" : name,
-                    "person.email" : email,
-                    "password" : password,
-                    "person.lastName" : lastName,
-                    "address.all" : address,
-                    "address.zipCode" : String(zipCode),
-                    "address.city" : city,
-                    "address.state" : state,
-                    "address.country" : country,
-                    "person.gender.id" : gender,
-                    "person.phone" : String(phone)
-                };*/
-                
-                
-                    formData.append("person.name", name);
-                    formData.append("person.email", email);
-                    formData.append("password",$.md5(String(password)));
-                    formData.append("person.lastName",lastName);
-                    formData.append("address.all",address);
-                    formData.append("address.zipCode",String(zipCode));
-                    formData.append("address.city", city);
-                    formData.append("address.state", state);
-                    formData.append("address.country", country);
-                    formData.append("person.gender.id", gender);
-                    formData.append("person.phone", String(phone));                
+                formData.append("person.name", name);
+                formData.append("person.lastName", lastName);
+                formData.append("person.email", email);
+                formData.append("person.phone", String(phone));
+                formData.append("password", $.md5(String(password)));
+                formData.append("person.gender.id", gender);
+                formData.append("brand", brand);
+                formData.append("category", category);
+                formData.append("tax.contact.person.name", taxContactName);
+                formData.append("tax.contact.person.lastName", taxContactLastName);
+                formData.append("tax.contact.person.email", taxContactEmail);
+                formData.append("tax.contact.person.phone", String(taxContactPhone));
+                formData.append("tax.contact.person.gender.id", taxContactGender);
+                formData.append("tax.id", taxId);
+                formData.append("tax.company.name", taxCompanyName);
+                formData.append("address.all", address);
+                formData.append("address.country", country);
+                formData.append("address.city", city);
+                formData.append("address.state", state);
+                formData.append("address.zipCode", String(zipCode));
+                formData.append("owner.account.bank", ownerAccountBank);
+                formData.append("bank", bank);
+                formData.append("clabe", String(clabe));
+                formData.append("email.notifications", emailNotifications);
 
-                $("#saveButton").attr("disabled","disabled");
-                $("#saveButton").html(text114);                
+                //$("#saveButton").attr("disabled","disabled");                
                 $.ajax({
-                    cache:false,
-                    url:"createNewAffiliateProcess.html",
-                    type:"post",
-                    data:formData,  
+                    cache: false,
+                    url: "createNewAffiliateProcess.html",
+                    type: "post",
+                    data: formData,
                     processData: false,
                     contentType: false,
+                    beforeSend: function (xhr) {
+                        $("#saveButton").removeAttr("disabled");
+                    },
                     success: function (data) {
-                        if (data.hasOwnProperty("error")) {
-                            alertify.error(text145);
-                        }
-                        if (data.created == 'true') { 
-                            $("#saveButton").html(text228);                
+                        checkAndShowErrorRequest(data);                        
+                        if (data.created == 'true') {                            
                             alertify.success(text164);
-                            alertify.confirm(text164 + "<br/> "+ text257,function(e,str){
-                                if(e){
-                                    $.redirect('createEstablishment.html', {'id': data.id}, 'GET');
+                            alertify.confirm(text164 + "<br/> " + text257, function (e, str) {
+                                if (e) {
+                                    $.redirect('redirector.html', {url: 'createEstablishment.html', affiliateId: data.id, type: 1}, 'POST');
                                 }
                             });
-                        } else {
-                            alertify.error(text165);
                         }
                     }, error: function (e1, e2, e3) {
-                        alertify.alert(text15);
+                        showError();                                                
+                    },complete: function (jqXHR, textStatus) {
                         $("#saveButton").removeAttr("disabled");
-                        $("#saveButton").html(text15);                
                     }
                 });
-
-            } else {
-                alertify.error(text102);
-                $("#saveButton").removeAttr("disabled");
             }
         });
     }    
@@ -802,10 +900,7 @@ $("#createEstablishmentForm").submit(function (event) {
     
     preventDefaultForm(event);
     var error = "";        
-    var data = $(this).serializeArray(); 
-    data[13].value = $.md5(String(data[13].value));
-    data[14].value = $.md5(String(data[14].value));
-    data[20].value = $.md5(String(data[21].value));    
+    var formData = new FormData();    
     
     var name = $("#establishment_name").val();
     if(name == "" || String(name).length < 2){
@@ -905,43 +1000,60 @@ $("#createEstablishmentForm").submit(function (event) {
     if (error.length > 1) {
         alertify.alert("<div style='text-align: left'>" + text113 + "<br>" + error  + "</div>");        
     } else {
-        
-        message = text203;
 
-        alertify.confirm(message, function (e) {
+        alertify.confirm(text290, function (e) {
 
             if (e) {               
 
-                $("#saveButton").attr("disabled","disabled");
-                $("#saveButton").html(text220);                
+                
                 $.ajax({
                     cache:false,
                     url:"createEstablishmentProcess.html",
                     type:"post",
-                    data:data,
+                    data:formData,
+                    processData: false,
+                    contentType: false,
+                    beforeSend: function (xhr) {
+                        $("#saveButton").attr("disabled","disabled");                
+                        formData.append("id", $("#id").val());
+                        formData.append("type", $("#type").val());
+                        formData.append("establishment_name", name);
+                        formData.append("category", category);
+                        formData.append("subcategory", $("#subcategory").val());
+                        formData.append("establishment_address", address);
+                        formData.append("country", country);
+                        formData.append("state", state);
+                        formData.append("city", city);
+                        formData.append("zipCode", zipCode);
+                        formData.append("latitude", $("#latitude").val());
+                        formData.append("longitude", $("#longitude").val());
+                        formData.append("responsable_name", resName);
+                        formData.append("responsable_lastName", resLastName);
+                        formData.append("responsable_email", resEmail);
+                        formData.append("responsable_phone", resPhone);
+                        formData.append("responsable_password", $.md5(String(resPassword)));
+                        formData.append("responsable_password2", $.md5(String(resPassword2)));
+                        formData.append("responsable_gender", $("#responsable_gender").val());
+                        formData.append("cashier_name", cashName);
+                        formData.append("cashier_lastName", cashLastName);
+                        formData.append("cashier_email", cashEmail);
+                        formData.append("cashier_phone", cashPhone);
+                        formData.append("cashier_password", $.md5(String(cashPassword)));
+                        formData.append("cashier_password2", $.md5(String(cashPassword2)));
+                        formData.append("cashier_gender", $("#cashier_gender").val());                        
+                    },
                     success: function (data) {
-                        if (data.hasOwnProperty("error")) {
-                            alertify.error(text221);
-                        }
+                        checkAndShowErrorRequest(data);
                         if(data.created == true){
-                            alertify.success(text204);                            
-                            $("#saveButton").html(text204);                
-                        }else{                            
-                            alertify.error(text205);
-                            $("#saveButton").removeAttr("disabled");
+                            showSuccess();                            
                         }
-                        $("#saveButton").html(text221);                
                     }, error: function (e1, e2, e3) {
-                        alertify.alert(e2);
+                        showError();
+                    },complete: function (jqXHR, textStatus) {
                         $("#saveButton").removeAttr("disabled");
-                        $("#saveButton").html(text221);                
                     }
                 });
-
-            } else {
-                alertify.error(text102);
-                $("#saveButton").removeAttr("disabled");
-            }
+            } 
         });
     }    
     
@@ -951,11 +1063,8 @@ $("#updateAffiliate").submit(function(event){
     updateAffiliateSubmit(event);    
 });
 
-function updateAffiliateSubmit(event){    
+function updateAffiliateSubmit(event){        
     
-    $("#updateAffiliate").attr("action","updateAffiliateProccess.html");  
-    $("#saveButton").removeAttr("disabled");
-   
     preventDefaultForm(event);
     
     var error = "";
@@ -1039,20 +1148,7 @@ function updateAffiliateSubmit(event){
         alertify.alert(text113 + "<br>" + error);
     } else {
 
-        message = text101 +
-                "<br><div class='alert alert-warning'> " + text90 + ": " + email
-                + "<br> " + text74 + ": " + name
-                + "<br> " + text76 + ": " + lastName
-                + "<br> " + text78 + ": " + address
-                + "<br> " + text80 + ": " + zipCode
-                + "<br> " + text82 + ": " + country
-                + "<br> " + text84 + ": " + city
-                + "<br> " + text86 + ": " + g
-                + "<br> " + text88 + ": " + phone
-                + "<br> " + text121 + ": " + state
-                + "</div>";
-
-        alertify.confirm(message, function (e) {
+        alertify.confirm(text290, function (e) {
 
             if (e) {
 
@@ -1071,33 +1167,26 @@ function updateAffiliateSubmit(event){
                     "id" : $("#id").val()
                 };
 
-                $("#saveButton").attr("disabled","disabled");
-                $("#saveButton").html(text114);                
+                $("#saveButton").attr("disabled","disabled");                
                 $.ajax({
                     cache:false,
                     url:"updateAffiliateProccess.html",
                     type:"post",
                     data:data,
-                    success: function (data) {                        
-                        if (data.hasOwnProperty('error')) {
-                            alertify.error(text116);
-                            $("#saveButton").removeAttr("disabled");
-                            $("#saveButton").html(text92);
-                        }
+                    beforeSend: function (xhr) {
+                        $("#saveButton").removeAttr("disabled");
+                    },
+                    success: function (data) {
+                        checkAndShowErrorRequest(data);                                                
                         if (data.hasOwnProperty('updated')) {
-                            alertify.alert(text228);
-                            $("#saveButton").html(text228);
+                            showSuccess();                            
                         }
                     }, error: function (e1, e2, e3) {
-                        alertify.alert(e2);
+                        showError();                        
+                    },complete: function (jqXHR, textStatus) {
                         $("#saveButton").removeAttr("disabled");
-                        $("#saveButton").html(text92);                
                     }
                 });
-
-            } else {
-                alertify.error(text102);
-                $("#saveButton").removeAttr("disabled");
             }
         });
 
@@ -1105,16 +1194,13 @@ function updateAffiliateSubmit(event){
     
 }
 
-function updateEstablishmentFormSubmit(event){
-    
-    $("#updateEstablishmentForm").attr("action","updateEstablishmentFormProccess.html");  
-    $("#saveButtonEstablishment").removeAttr("disabled");
+function updateEstablishmentFormSubmit(event){   
     
     preventDefaultForm(event);
     
     var error = "";        
-    var data = $("#updateEstablishmentForm").serializeArray();    
-    
+    var data = $("#updateEstablishmentForm").serializeArray();        
+   
     var name = $("#name").val();
     if(name == "" || String(name).length < 2){
         error += "<br>" + text201;
@@ -1154,44 +1240,32 @@ function updateEstablishmentFormSubmit(event){
     if (error.length > 1) {
         alertify.alert("<div style='text-align: left'>" + text113 + "<br>" + error  + "</div>");        
     } else {
-        
-        message = text260;
 
-        alertify.confirm(message, function (e) {
+        alertify.confirm(text290, function (e) {
 
             if (e) {               
-
-                $("#saveButtonEstablishment").attr("disabled","disabled");
-                $("#saveButtonEstablishment").html(text220);                
+                
                 $.ajax({
                     cache:false,
                     url:"updateEstablishmentFormProccess.html",
                     type:"post",
                     data:data,
-                    success: function (data) {
-                        if (data.hasOwnProperty("error")) {
-                            alertify.error(text221);
-                        }
-                        if(data.updated == true){
-                            alertify.success(text228);                            
-                            $("#saveButtonEstablishment").html(text228);
-                            establishmentDetailsForm();
-                        }else{                            
-                            alertify.error(text205);
-                            $("#saveButtonEstablishment").removeAttr("disabled");
-                        }
-                        $("#saveButtonEstablishment").html(text221);                
-                    }, error: function (e1, e2, e3) {
-                        alertify.alert(e2);
+                    beforeSend: function (xhr) {
                         $("#saveButtonEstablishment").removeAttr("disabled");
-                        $("#saveButtonEstablishment").html(text221);                
+                    },
+                    success: function (data) {
+                        checkAndShowErrorRequest(data);
+                        if(data.updated == true){
+                            showSuccess();                            
+                            establishmentDetailsForm();
+                        }                        
+                    }, error: function (e1, e2, e3) {
+                        showError();                                                
+                    },complete: function (jqXHR, textStatus) {
+                        $("#saveButtonEstablishment").removeAttr("disabled");
                     }
                 });
-
-            } else {
-                alertify.error(text102);
-                $("#saveButtonEstablishment").removeAttr("disabled");
-            }
+            } 
         });
     }    
     
@@ -1207,15 +1281,12 @@ $("#updateResponsableForm").submit(function (event) {
 
 function updateResponsableFormSubmit(event){
     
-    $("#updateResponsableForm").attr("action","updateResponsableFormProccess.html");  
-    $("#saveButtonResponsable").removeAttr("disabled");
-    
     preventDefaultForm(event);
     
     var error = "";        
     var data = $("#updateResponsableForm").serializeArray();  
-    data[4].value = $.md5(String(data[4].value));
     data[5].value = $.md5(String(data[5].value));
+    data[6].value = $.md5(String(data[6].value));
     
     var resName = $("#responsable_name").val();
     if(resName == "" || resName == null || String(resName).length < 2){
@@ -1251,46 +1322,34 @@ function updateResponsableFormSubmit(event){
         alertify.alert("<div style='text-align: left'>" + text113 + "<br>" + error  + "</div>");        
     } else {
         
-        message = text261;
-
-        alertify.confirm(message, function (e) {
+        alertify.confirm(text290, function (e) {
 
             if (e) {               
-
-                $("#saveButtonResponsable").attr("disabled","disabled");
-                $("#saveButtonResponsable").html(text220);                
+                
                 $.ajax({
                     cache:false,
                     url:"updateResponsableFormProccess.html",
                     type:"post",
                     data:data,
-                    success: function (data) {
-                        if (data.hasOwnProperty("error")) {
-                            alertify.error(text221);
-                        }
-                        if(data.updated == true){
-                            alertify.success(text228);                            
-                            $("#saveButtonResponsable").html(text228);
-                            establishmentDetailsForm();
-                        }else{                            
-                            alertify.error(text205);
-                            $("#saveButtonResponsable").removeAttr("disabled");
-                        }
-                        $("#saveButtonEstablishment").html(text221);                
-                    }, error: function (e1, e2, e3) {
-                        alertify.alert(e2);
+                    beforeSend: function (xhr) {
                         $("#saveButtonResponsable").removeAttr("disabled");
-                        $("#saveButtonResponsable").html(text221);                
+                    },
+                    success: function (data) {
+                        checkAndShowErrorRequest(data);
+                        if(data.updated == true){
+                            showSuccess();                            
+                            establishmentDetailsForm();
+                        }
+                    }, error: function (e1, e2, e3) {
+                        showError();
+                    },complete: function (jqXHR, textStatus) {
+                        $("#saveButtonResponsable").removeAttr("disabled");
                     }
                 });
 
-            } else {
-                alertify.error(text102);
-                $("#saveButtonResponsable").removeAttr("disabled");
             }
         });
-    }    
-    
+    }        
 }
 
 function cashierDetails(cashierId){
@@ -1300,12 +1359,13 @@ function cashierDetails(cashierId){
         url:"cashierDetails.html",
         data:{cashierId:cashierId},
         success: function (data, textStatus, jqXHR) {
+            checkAndShowErrorRequest(data);
             $("#outputDetail").html(data);
             $("#updateCashierForm").bind("submit", function (event) {
                 updateCashierInfomation(event);
             });            
         },error: function (jqXHR, textStatus, errorThrown) {
-            alertify.alert(text15);
+            showError();
         }       
     });
 }
@@ -1344,41 +1404,32 @@ function updateCashierInfomation(event){
     if (error.length > 1) {
         alertify.alert("<div style='text-align: left'>" + text113 + "<br>" + error  + "</div>");        
     } else {
-        
-        message = text259;
 
-        alertify.confirm(message, function (e) {
+        alertify.confirm(text290, function (e) {
 
             if (e) {               
 
-                $("#updateCahierButton").attr("disabled","disabled");
-                $("#updateCahierButton").html(text220);                
+                
+                
                 $.ajax({
                     cache:false,
                     url:"updateCashierProcess.html",
                     type:"post",
                     data:data,
+                    beforeSend: function (xhr) {
+                        $("#updateCahierButton").attr("disabled","disabled");
+                    },
                     success: function (data) {
-                        if (data.hasOwnProperty("error")) {
-                            alertify.error(text221);
-                        }
+                        checkAndShowErrorRequest(data);
                         if(data.updated == true){
-                            alertify.success(text228);                            
-                            $("#updateCahierButton").html(text228);                            
-                        }else{                            
-                            alertify.error(text205);
-                            $("#updateCahierButton").removeAttr("disabled");
+                            showSuccess();                            
                         }                        
                     }, error: function (e1, e2, e3) {
-                        alertify.alert(e2);
+                        showError();                                                
+                    },complete: function (jqXHR, textStatus) {
                         $("#updateCahierButton").removeAttr("disabled");
-                        $("#updateCahierButton").html(text221);                
                     }
                 });
-
-            } else {
-                alertify.error(text102);
-                $("#updateCahierButton").removeAttr("disabled");
             }
         });
     }    
@@ -1390,14 +1441,15 @@ function cashierUpdatePassword(cashierId){
     $.ajax({   
         cache:false,
         url:"updatePasswordCashier.html",
-        data:{id:cashierId},
+        data:{cashierId:cashierId},
         success: function (data, textStatus, jqXHR) {
+            checkAndShowErrorRequest(data);
             $("#outputUpdatePassword").html(data);
             $("#updatePasswordCashierForm").bind("submit", function (event) {
                 updatePasswordCashierFormSubmit(event);
             });            
         },error: function (jqXHR, textStatus, errorThrown) {
-            alertify.alert(text15);
+            showError();
         }       
     });
 }
@@ -1423,50 +1475,40 @@ function updatePasswordCashierFormSubmit(event) {
     
      if (error.length > 1) {
         alertify.alert("<div style='text-align: left'>" + text113 + "<br>" + error  + "</div>");        
-    } else {
-        message = text258;
+    } else {       
 
-        alertify.confirm(message, function (e) {
+        alertify.confirm(text290, function (e) {
 
             if (e) {
 
-                var data = {password1:$.md5(String(cashPassword)),password2:$.md5(String(cashPassword2)),id:$("#cashier_id").val()};                
-
-                $("#updatePasswordCashierButton").attr("disabled", "disabled");
-                $("#updatePasswordCashierButton").html(text220);
+                var data = {password1:$.md5(String(cashPassword)),password2:$.md5(String(cashPassword2)),cashierId:$("#cashier_id").val()};                               
+                
                 $.ajax({
                     cache:false,
                     url: "updatePasswordCashierProcess.html",
                     type: "post",
                     data:data,
+                    beforeSend: function (xhr) {
+                        $("#updatePasswordCashierButton").attr("disabled", "disabled");
+                    },
                     success: function (data) {
-                        if (data.hasOwnProperty("error")) {
-                            alertify.error(text221);
-                        }
+                        checkAndShowErrorRequest(data);
                         if (data.updated == true) {
-                            alertify.success(text228);
-                            $("#updatePasswordCashierButton").html(text228);
-                        } else {
-                            alertify.error(text205);
-                            $("#updatePasswordCashierButton").removeAttr("disabled");
+                            showSuccess();                            
                         }                        
                     }, error: function (e1, e2, e3) {
-                        alertify.alert(e2);
+                        showError();                                                
+                    },complete: function (jqXHR, textStatus) {
                         $("#updatePasswordCashierButton").removeAttr("disabled");
-                        $("#updatePasswordCashierButton").html(text221);
                     }
                 });
-
-            } else {
-                alertify.error(text102);
-                $("#updatePasswordCashierButton").removeAttr("disabled");
             }
         });     
     }
     
 }
 
-function createCashier(eId){
+function createCashier(establishmentId){
     
     $("#myModalLabel").html(text263)    
     $("#outputDetail").html(loader);
@@ -1474,14 +1516,15 @@ function createCashier(eId){
     $.ajax({  
         cache:false,
         url:"createCashierForm.html",
-        data: {eId: eId},
+        data: {establishmentId: establishmentId},
         success: function (data, textStatus, jqXHR) {
+            checkAndShowErrorRequest(data);
             $("#outputDetail").html(data);
             $("#createCashierForm").bind("submit", function (event) {
                 createCashierFormSubmit(event);
             });
         }, error: function (jqXHR, textStatus, errorThrown) {
-            alertify.alert(text15);
+            showError();
         }
     });
     
@@ -1526,52 +1569,814 @@ function createCashierFormSubmit(event){
         alertify.alert("<div style='text-align: left'>" + text113 + "<br>" + error  + "</div>");        
     } else {
         
-        message = text264;
-        alertify.confirm(message, function (e) {
+        alertify.confirm(text290, function (e) {
 
             if (e) {
 
                 var data = {
                     cashier_password:$.md5(String(cashPassword)),
                     cashier_password2:$.md5(String(cashPassword2)),
-                    id:$("#id").val(),
+                    establishmentId:$("#establishmentId").val(),
                     cashier_phone:cashPhone, 
                     cashier_email:cashEmail, 
                     cashier_name:cashName, 
                     cashier_lastName:cashLastName,
                     cashier_gender:$("#cashier_gender").val()
                 };                
-
-                $("#createCashierButton").attr("disabled", "disabled");
-                $("#createCashierButton").html(text220);
+                
                 $.ajax({
                     cache:false,
                     url: "createCashierFormProccess.html",
                     type: "post",
                     data:data,
+                    beforeSend: function (xhr) {
+                        $("#createCashierButton").attr("disabled", "disabled");                
+                    },
                     success: function (data) {
-                        if (data.hasOwnProperty("error")) {
-                            alertify.error(text221);
-                        }
+                        checkAndShowErrorRequest(data);
                         if (data.created == true) {
-                            alertify.success(text228);
-                            $("#createCashierButton").html(text228);
-                        } else {
-                            alertify.error(text15);
-                            $("#createCashierButton").removeAttr("disabled");
+                            showSuccess();                            
                         }                        
                     }, error: function (e1, e2, e3) {
-                        alertify.alert(text15);
+                        showError();                                                
+                    },complete: function (jqXHR, textStatus) {
                         $("#createCashierButton").removeAttr("disabled");
-                        $("#createCashierButton").html(text265);
                     }
                 });
-
-            } else {
-                alertify.error(text102);
-                $("#createCashierButton").removeAttr("disabled");
             }
         });    
     }
     
+}
+
+
+$("#createNewCompanyForm").submit(function(event){        
+    
+    preventDefaultForm(event);    
+    
+    var formData = new FormData();
+    //formData.append('file', $('#file')[0].files[0]);    
+    
+    var error = "";
+    var name = $("#name").val();
+    var brand = $("#brand").val();
+    var contactName = $("#contactName").val();
+    var contactLastName = $("#contactLastName").val();
+    var contactGender = $("#contactGender").val();           
+    var contactPhone = $("#contactPhone").val();
+    var contactEmail = $("#contactEmail").val();    
+    var category = $("#category").val();    
+    var password = $("#password").val();
+    var password2 = $("#password2").val();        
+    
+    var taxContactName = $("#taxContactName").val();
+    var taxContactLastName = $("#taxContactLastName").val();
+    var taxContactEmail = $("#taxContactEmail").val();    
+    var taxContactPhone = $("#taxContactPhone").val();
+    var taxContactGender = $("#taxContactGender").val();   
+    var taxId = $("#taxId").val();    
+    var taxCompanyName = $("#taxCompanyName").val();        
+    var address = $("#address").val();
+    var country = $("#country").val();
+    var state = $("#state").val();
+    var city = $("#city").val();
+    var zipCode = $("#zipCode").val();   
+    
+    var ownerAccountBank = $("#ownerAccountBank").val();    
+    var bank = $("#bank").val();    
+    var clabe = $("#clabe").val();    
+    var emailNotifications = $("#emailNotifications").val();        
+    //var data = $("#createNewCompanyForm").serializeArray();
+    
+    if (name.length < 2) {
+        error += "<br>" + text104;
+    }
+    
+    if (brand.length < 2) {
+        error += "<br>" + text272;
+    }
+    
+    if(category == "" || category == null || String(category).length < 1){
+        error += "<br>" + text193;
+    }
+    
+    if(password != password2){
+        alertify.alert(text119);
+        return;
+    }
+    
+    if (password.length < 4) {
+        error += "<br>" + text106;
+    }
+    
+    if (password.length < 5 || password.length > 8) {
+        error += "<br>" + text136;
+    }    
+    
+    if (contactName.length < 2) {
+        error += "<br>" + text280;
+    }
+    
+    if (contactLastName.length < 2) {
+        error += "<br>" + text281;
+    }
+    
+    if (!isEmail(contactEmail)) {
+        error += "<br>" + text282;
+    }
+    
+    if(isNaN(contactPhone)){
+        error += "<br>" + text283;
+    }
+    
+    if (contactPhone.length < 5) {
+        error += "<br>" + text284;
+    }    
+
+    if (taxId.length != 13) {
+        error += "<br>" + text273;
+    }
+    
+    if (taxCompanyName.length < 3) {
+        error += "<br>" + text274;
+    }
+
+    if (address.length < 5) {
+        error += "<br>" + text107;
+    }
+    
+    if (country.length < 3) {
+        error += "<br>" + text109;
+    }
+
+    if (city.length < 3) {
+        error += "<br>" + text110;
+    }    
+    
+    if (state.length < 3) {
+        error += "<br>" + text122;
+    }
+
+    if(isNaN(zipCode)){
+        error += "<br>" + text137;
+    }
+
+    if (zipCode.length < 5) {
+        error += "<br>" + text108;
+    }
+    
+    if (ownerAccountBank.length < 3) {
+        error += "<br>" + text275;
+    }
+    
+    if (bank.length < 3) {
+        error += "<br>" + text276;
+    }
+    
+    if (clabe.length < 10) {
+        error += "<br>" + text277;
+    }
+    
+    if (!isEmail(emailNotifications)) {
+        error += "<br>" + text278;
+    }
+
+    if (error.length > 1) {
+        alertify.alert(text113 + "<br>" + error);
+    } else {
+
+        alertify.confirm(text290, function (e) {
+
+            if (e) {
+
+                formData.append("name", name);
+                formData.append("brand", brand);
+                formData.append("person.name", contactName);                
+                formData.append("person.lastName", contactLastName);
+                formData.append("person.gender.id", contactGender);
+                formData.append("person.phone", String(contactPhone));
+                formData.append("person.email", contactEmail);
+                formData.append("category", category);
+                formData.append("password", $.md5(String(password)));
+                
+                formData.append("tax.contact.person.name", taxContactName);
+                formData.append("tax.contact.person.lastName", taxContactLastName);
+                formData.append("tax.contact.person.email", taxContactEmail);
+                formData.append("tax.contact.person.phone", String(taxContactPhone));
+                formData.append("tax.contact.person.gender.id", taxContactGender);
+                formData.append("tax.id", taxId);
+                formData.append("tax.company.name", taxCompanyName);
+                formData.append("address.all", address);
+                formData.append("address.country", country);
+                formData.append("address.state", state);
+                formData.append("address.city", city);                
+                formData.append("address.zipCode", String(zipCode));                                
+                
+                formData.append("ownerAccountBank", ownerAccountBank);
+                formData.append("bank", bank);
+                formData.append("clabe", String(clabe));
+                formData.append("emailNotifications", emailNotifications);
+                
+                $.ajax({
+                    cache: false,
+                    url: "createNewCompanyProcess.html",
+                    type: "post",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    beforeSend: function (xhr) {
+                        $("#saveButton").removeAttr("disabled");
+                    },
+                    success: function (data) {
+                        checkAndShowErrorRequest(data);
+                        if (data.created == 'true') {                            
+                            showSuccess();
+                            alertify.confirm(text164 + "<br/> " + text257, function (e, str) {
+                                if (e) {
+                                    $.redirect('redirector.html', {url:'createEstablishment.html',companyId: data.id, type:2}, 'POST');
+                                }
+                            });
+                        }
+                    }, error: function (e1, e2, e3) {
+                        showError();                        
+                    },complete: function (jqXHR, textStatus) {
+                        $("#saveButton").removeAttr("disabled");                        
+                    }
+                });
+            }
+        });
+    }    
+});
+
+function updateAffiliateBasicInformationFormSubmit(event){
+    
+    preventDefaultForm(event);
+    var formData = new FormData();    
+
+    var error = "";
+    var name = $("#name").val();
+    var lastName = $("#lastName").val();
+    var email = $("#email").val();
+    var phone = $("#phone").val();
+    var password = $("#password").val();
+    var password2 = $("#password2").val();
+    var gender = $("#gender").val();
+    var brand = $("#brand").val();
+    var category = $("#category").val();
+
+    if (name.length < 2) {
+        error += "<br>" + text104;
+    }
+
+    if (lastName.length < 2) {
+        error += "<br>" + text105;
+    }
+
+    if (!isEmail(email)) {
+        error += "<br>" + text103;
+    }
+
+    if (isNaN(phone)) {
+        error += "<br>" + text138;
+    }
+
+    if (phone.length < 5) {
+        error += "<br>" + text112;
+    }
+
+    if (password != password2) {
+        alertify.alert(text119);
+        return;
+    }
+
+    if (password.length < 4) {
+        error += "<br>" + text106;
+    }
+
+    if (password.length < 5 || password.length > 8) {
+        error += "<br>" + text136;
+    }
+
+    if (brand.length < 2) {
+        error += "<br>" + text272;
+    }
+
+    if (category == "" || category == null || String(category).length < 1) {
+        error += "<br>" + text193;
+    }
+
+    if (error.length > 1) {
+        alertify.alert(text113 + "<br>" + error);
+    } else {
+        
+        alertify.confirm(text290, function (e) {
+
+            if (e) {
+                
+                $.ajax({
+                    cache: false,
+                    url: "updateAffiliateBasicInformationProcess.html",
+                    type: "post",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    beforeSend: function (xhr) {                        
+                        $("#buttonSaveAffiliate").attr("disabled", "disabled");
+                        formData.append("affiliateId", $("#affiliateId").val());
+                        formData.append("person.name", name);
+                        formData.append("person.lastName", lastName);
+                        formData.append("person.email", email);
+                        formData.append("person.phone", String(phone));
+                        formData.append("password", $.md5(String(password)));
+                        formData.append("person.gender.id", gender);
+                        formData.append("brand", brand);
+                        formData.append("category", category);
+                    },
+                    success: function (data) {
+                        checkAndShowErrorRequest(data);
+                        if (data.update === true) {
+                            showSuccess();                            
+                        } else {
+                            showError();                            
+                        }
+                    }, error: function (e1, e2, e3) {
+                        showError();
+                    }, complete: function (jqXHR, textStatus) {
+                        $("#buttonSaveAffiliate").removeAttr("disabled");
+                    }
+                });
+            }
+        });
+    }
+}
+
+function updateAffiliateTaxFormSubmit(event){
+    
+    preventDefaultForm(event);
+    var formData = new FormData();    
+    
+    var error = "";
+    var taxContactName = $("#taxContactName").val();
+    var taxContactLastName = $("#taxContactLastName").val();
+    var taxContactEmail = $("#taxContactEmail").val();    
+    var taxContactPhone = $("#taxContactPhone").val();
+    var taxContactGender = $("#taxContactGender").val();   
+    var taxId = $("#taxId").val();    
+    var taxCompanyName = $("#taxCompanyName").val();        
+    var address = $("#address").val();
+    var country = $("#country").val();
+    var state = $("#state").val();
+    var city = $("#city").val();
+    var zipCode = $("#zipCode").val();   
+    
+    if (taxContactName.length < 2) {
+        error += "<br>" + text286;
+    }
+
+    if (taxContactLastName.length < 2) {
+        error += "<br>" + text287;
+    }
+    
+    if (!isEmail(taxContactEmail)) {
+        error += "<br>" + text288;
+    }
+    
+    if(isNaN(taxContactPhone)){
+        error += "<br>" + text289;
+    }
+    
+    if (taxContactPhone.length < 5) {
+        error += "<br>" + text112;
+    }    
+
+    if (taxId.length != 13) {
+        error += "<br>" + text273;
+    }
+    
+    if (taxCompanyName.length < 3) {
+        error += "<br>" + text274;
+    }
+
+    if (address.length < 5) {
+        error += "<br>" + text107;
+    }
+    
+    if (country.length < 3) {
+        error += "<br>" + text109;
+    }
+
+    if (city.length < 3) {
+        error += "<br>" + text110;
+    }    
+    
+    if (state.length < 3) {
+        error += "<br>" + text122;
+    }
+
+    if(isNaN(zipCode)){
+        error += "<br>" + text137;
+    }
+
+    if (zipCode.length < 5) {
+        error += "<br>" + text108;
+    }    
+    
+    if (error.length > 1) {
+        alertify.alert(text113 + "<br>" + error);
+    } else {
+        
+        alertify.confirm(text290, function (e) {
+
+            if (e) {
+                
+                $.ajax({
+                    cache: false,
+                    url: "updateAffiliateTaxInformationProcess.html",
+                    type: "post",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    beforeSend: function (xhr) {
+                        $("#buttonSaveTaxInformation").attr("disabled", "disabled");
+                        formData.append("affiliateId", $("#affiliateId").val());
+                        formData.append("tax.contact.person.name", taxContactName);
+                        formData.append("tax.contact.person.lastName", taxContactLastName);
+                        formData.append("tax.contact.person.email", taxContactEmail);
+                        formData.append("tax.contact.person.phone", String(taxContactPhone));
+                        formData.append("tax.contact.person.gender.id", taxContactGender);
+                        formData.append("tax.id", taxId);
+                        formData.append("tax.company.name", taxCompanyName);
+                        formData.append("address.all", address);
+                        formData.append("address.country", country);
+                        formData.append("address.city", city);
+                        formData.append("address.state", state);
+                        formData.append("address.zipCode", String(zipCode));
+                    },
+                    success: function (data) {
+                        checkAndShowErrorRequest(data);
+                        if (data.update === true) {
+                            showSuccess();                            
+                        } else {
+                            showError();                            
+                        }
+                    }, error: function (e1, e2, e3) {
+                        showError();                        
+                    }, complete: function (jqXHR, textStatus) {
+                        $("#buttonSaveTaxInformation").removeAttr("disabled");
+                    }
+                });
+            }
+        });
+    }    
+}
+
+
+function updateAffiliateBankFormSubmit(event){
+    
+    preventDefaultForm(event);
+    var formData = new FormData();    
+    
+    var error = "";
+    var ownerAccountBank = $("#ownerAccountBank").val();    
+    var bank = $("#bank").val();    
+    var clabe = $("#clabe").val();    
+    var emailNotifications = $("#emailNotifications").val();        
+    
+    if (ownerAccountBank.length < 3) {
+        error += "<br>" + text275;
+    }
+    
+    if (bank.length < 3) {
+        error += "<br>" + text276;
+    }
+    
+    if (clabe.length < 10) {
+        error += "<br>" + text277;
+    }
+    
+    if (!isEmail(emailNotifications)) {
+        error += "<br>" + text278;
+    }
+    
+    if (error.length > 1) {
+        alertify.alert(text113 + "<br>" + error);
+    } else {        
+        alertify.confirm(text290, function (e) {
+
+            if (e) {
+                
+                $.ajax({
+                    cache: false,
+                    url: "updateAffiliateBankInformationProcess.html",
+                    type: "post",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    beforeSend: function (xhr) {
+                        $("#saveButtonBank").attr("disabled", "disabled");
+                        formData.append("affiliateId", $("#affiliateId").val());
+                        formData.append("owner.account.bank", ownerAccountBank);
+                        formData.append("bank", bank);
+                        formData.append("clabe", String(clabe));
+                        formData.append("email.notifications", emailNotifications);
+                    },
+                    success: function (data) {
+                        checkAndShowErrorRequest(data);
+                        if (data.update === true) {
+                            showSuccess();                            
+                        } else {
+                            showError();                            
+                        }
+                    }, error: function (e1, e2, e3) {
+                        showError();                        
+                    }, complete: function (jqXHR, textStatus) {
+                        $("#saveButtonBank").removeAttr("disabled");
+                    }
+                });
+            }
+        });
+    } 
+    
+}
+
+function companyDetailsAjax(){
+    $("#output").html(loader);     
+    $.ajax({
+        cache:false,
+        url:"companyDetailsForm.html",
+        type:"post",
+        success:function(data){
+            checkAndShowErrorRequest(data);
+            $("#output").html(data); 
+            bindCompanyDetailsForms();
+            $(".selectpicker").selectpicker("refresh");
+        },error:function(e1,e2,e3){
+            showError();
+        }
+    });
+}
+
+function updateCompanyBasicInformationFormSubmit(event){
+    
+    preventDefaultForm(event);
+    var formData = new FormData();
+    var error = "";
+    var name = $("#name").val();
+    var brand = $("#brand").val();
+    var contactName = $("#contactName").val();
+    var contactLastName = $("#contactLastName").val();
+    var contactGender = $("#contactGender").val();
+    var contactPhone = $("#contactPhone").val();
+    var contactEmail = $("#contactEmail").val();
+    var category = $("#category").val();
+    var password = $("#password").val();
+    var password2 = $("#password2").val();
+
+    if (name.length < 2) {
+        error += "<br>" + text104;
+    }
+
+    if (brand.length < 2) {
+        error += "<br>" + text272;
+    }
+
+    if (category == "" || category == null || String(category).length < 1) {
+        error += "<br>" + text193;
+    }
+
+    if (password != password2) {
+        alertify.alert(text119);
+        return;
+    }
+
+    if (password.length < 4) {
+        error += "<br>" + text106;
+    }
+
+    if (password.length < 5 || password.length > 8) {
+        error += "<br>" + text136;
+    }
+
+    if (error.length > 1) {
+        alertify.alert(text113 + "<br>" + error);
+    } else {
+
+        alertify.confirm(text290, function (e) {
+
+            if (e) {
+
+                $.ajax({
+                    cache: false,
+                    url: "updateCompanyBasicInformationProcess.html",
+                    type: "post",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    beforeSend: function (xhr) {
+                        $("#buttonSaveBasicInformation").attr("disabled", "disabled");
+                        formData.append("companyId", $("#companyId").val());
+                        formData.append("name", name);
+                        formData.append("brand", brand);
+                        formData.append("person.name", contactName);
+                        formData.append("person.lastName", contactLastName);
+                        formData.append("person.gender.id", contactGender);
+                        formData.append("person.phone", String(contactPhone));
+                        formData.append("person.email", contactEmail);
+                        formData.append("category", category);
+                        formData.append("password", $.md5(String(password)));
+                    },
+                    success: function (data) {
+                        checkAndShowErrorRequest(data);
+                        if (data.updated == true) {
+                            showSuccess();
+                        }
+                    }, error: function (e1, e2, e3) {
+                        showError();
+                    }, complete: function (jqXHR, textStatus) {
+                        $("#buttonSaveBasicInformation").removeAttr("disabled");
+                    }
+                });
+            }
+        });
+    }
+
+}
+
+function updateCompanyTaxFormSubmit(event){
+    
+    preventDefaultForm(event);
+    
+    var formData = new FormData();
+    var error = "";
+    var taxContactName = $("#taxContactName").val();
+    var taxContactLastName = $("#taxContactLastName").val();
+    var taxContactEmail = $("#taxContactEmail").val();    
+    var taxContactPhone = $("#taxContactPhone").val();
+    var taxContactGender = $("#taxContactGender").val();   
+    var taxId = $("#taxId").val();    
+    var taxCompanyName = $("#taxCompanyName").val();        
+    var address = $("#address").val();
+    var country = $("#country").val();
+    var state = $("#state").val();
+    var city = $("#city").val();
+    var zipCode = $("#zipCode").val();   
+    
+    if (taxContactName.length < 2) {
+        error += "<br>" + text280;
+    }
+    
+    if (taxContactLastName.length < 2) {
+        error += "<br>" + text281;
+    }
+    
+    if (!isEmail(taxContactEmail)) {
+        error += "<br>" + text282;
+    }
+    
+    if(isNaN(taxContactPhone)){
+        error += "<br>" + text283;
+    }
+    
+    if (taxContactPhone.length < 5) {
+        error += "<br>" + text289;
+    }    
+
+    if (taxId.length != 13) {
+        error += "<br>" + text273;
+    }
+    
+    if (taxCompanyName.length < 3) {
+        error += "<br>" + text274;
+    }
+
+    if (address.length < 5) {
+        error += "<br>" + text107;
+    }
+    
+    if (country.length < 3) {
+        error += "<br>" + text109;
+    }
+
+    if (city.length < 3) {
+        error += "<br>" + text110;
+    }    
+    
+    if (state.length < 3) {
+        error += "<br>" + text122;
+    }
+
+    if(isNaN(zipCode)){
+        error += "<br>" + text137;
+    }
+
+    if (zipCode.length < 5) {
+        error += "<br>" + text108;
+    }
+    
+    if (error.length > 1) {
+        alertify.alert(text113 + "<br>" + error);
+    } else {
+
+        alertify.confirm(text290, function (e) {
+
+            if (e) {
+                
+                $.ajax({
+                    cache: false,
+                    url: "updateCompanyTaxInformationProcess.html",
+                    type: "post",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    beforeSend: function (xhr) {
+                        formData.append("companyId", $("#companyId").val());
+                        formData.append("tax.contact.person.name", taxContactName);
+                        formData.append("tax.contact.person.lastName", taxContactLastName);
+                        formData.append("tax.contact.person.email", taxContactEmail);
+                        formData.append("tax.contact.person.phone", String(taxContactPhone));
+                        formData.append("tax.contact.person.gender.id", taxContactGender);
+                        formData.append("tax.id", taxId);
+                        formData.append("tax.company.name", taxCompanyName);
+                        formData.append("address.all", address);
+                        formData.append("address.country", country);
+                        formData.append("address.state", state);
+                        formData.append("address.city", city);
+                        formData.append("address.zipCode", String(zipCode));
+                    },
+                    success: function (data) {
+                        checkAndShowErrorRequest(data);
+                        if (data.updated === true) {
+                            showSuccess();
+                        }
+                    }, error: function (e1, e2, e3) {
+                        showError();                                                
+                    },complete: function (jqXHR, textStatus) {
+                        $("#saveButton").removeAttr("disabled");
+                    }
+                });
+            }
+        });
+    }    
+}
+
+function updateCompanyBankFormSubmit(event){
+    
+    preventDefaultForm(event);
+    
+    var formData = new FormData();
+    var error = "";
+    var ownerAccountBank = $("#ownerAccountBank").val();    
+    var bank = $("#bank").val();    
+    var clabe = $("#clabe").val();    
+    var emailNotifications = $("#emailNotifications").val();        
+    
+    if (ownerAccountBank.length < 3) {
+        error += "<br>" + text275;
+    }
+    
+    if (bank.length < 3) {
+        error += "<br>" + text276;
+    }
+    
+    if (clabe.length < 10) {
+        error += "<br>" + text277;
+    }
+    
+    if (!isEmail(emailNotifications)) {
+        error += "<br>" + text278;
+    }
+
+    if (error.length > 1) {
+        alertify.alert(text113 + "<br>" + error);
+    } else {
+        
+        alertify.confirm(text290, function (e) {
+
+            if (e) {                
+                formData.append("companyId", $("#companyId").val());
+                formData.append("ownerAccountBank", ownerAccountBank);
+                formData.append("bank", bank);
+                formData.append("clabe", String(clabe));
+                formData.append("emailNotifications", emailNotifications);                
+                $.ajax({
+                    cache: false,
+                    url: "updateCompanyBankInformationProcess.html",
+                    type: "post",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (data) {
+                        checkAndShowErrorRequest(data);
+                        if (data.updated === true) {
+                            showSuccess();
+                        }
+                    }, error: function (e1, e2, e3) {
+                        showError();                                                
+                    },complete: function (jqXHR, textStatus) {
+                        $("#saveButton").removeAttr("disabled");
+                    }
+                });
+            }
+        });
+    }    
 }

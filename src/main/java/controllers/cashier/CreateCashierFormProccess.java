@@ -30,7 +30,7 @@ public class CreateCashierFormProccess extends BaseController {
     //==========================================================================
     @RequestMapping(value = {"/createCashierFormProccess", "createCashierFormProccess"})
     public ModelAndView createCashier(
-            @RequestParam long id,
+            @RequestParam long establishmentId,
             @RequestParam String cashier_name,
             @RequestParam String cashier_lastName,
             @RequestParam String cashier_phone,
@@ -46,8 +46,8 @@ public class CreateCashierFormProccess extends BaseController {
     
         try {            
             
-            parameters = ApplicationUtil.createParameters(
-                    id,
+            parameters = ApplicationUtil.createParametersUpdateResponsable(
+                    establishmentId,
                     cashier_name,
                     cashier_lastName,
                     cashier_password,

@@ -29,13 +29,11 @@ public class UpdateCashierProccess extends BaseController {
     
     @RequestMapping(value = {"/updateCashierProcess", "updateCashierProcess"})
     public ModelAndView updateCashier(
-            @RequestParam long id,
+            @RequestParam long cashier_id,
             @RequestParam String cashier_name,
             @RequestParam String cashier_lastName,
             @RequestParam String cashier_phone,
-            @RequestParam String cashier_email,            
-            @RequestParam String cashier_password,            
-            @RequestParam String cashier_password2,            
+            @RequestParam String cashier_email,
             @RequestParam int cashier_gender,
             Locale locale){
     
@@ -44,28 +42,21 @@ public class UpdateCashierProccess extends BaseController {
         HashMap parameters = null;
         String json = null;
     
-        try {   
+        try {
             
-            if(!cashier_password.equals(cashier_password2)){
-                jsono = new JSONObject();            
-                jsono.put("created", false);
-                mav.addObject("json", jsono.toString());
-                return mav;
-            }
-            
-            parameters = ApplicationUtil.createParameters(id,
+            parameters = ApplicationUtil.createParameters(
+                    cashier_id,
                     cashier_name,
                     cashier_lastName,                    
                     cashier_phone,
-                    cashier_email,
-                    cashier_password, 
+                    cashier_email,                    
                     cashier_gender);
             
             json  = RestPostClient.sendReceive(
                     parameters, 
                     Constants.API_URL, 
                     Constants.API_FIRST_VERSION, 
-                    Constants.URI_CASHIER_CREATE);
+                    Constants.URI_CASHIER_UPDATE);
             
             jsono = new JSONObject(json);            
             mav.addObject("json", jsono.toString());            

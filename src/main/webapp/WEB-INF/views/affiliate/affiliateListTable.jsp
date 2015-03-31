@@ -2,6 +2,7 @@
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<jsp:useBean id="cons" class="model.logic.Constants" />
 <c:choose>
     <c:when test="${fn:length(affiliates) <= 0}">
         <div class="alert alert-warning">
@@ -42,10 +43,10 @@
                                         ${a.person.getRegistrationDate()}
                                     </td>        
                                     <td>
-                                        <button class="btn btn-primary" onclick="javascript:redirectData('createEstablishment.html', {id:${a.getId()}})">
+                                        <button class="btn btn-primary" onclick="javascript:redirectData('redirector.html', {url:'createEstablishment.html', affiliateId:${a.getId()}, type: <c:out value="${cons.getAffiliate()}"/> });">
                                             <spring:message code="text234" />
                                         </button>
-                                        <button class="btn btn-success" onclick="javascript:redirectData('affiliateDetails.html', {id:${a.getId()}})">
+                                        <button class="btn btn-success" onclick="javascript:redirectData('redirector.html', {url:'affiliateDetails.html', affiliateId:${a.getId()}})">
                                             <spring:message code="text235" />
                                         </button>
                                     </td>

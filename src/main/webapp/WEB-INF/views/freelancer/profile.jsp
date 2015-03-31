@@ -86,8 +86,8 @@
                                             <div class="form-group">                                                 
                                                 <label><spring:message code="text86" /></label>
                                                 <select id="gender" name="gender" class="form-control" tabindex="11">                                                                                                        
-                                                    <option value="1" ${freelancerBasic.gender == "male" ? "selected='selected'": ""}><spring:message code="text97" /></option>
-                                                    <option value="2" ${freelancerBasic.gender == "female" ? "selected='selected'": ""}><spring:message code="text98" /></option>
+                                                    <option value="1" ${freelancerBasic.gender == "1" ? "selected='selected'": ""}><spring:message code="text97" /></option>
+                                                    <option value="2" ${freelancerBasic.gender == "2" ? "selected='selected'": ""}><spring:message code="text98" /></option>
                                                 </select>
                                             </div> 
                                         </div>

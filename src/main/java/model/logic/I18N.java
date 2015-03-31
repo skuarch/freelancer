@@ -11,7 +11,7 @@ public class I18N {
     private static final ArrayList<String> arrayList = new ArrayList<>(100);
     
     static{
-        System.out.println("creating arrayList i18n");
+        
         arrayList.clear();        
         arrayList.add("text12");
         arrayList.add("text13");
@@ -113,6 +113,27 @@ public class I18N {
         arrayList.add("text263");
         arrayList.add("text264");
         arrayList.add("text265");
+        arrayList.add("text272");
+        arrayList.add("text273");
+        arrayList.add("text274");
+        arrayList.add("text275");
+        arrayList.add("text276");
+        arrayList.add("text277");
+        arrayList.add("text278");
+        arrayList.add("text280");
+        arrayList.add("text281");
+        arrayList.add("text282");
+        arrayList.add("text283");
+        arrayList.add("text284");
+        arrayList.add("text286");
+        arrayList.add("text287");
+        arrayList.add("text288");        
+        arrayList.add("text289");        
+        arrayList.add("text290");        
+        arrayList.add("text291");        
+        arrayList.add("text292");        
+        arrayList.add("text293");        
+
     }
     
     private I18N(){

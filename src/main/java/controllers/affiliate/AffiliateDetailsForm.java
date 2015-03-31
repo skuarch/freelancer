@@ -1,16 +1,17 @@
 package controllers.affiliate;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
 import model.beans.Affiliate;
+import model.beans.Category;
 import model.logic.Constants;
 import model.logic.RestPostClient;
 import model.util.ApplicationUtil;
 import model.util.HandlerExceptionUtil;
 import org.apache.log4j.Logger;
+import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
@@ -31,34 +32,51 @@ public class AffiliateDetailsForm {
 
     //==========================================================================
     @RequestMapping(value = "affiliateDetailsForm")
-    public ModelAndView affiliateDetailsForm(@RequestParam long id, Locale locale) {
+    public ModelAndView affiliateDetailsForm(@RequestParam long affiliateId, Locale locale) {
 
         ModelAndView mav = null;
         Affiliate affiliate = null;
         HashMap<String,Object> parameters = null;
         String json = null;
+        String jsonCategories = null;
+        Category[] categories = null;
+        JSONArray jsona = null;
+        ArrayList<Category> selectedCategories = null;
 
         try {
 
-            if (id < 1) {
+            if (affiliateId < 1) {
                 mav = new ModelAndView("application/systemWelcome");                
                 return mav;
             }
 
             mav = new ModelAndView("affiliate/affiliateDetialsForm");
-            mav.addObject("id", id);
+            mav.addObject("affiliateId", affiliateId);
             
-            parameters = ApplicationUtil.createParameters(id);
+            parameters = ApplicationUtil.createParameters(affiliateId);
             json = RestPostClient.sendReceive(
                     parameters, 
                     Constants.API_URL, 
                     Constants.API_FIRST_VERSION, 
                     Constants.URI_AFFILIATE_GET);
             
-            affiliate = new Gson().fromJson(json, Affiliate.class);
-            mav.addObject("affiliate", affiliate);            
+            affiliate = new Gson().fromJson(json, Affiliate.class);            
+            
+            jsonCategories = RestPostClient.sendReceive(
+                    Constants.API_URL,
+                    Constants.API_FIRST_VERSION,
+                    Constants.URI_CATEGORY_GET);
 
-        } catch (IOException | JsonSyntaxException e) {
+            jsona = new JSONArray(jsonCategories);
+            categories = new Gson().fromJson(jsona.toString(), Category[].class);            
+            
+            selectedCategories = new ArrayList<>(affiliate.getCategory());
+            categories = ApplicationUtil.selectCategory(categories, selectedCategories);
+            
+            mav.addObject("affiliate", affiliate);  
+            mav.addObject("categories", categories);
+            
+        } catch (Exception e) {
             HandlerExceptionUtil.alert(mav, messageSource, e, logger, locale);
         }
 

@@ -22,7 +22,7 @@
         <input name="cashier_email" id="cashier_email" value="${cashier.person.getEmail()}" maxlength="50" class="form-control" type="email" required="required" tabindex="19" />
     </div> 
 
-    <input type="hidden" name="id" value="${cashier.getId()}" />
+    <input type="hidden" name="cashier_id" value="${cashier.getId()}" />
 
     <div class="form-group"> 
         <label><spring:message code="text86" /></label>

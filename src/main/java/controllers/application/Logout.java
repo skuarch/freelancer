@@ -20,14 +20,7 @@ public class Logout extends BaseController{
     @RequestMapping(value = {"/logout","logout"})
     public ModelAndView logout(ModelAndView mav,HttpServletResponse response){
         
-        setHeaderNoChache(response);         
-        
-        if(session != null){
-            session.setAttribute("logged", "false");
-            session.invalidate();       
-            session = null;
-        }
-        
+        setHeaderNoChache(response);
         mav.setViewName("application/logout");
         return mav;
         

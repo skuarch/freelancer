@@ -1,7 +1,6 @@
 package controllers.affiliate;
 
 import controllers.application.BaseController;
-import java.io.IOException;
 import java.util.HashMap;
 import model.util.HandlerExceptionUtil;
 import org.apache.log4j.Logger;
@@ -10,7 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 import model.logic.Constants;
 import model.logic.RestPostClient;
 import model.util.ApplicationUtil;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -30,9 +28,10 @@ public class createEstablishmentProcess extends BaseController {
     private MessageSource messageSource;
     private static final Logger logger = Logger.getLogger(CreateNewAffiliateProcess.class);
 
-    @RequestMapping(value = {"createEstablishmentProcess", "/createEstablishmentProcess"})
+    @RequestMapping(value = {"c", "/c"})
     public ModelAndView createEstablishment(
             @RequestParam long id,
+            @RequestParam long type,
             @RequestParam String establishment_name,
             @RequestParam int[] category,
             @RequestParam String subcategory,
@@ -41,6 +40,8 @@ public class createEstablishmentProcess extends BaseController {
             @RequestParam String state,
             @RequestParam String city,
             @RequestParam String zipCode,
+            @RequestParam String latitude,
+            @RequestParam String longitude,
             @RequestParam String responsable_name,
             @RequestParam String responsable_lastName,
             @RequestParam String responsable_phone,
@@ -68,8 +69,9 @@ public class createEstablishmentProcess extends BaseController {
             //do some validations here            
             setHeaderNoChache(response);
 
-            parameters = ApplicationUtil.createParameters(
+            parameters = ApplicationUtil.createParametersEstablishment(
                     id,
+                    type,
                     establishment_name,
                     category,
                     subcategory,
@@ -77,7 +79,9 @@ public class createEstablishmentProcess extends BaseController {
                     country,
                     state,
                     city,
-                    zipCode,
+                    zipCode,                    
+                    latitude,
+                    longitude,
                     responsable_name,
                     responsable_lastName,
                     responsable_phone,
@@ -102,7 +106,7 @@ public class createEstablishmentProcess extends BaseController {
             jsono = new JSONObject(json);
             mav.addObject("json", jsono);
 
-        } catch (IOException | JSONException e) {
+        } catch (Exception e) {
             HandlerExceptionUtil.json(mav, messageSource, e, logger, locale, "text116");
         }
 
