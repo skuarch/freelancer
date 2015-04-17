@@ -105,25 +105,25 @@
                 <div class="col-lg-6">
                     <div class="form-group"> 
                         <label><spring:message code="text305" /></label>
-                        <input name="taxContactName" id="taxContactName" value="${company.contact.person.getName()}" maxlength="255" class="form-control" type="text" required="required" tabindex="15" />
+                        <input name="taxContactName" id="taxContactName" value="${company.contact.person.getName()}" maxlength="255" class="form-control" type="text" required="required" tabindex="11" />
                     </div> 
                 </div>
                 <div class="col-lg-6">
                     <div class="form-group"> 
                         <label><spring:message code="text306" /></label>
-                        <input name="taxContactLastName" id="taxContactLastName" value="${company.contact.person.getLastName()}" maxlength="255" class="form-control" type="text" required="required" tabindex="15" />
+                        <input name="taxContactLastName" id="taxContactLastName" value="${company.contact.person.getLastName()}" maxlength="255" class="form-control" type="text" required="required" tabindex="12" />
                     </div> 
                 </div>
                 <div class="col-lg-6">
                     <div class="form-group"> 
                         <label><spring:message code="text307" /></label>
-                        <input name="taxContactEmail" id="taxContactEmail" value="${company.contact.person.getEmail()}" placeholder="<spring:message code="text91" />" maxlength="55" class="form-control" type="email" required="required" tabindex="3" />
+                        <input name="taxContactEmail" id="taxContactEmail" value="${company.contact.person.getEmail()}" placeholder="<spring:message code="text91" />" maxlength="55" class="form-control" type="email" required="required" tabindex="13" />
                     </div> 
                 </div>
                 <div class="col-lg-6">
                     <div class="form-group"> 
                         <label><spring:message code="text86" /></label>
-                        <select id="taxContactGender" name="taxContactGender" class="form-control" tabindex="7">
+                        <select id="taxContactGender" name="taxContactGender" class="form-control" tabindex="14">
                             <option value="1" <c:if test="${company.contact.person.gender.getName() == 'male' }" > selected </c:if> ><spring:message code="text97" /></option>
                             <option value="2" <c:if test="${company.contact.person.gender.getName() == 'female' }" > selected </c:if> ><spring:message code="text98" /></option>
                             </select>
@@ -132,49 +132,49 @@
                     <div class="col-lg-6">
                         <div class="form-group"> 
                             <label><spring:message code="text308" /></label>
-                        <input name="taxId" id="taxId" placeholder="<spring:message code="text316" />" value="${company.getTaxId()}" maxlength="13" class="form-control" type="text" required="required" tabindex="11" />
+                        <input name="taxId" id="taxId" placeholder="<spring:message code="text316" />" value="${company.getTaxId()}" maxlength="13" class="form-control" type="text" required="required" tabindex="15" />
                     </div> 
                 </div>
                 <div class="col-lg-6">
                     <div class="form-group"> 
                         <label><spring:message code="text309" /></label>
-                        <input name="taxCompanyName" id="taxCompanyName" value="${company.getTaxCompanyName()}" maxlength="55" class="form-control" type="text" required="required" tabindex="12" />
+                        <input name="taxCompanyName" id="taxCompanyName" value="${company.getTaxCompanyName()}" maxlength="55" class="form-control" type="text" required="required" tabindex="16" />
                     </div> 
                 </div>
                 <div class="col-lg-6">
                     <div class="form-group"> 
                         <label><spring:message code="text310" /></label>
-                        <input name="taxContactPhone" id="taxContactPhone" value="${company.contact.person.getPhone()}" placeholder="<spring:message code="text89"/>" min="1" max="999999999999" class="form-control" type="number" required="required" tabindex="4" />
+                        <input name="taxContactPhone" id="taxContactPhone" value="${company.contact.person.getPhone()}" placeholder="<spring:message code="text89"/>" min="1" max="999999999999" class="form-control" type="number" required="required" tabindex="17" />
                     </div> 
                 </div>
                 <div class="col-lg-6">
                     <div class="form-group"> 
                         <label><spring:message code="text161" /></label>
-                        <input name="address" id="address" value="${company.address.getAll()}" placeholder="<spring:message code="text79"/>" maxlength="512" class="form-control" type="text" required="required" tabindex="13" />
+                        <input name="address" id="address" value="${company.address.getAll()}" placeholder="<spring:message code="text79"/>" maxlength="512" class="form-control" type="text" required="required" tabindex="18" />
                     </div> 
                 </div>
                 <div class="col-lg-6">
                     <div class="form-group"> 
                         <label><spring:message code="text82" /></label>
-                        <input name="country" id="country" value="${company.address.getCountry()}" placeholder="<spring:message code="text83"/>" maxlength="35" class="form-control" type="text" required="required" tabindex="14" />
+                        <input name="country" id="country" value="${company.address.getCountry()}" placeholder="<spring:message code="text83"/>" maxlength="35" class="form-control" type="text" required="required" tabindex="19" />
                     </div> 
                 </div>
                 <div class="col-lg-6">
                     <div class="form-group"> 
                         <label><spring:message code="text121" /></label>
-                        <input name="state" id="state" placeholder="" value="${company.address.getState()}" class="form-control" maxlength="55" type="text" required="required" tabindex="15" />
+                        <input name="state" id="state" placeholder="" value="${company.address.getState()}" class="form-control" maxlength="55" type="text" required="required" tabindex="20" />
                     </div> 
                 </div>
                 <div class="col-lg-6">
                     <div class="form-group"> 
                         <label><spring:message code="text84" /></label>
-                        <input name="city" id="city" value="${company.address.getCity()}" placeholder="<spring:message code="text85"/>" maxlength="55" class="form-control" type="text" required="required" tabindex="16" />
+                        <input name="city" id="city" value="${company.address.getCity()}" placeholder="<spring:message code="text85"/>" maxlength="55" class="form-control" type="text" required="required" tabindex="21" />
                     </div> 
                 </div>
                 <div class="col-lg-6">
                     <div class="form-group"> 
                         <label><spring:message code="text80" /></label>
-                        <input name="zipCode" id="zipCode" value="${company.address.getZipCode()}" placeholder="<spring:message code="text81"/>" min="1" max="99999999" class="form-control" type="number" required="required" tabindex="17" />
+                        <input name="zipCode" id="zipCode" value="${company.address.getZipCode()}" placeholder="<spring:message code="text81"/>" min="1" max="99999999" class="form-control" type="number" required="required" tabindex="22" />
                     </div> 
                 </div>
             </div>
@@ -198,29 +198,29 @@
                 <div class="col-lg-6">
                     <div class="form-group"> 
                         <label><spring:message code="text312" /></label>
-                        <input name="ownerAccountBank" id="ownerAccountBank" value="${company.getOwnerAccountBank()}" maxlength="255" class="form-control" type="text" required="required" tabindex="18" />
+                        <input name="ownerAccountBank" id="ownerAccountBank" value="${company.getOwnerAccountBank()}" maxlength="255" class="form-control" type="text" required="required" tabindex="23" />
                     </div> 
                 </div>
                 <div class="col-lg-6">
                     <div class="form-group"> 
                         <label><spring:message code="text313" /></label>
-                        <input name="bank" id="bank" value="${company.getBank()}" maxlength="55" class="form-control" type="text" required="required" tabindex="19" />
+                        <input name="bank" id="bank" value="${company.getBank()}" maxlength="55" class="form-control" type="text" required="required" tabindex="24" />
                     </div> 
                 </div>
                 <div class="col-lg-6">
                     <div class="form-group"> 
                         <label><spring:message code="text314" /></label>
-                        <input name="clabe" id="clabe" value="${company.getClabe()}" maxlength="25" class="form-control" type="text" required="required" tabindex="20" />
+                        <input name="clabe" id="clabe" value="${company.getClabe()}" maxlength="25" class="form-control" type="text" required="required" tabindex="25" />
                     </div> 
                 </div>
                 <div class="col-lg-6">
                     <div class="form-group"> 
                         <label><spring:message code="text315" /></label>
-                        <input name="emailNotifications" id="emailNotifications" value="${company.getEmailNotifications()}"  class="form-control" maxlength="35" type="email" required="required" tabindex="21" />
+                        <input name="emailNotifications" id="emailNotifications" value="${company.getEmailNotifications()}"  class="form-control" maxlength="35" type="email" required="required" tabindex="26" />
                     </div> 
                 </div>                                                                
             </div>
-            <button id="saveButton" type="submit" class="btn btn-block btn-lg btn-success" tabindex="22">
+            <button id="saveButton" type="submit" class="btn btn-block btn-lg btn-success" tabindex="27">
                 <spring:message code="text340" />
             </button>
         </form>

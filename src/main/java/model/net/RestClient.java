@@ -108,8 +108,8 @@ public class RestClient {
         try {
 
             stringBuilder = new StringBuilder();
-            inputStream = hurlc.getInputStream();
-            bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+            inputStream = hurlc.getInputStream();            
+            bufferedReader = new BufferedReader(new InputStreamReader(inputStream,"UTF-8"));            
             while ((tmp = bufferedReader.readLine()) != null) {
                 stringBuilder.append(tmp);
             }

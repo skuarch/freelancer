@@ -79,13 +79,13 @@
                                 <div class="col-lg-6">
                                     <div class="form-group"> 
                                         <label><spring:message code="text320" /></label>
-                                        <input name="latitude" id="latitude" value="${establishment.latitude}" class="form-control" type="number" required="required" tabindex="8" />
+                                        <input name="latitude" id="latitude" value="${establishment.latitude}" class="form-control" type="number" tabindex="8" />
                                     </div> 
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="form-group"> 
                                         <label><spring:message code="text321" /></label>
-                                        <input name="longitude" id="longitude" value="${establishment.longitude}" class="form-control" type="number" required="required" tabindex="8" />
+                                        <input name="longitude" id="longitude" value="${establishment.longitude}" class="form-control" type="number" tabindex="8" />
                                     </div> 
                                 </div>
                             </div>                             
