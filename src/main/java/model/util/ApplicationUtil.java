@@ -1,8 +1,13 @@
 package model.util;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import model.beans.Category;
+import model.logic.Constants;
+import org.apache.commons.io.FileUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -21,6 +26,7 @@ public class ApplicationUtil {
             short personGenderId,
             String brand,
             String category,
+            String description,
             String taxContactPersonName,
             String taxContactPersonLastName,
             String taxContactPersonEmail,
@@ -56,6 +62,7 @@ public class ApplicationUtil {
             for (int i = 0; i < cat.length; i++) {
                 hm.put("category[" + i + "].id", cat[i]);
             }
+            hm.put("description", description);
 
             hm.put("contact.person.name", String.valueOf(taxContactPersonName));
             hm.put("contact.person.lastName", String.valueOf(taxContactPersonLastName));
@@ -96,6 +103,7 @@ public class ApplicationUtil {
             String personEmail,
             String category,
             String password,
+            String description,
             String taxContactPersonName,
             String taxContactPersonLastName,
             String taxContactPersonEmail,
@@ -113,37 +121,38 @@ public class ApplicationUtil {
             String clabe,
             String emailNotifications,
             long freelancerId
-    ) throws Exception{
-        
+    ) throws Exception {
+
         HashMap hm = new HashMap();
-        
+
         try {
-            
+
             hm.put("name", name);
             hm.put("brand", brand);
-            hm.put("person.name", String.valueOf(personName));
-            hm.put("person.lastName", String.valueOf(personLastName));
+            hm.put("person.name", personName);
+            hm.put("person.lastName", personLastName);
             hm.put("person.gender.id", personGenderId);
-            hm.put("person.phone", String.valueOf(personPhone));
-            hm.put("person.email", String.valueOf(personEmail));
+            hm.put("person.phone", personPhone);
+            hm.put("person.email", personEmail);
             String[] cat = category.split(",");
             for (int i = 0; i < cat.length; i++) {
                 hm.put("category[" + i + "].id", cat[i]);
-            }            
-            hm.put("password", MD5Util.getHash(String.valueOf(password)));           
-
-            hm.put("contact.person.name", String.valueOf(taxContactPersonName));
-            hm.put("contact.person.lastName", String.valueOf(taxContactPersonLastName));
-            hm.put("contact.person.email", String.valueOf(taxContactPersonEmail));
+            }
+            hm.put("password", MD5Util.getHash(String.valueOf(password)));
+            hm.put("description", description);
+            
+            hm.put("contact.person.name", taxContactPersonName);
+            hm.put("contact.person.lastName", taxContactPersonLastName);
+            hm.put("contact.person.email", taxContactPersonEmail);
             hm.put("contact.person.gender.id", taxContactPersonGender);
             hm.put("taxId", taxId);
             hm.put("taxCompanyName", taxCompanyName);
-            hm.put("contact.person.phone", String.valueOf(taxContactPersonPhone));
-            hm.put("address.all", String.valueOf(address));
-            hm.put("address.country", String.valueOf(addressCountry));
-            hm.put("address.city", String.valueOf(addressCity));
-            hm.put("address.state", String.valueOf(addressState));
-            hm.put("address.zipCode", Integer.parseInt(addressZipCode));
+            hm.put("contact.person.phone", taxContactPersonPhone);
+            hm.put("address.all", address);
+            hm.put("address.country", addressCountry);
+            hm.put("address.city", addressCity);
+            hm.put("address.state", addressState);
+            hm.put("address.zipCode", addressZipCode);
 
             hm.put("ownerAccountBank", ownerAccountBank);
             hm.put("bank", bank);
@@ -151,18 +160,18 @@ public class ApplicationUtil {
             hm.put("emailNotifications", emailNotifications);
 
             hm.put("freelancer.id", freelancerId);
-            
+
         } catch (Exception e) {
             throw e;
         }
-        
+
         return hm;
 
     }
 
     //==========================================================================
     public static HashMap<String, Object> createParametersTaxInformation(
-            long id,            
+            long id,
             String taxContactPersonName,
             String taxContactPersonLastName,
             String taxContactPersonEmail,
@@ -175,11 +184,11 @@ public class ApplicationUtil {
             String addressState,
             String addressCity,
             String addressZipCode
-    ) throws Exception{
-        
+    ) throws Exception {
+
         HashMap hm = new HashMap();
-        
-        try {            
+
+        try {
 
             hm.put("id", id);//company id
             hm.put("contact.person.name", taxContactPersonName);
@@ -193,18 +202,16 @@ public class ApplicationUtil {
             hm.put("address.country", addressCountry);
             hm.put("address.city", addressCity);
             hm.put("address.state", addressState);
-            hm.put("address.zipCode", Integer.parseInt(addressZipCode));            
-            
+            hm.put("address.zipCode", Integer.parseInt(addressZipCode));
+
         } catch (Exception e) {
             throw e;
         }
-        
+
         return hm;
 
     }
-    
-    
-    
+
     //==========================================================================
     public static HashMap<String, Object> createParameters(
             long companyId,
@@ -215,15 +222,15 @@ public class ApplicationUtil {
             short personGenderId,
             String personPhone,
             String personEmail,
-            String category,
-            String password,
+            String category,            
+            String description,
             long freelancerId
-    ) throws Exception{
-        
+    ) throws Exception {
+
         HashMap hm = new HashMap();
-        
+
         try {
-            
+
             hm.put("companyId", companyId);
             hm.put("name", name);
             hm.put("brand", brand);
@@ -236,20 +243,18 @@ public class ApplicationUtil {
             for (int i = 0; i < cat.length; i++) {
                 hm.put("category[" + i + "].id", cat[i]);
             }            
-            hm.put("password", MD5Util.getHash(String.valueOf(password)));                       
-
-            hm.put("freelancer.id", freelancerId);
+            hm.put("description", description);
             
+            hm.put("freelancer.id", freelancerId);
+
         } catch (Exception e) {
             throw e;
         }
-        
+
         return hm;
 
     }
 
-    
-    
     //==========================================================================
     public static HashMap<String, Object> createParameters(String personEmail, String personName, String personLastName, String personPassword, String personPhone, short personGenderId, String brand, String address, String addressZipCode, String addressCountry, String addressCity, String addressState, long freelancerId, String ownerAccountBank, String bank, String clabe, String emailNotifications, String category, String taxCompanyName, String taxId) throws Exception {
 
@@ -302,7 +307,7 @@ public class ApplicationUtil {
             String country,
             String state,
             String city,
-            String zipCode,            
+            String zipCode,
             String latitude,
             String longitude,
             String responsable_name,
@@ -390,11 +395,11 @@ public class ApplicationUtil {
             String personName,
             String personLastName,
             String personEmail,
-            String personPhone,
-            String personPassword,
+            String personPhone,            
             short personGenderId,
             String brand,
-            String category
+            String category,
+            String description
     ) throws Exception {
 
         HashMap hm = new HashMap();
@@ -406,8 +411,7 @@ public class ApplicationUtil {
             hm.put("person.name", personName);
             hm.put("person.lastName", personLastName);
             hm.put("person.email", personEmail);
-            hm.put("person.phone", personPhone);
-            hm.put("password", personPassword);
+            hm.put("person.phone", personPhone);            
             hm.put("person.gender.id", personGenderId);
             hm.put("brand", brand);
 
@@ -416,6 +420,8 @@ public class ApplicationUtil {
                 hm.put("category[" + i + "].id", cat[i]);
             }
 
+            hm.put("description", description);
+            
         } catch (Exception e) {
             throw e;
         }
@@ -426,14 +432,14 @@ public class ApplicationUtil {
 
     //==========================================================================
     public static HashMap<String, Object> createParametersUpdateEstablishment(
-            long id, 
-            String name, 
-            int[] category, 
-            String subcategory, 
-            String address, 
-            String country, 
-            String state, 
-            String city, 
+            long id,
+            String name,
+            int[] category,
+            String subcategory,
+            String address,
+            String country,
+            String state,
+            String city,
             String zipCode,
             String latitude,
             String longitude
@@ -454,7 +460,7 @@ public class ApplicationUtil {
             hm.put("address.state", state);
             hm.put("latitude", latitude);
             hm.put("longitude", longitude);
-            
+
             for (int i = 0; i < category.length; i++) {
                 hm.put("category[" + i + "].id", category[i]);
             }
@@ -503,8 +509,8 @@ public class ApplicationUtil {
             long id,
             String name,
             String lastName,
-            String phone,            
-            String email,            
+            String phone,
+            String email,
             String password,
             long gender
     ) throws Exception {
@@ -521,7 +527,7 @@ public class ApplicationUtil {
             hm.put("person.phone", phone);
             hm.put("person.email", email);
             hm.put("person.gender.id", gender);
-            
+
         } catch (Exception e) {
             throw e;
         }
@@ -545,6 +551,54 @@ public class ApplicationUtil {
             hm.put("id", id);
             hm.put("password", password1);
             hm.put("password2", password2);
+
+        } catch (Exception e) {
+            throw e;
+        }
+
+        return hm;
+
+    }
+    
+    //==========================================================================
+    public static HashMap<String, Object> createParametersFreelancerUpdateAffiliatePassword(
+            long id,
+            String password1,
+            String password2
+    ) throws Exception {
+
+        HashMap hm = new HashMap();
+
+        try {
+
+            //avoid some html tags  
+            hm.put("id", id);
+            hm.put("newPassword", password1);
+            hm.put("newPassword2", password2);
+
+        } catch (Exception e) {
+            throw e;
+        }
+
+        return hm;
+
+    }
+    
+    //==========================================================================
+    public static HashMap<String, Object> createParametersFreelancerUpdateCompanyPassword(
+            long id,
+            String password1,
+            String password2
+    ) throws Exception {
+
+        HashMap hm = new HashMap();
+
+        try {
+
+            //avoid some html tags  
+            hm.put("id", id);
+            hm.put("newPassword", password1);
+            hm.put("newPassword2", password2);
 
         } catch (Exception e) {
             throw e;
@@ -646,6 +700,6 @@ public class ApplicationUtil {
 
         return categories;
 
-    }
+    }    
 
 }

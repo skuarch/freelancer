@@ -29,7 +29,7 @@ public class HandlerExceptionUtil {
     
     //==========================================================================
     public static void json(ModelAndView mav,MessageSource messageSource,Exception exception,Logger logger,Locale locale) {        
-        
+       
         logger.error(" error ", exception);        
         JSONObject jsono = new JSONObject();
         
@@ -54,6 +54,10 @@ public class HandlerExceptionUtil {
         }else{
             jsono.append("error", messageSource.getMessage(textNumber,null, locale));
         }  
+        
+        if(mav == null){
+            mav = new ModelAndView("aplication/json");
+        }
         
         mav.addObject("json",jsono.toString());
 

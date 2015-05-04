@@ -1,6 +1,5 @@
 package controllers.freelancer;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Locale;
 import javax.servlet.http.HttpSession;
@@ -10,7 +9,6 @@ import model.logic.RestPostClient;
 import model.util.FreelancerUtil;
 import model.util.HandlerExceptionUtil;
 import org.apache.log4j.Logger;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -49,13 +47,20 @@ public class UpdateFreelancerProcess {
             freelancer.setKey(freelancerSession.getKey());
             
             parameters = FreelancerUtil.createHashMapFreelancer(freelancer);            
-            json = RestPostClient.sendReceive(parameters, Constants.URI_FREELANCER_UPDATE);            
+            
+            json = RestPostClient.sendReceive(
+                    parameters, 
+                    Constants.API_URL, 
+                    Constants.API_FIRST_VERSION, 
+                    Constants.URI_FREELANCER_UPDATE);            
+            
+            
             jsono = new JSONObject(json);            
             mav.addObject("json", jsono);
             
             FreelancerUtil.resetFreelancerBasicSession(session, freelancer);
 
-        } catch (IOException | JSONException e) {
+        } catch (Exception e) {
             HandlerExceptionUtil.json(mav, messageSource, e, logger, locale, "text116");
         }
 

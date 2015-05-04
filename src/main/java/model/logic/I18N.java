@@ -133,6 +133,9 @@ public class I18N {
         arrayList.add("text291");        
         arrayList.add("text292");        
         arrayList.add("text293");        
+        arrayList.add("text345");        
+        arrayList.add("text346");        
+        arrayList.add("text347");        
 
     }
     

@@ -110,6 +110,18 @@
                                                     <input name="password2" id="password2" placeholder="<spring:message code="text95"/>" maxlength="8" class="form-control" type="password" required="required" tabindex="10"/>
                                                 </div> 
                                             </div>
+                                            <div class="col-lg-12">
+                                                <div class="form-group"> 
+                                                    <label><spring:message code="text344"/> </label>
+                                                    <input name="logo" id="logo" placeholder="" maxlength="55" class="form-control" type="file" tabindex="8" />
+                                                </div> 
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <div class="form-group">
+                                                    <label><spring:message code="text342" /></label>                                                
+                                                    <textarea id="description" name="description" class="form-control" cols="1" rows="6" placeholder="<spring:message code="text343" />"></textarea>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
 

@@ -91,8 +91,7 @@ public class FreelancerUtil {
         HashMap hm = new HashMap();
 
         try {
-
-            //avoid some html tags                        
+            
             hm.put("id", freelancerId);
             hm.put("other", "other");
 
@@ -110,7 +109,7 @@ public class FreelancerUtil {
         if (session != null) {
             freelancerBasic = (FreelancerBasic) session.getAttribute("freelancerBasic");
         } else {
-            throw new NullPointerException("session is null");
+            throw new IllegalStateException("session is null");
         }
         return freelancerBasic;
     }

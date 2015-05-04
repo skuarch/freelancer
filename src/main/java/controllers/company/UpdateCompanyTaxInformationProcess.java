@@ -3,12 +3,9 @@ package controllers.company;
 import java.util.Locale;
 import controllers.application.BaseController;
 import java.util.HashMap;
-import javax.servlet.http.HttpSession;
-import model.beans.FreelancerBasic;
 import model.logic.Constants;
 import model.logic.RestPostClient;
 import model.util.ApplicationUtil;
-import model.util.FreelancerUtil;
 import model.util.HandlerExceptionUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,9 +26,7 @@ public class UpdateCompanyTaxInformationProcess extends BaseController {
     private static final Logger logger = Logger.getLogger(UpdateCompanyTaxInformationProcess.class);
 
     @Autowired
-    private MessageSource messageSource;        
-    @Autowired
-    private HttpSession session;
+    private MessageSource messageSource;            
 
     //==========================================================================
     @RequestMapping(value = {"/updateCompanyTaxInformationProcess"})

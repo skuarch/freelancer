@@ -1,7 +1,6 @@
 package controllers.freelancer;
 
 import controllers.application.BaseController;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Locale;
 import javax.servlet.http.HttpServletResponse;
@@ -12,7 +11,6 @@ import model.logic.RestPostClient;
 import model.util.FreelancerUtil;
 import model.util.HandlerExceptionUtil;
 import org.apache.log4j.Logger;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -62,7 +60,7 @@ public class UpdateFreelancerPasswordProcess extends BaseController {
             jsono = new JSONObject(json);            
             mav.addObject("json", jsono);
             
-        } catch (IOException | JSONException e) {
+        } catch (Exception e) {
             HandlerExceptionUtil.json(mav, messageSource, e, logger, locale, "text116");
         }
 

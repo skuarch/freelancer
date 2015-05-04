@@ -30,7 +30,7 @@ public class CompanyDetails {
     @RequestMapping(value = {"/companyDetails", "companyDetails"})
     public ModelAndView companyDetails(Locale locale) {
 
-        ModelAndView mav = new ModelAndView("company/companyDetailsContainer");
+        ModelAndView mav = new ModelAndView();
         long companyId = 0;
 
         try {
@@ -42,6 +42,7 @@ public class CompanyDetails {
                 return mav;
             }            
             
+            mav.setViewName("company/companyDetailsContainer");
             mav.addObject("companyId", companyId);
             
         } catch (Exception e) {

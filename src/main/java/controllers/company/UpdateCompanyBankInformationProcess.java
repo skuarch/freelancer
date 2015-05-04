@@ -3,7 +3,6 @@ package controllers.company;
 import java.util.Locale;
 import controllers.application.BaseController;
 import java.util.HashMap;
-import javax.servlet.http.HttpSession;
 import model.logic.Constants;
 import model.logic.RestPostClient;
 import model.util.ApplicationUtil;
@@ -27,9 +26,7 @@ public class UpdateCompanyBankInformationProcess extends BaseController {
     private static final Logger logger = Logger.getLogger(UpdateCompanyBankInformationProcess.class);
 
     @Autowired
-    private MessageSource messageSource;
-    @Autowired
-    private HttpSession session;
+    private MessageSource messageSource;    
 
     //==========================================================================
     @RequestMapping(value = {"/updateCompanyBankInformationProcess", "updateCompanyBankInformationProcess"})

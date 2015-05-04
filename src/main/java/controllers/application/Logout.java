@@ -14,9 +14,6 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class Logout extends BaseController{
     
-    @Autowired
-    private HttpSession session;
-    
     @RequestMapping(value = {"/logout","logout"})
     public ModelAndView logout(ModelAndView mav,HttpServletResponse response){
         

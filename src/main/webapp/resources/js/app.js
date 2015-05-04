@@ -35,6 +35,13 @@ if("undefined"==typeof jQuery)throw new Error("Bootstrap's JavaScript requires j
 /*sb admin*/
 $(function(){$("#side-menu").metisMenu()});$(function(){$(window).bind("load resize",function(){topOffset=50;width=(this.window.innerWidth>0)?this.window.innerWidth:this.screen.width;if(width<768){$("div.navbar-collapse").addClass("collapse");topOffset=100}else{$("div.navbar-collapse").removeClass("collapse")}height=(this.window.innerHeight>0)?this.window.innerHeight:this.screen.height;height=height-topOffset;if(height<1){height=1}if(height>topOffset){$("#page-wrapper").css("min-height",(height)+"px")}})});
 
+/**
+* Loading plugin for jQuery
+* version: v1.0.6
+*/(function(e,t,n,r){function o(t,n){this.element=t;this.options=e.extend({},s,n);this._defaults=s;this._name=i;this._loader=null;this.init()}function u(){e[i]||(e.isLoading=function(t){e("body").isLoading(t)})}var i="isLoading",s={position:"right",text:"","class":"icon-refresh",tpl:'<span class="isloading-wrapper %wrapper%">%text%<i class="%class% icon-spin"></i></span>',disableSource:!0,disableOthers:[]};o.prototype={init:function(){e(this.element).is("body")&&(this.options.position="overlay");this.show()},show:function(){var n=this,r=n.options.tpl.replace("%wrapper%"," isloading-show  isloading-"+n.options.position);r=r.replace("%class%",n.options["class"]);r=r.replace("%text%",n.options.text!==""?n.options.text+" ":"");n._loader=e(r);e(n.element).is("input, textarea")&&!0===n.options.disableSource?e(n.element).attr("disabled","disabled"):!0===n.options.disableSource&&e(n.element).addClass("disabled");switch(n.options.position){case"inside":e(n.element).html(n._loader);break;case"overlay":var i=null;if(e(n.element).is("body")){i=e('<div class="isloading-overlay" style="position:fixed; left:0; top:0; z-index: 10000; background: rgba(0,0,0,0.5); width: 100%; height: '+e(t).height()+'px;" />');e("body").prepend(i);e(t).on("resize",function(){i.height(e(t).height()+"px");n._loader.css({top:e(t).height()/2-n._loader.outerHeight()/2+"px"})})}else{var s=e(n.element).css("position"),o={},u=e(n.element).outerHeight()+"px",a="100%";"relative"===s||"absolute"===s?o={top:0,left:0}:o=e(n.element).position();i=e('<div class="isloading-overlay" style="position:absolute; top: '+o.top+"px; left: "+o.left+"px; z-index: 10000; background: rgba(0,0,0,0.5); width: "+a+"; height: "+u+';" />');e(n.element).prepend(i);e(t).on("resize",function(){i.height(e(n.element).outerHeight()+"px");n._loader.css({top:i.outerHeight()/2-n._loader.outerHeight()/2+"px"})})}i.html(n._loader);n._loader.css({top:i.outerHeight()/2-n._loader.outerHeight()/2+"px"});break;default:e(n.element).after(n._loader)}n.disableOthers()},hide:function(){if("overlay"===this.options.position)e(this.element).find(".isloading-overlay").first().remove();else{e(this._loader).remove();e(this.element).text(e(this.element).attr("data-isloading-label"))}e(this.element).removeAttr("disabled").removeClass("disabled");this.enableOthers()},disableOthers:function(){e.each(this.options.disableOthers,function(t,n){var r=e(n);r.is("button, input, textarea")?r.attr("disabled","disabled"):r.addClass("disabled")})},enableOthers:function(){e.each(this.options.disableOthers,function(t,n){var r=e(n);r.is("button, input, textarea")?r.removeAttr("disabled"):r.removeClass("disabled")})}};e.fn[i]=function(t){return this.each(function(){if(t&&"hide"!==t||!e.data(this,"plugin_"+i))e.data(this,"plugin_"+i,new o(this,t));else{var n=e.data(this,"plugin_"+i);"hide"===t?n.hide():n.show()}})};u()})(jQuery,window,document);
+
+var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+var validExtensions = /(\.jpg|\.jpeg|\.gif|\.png)$/i;  
 var wsNotifications;
 var loader = "<i class='fa fa-refresh fa-spin'></i>";
 
@@ -72,13 +79,11 @@ $('#loginForm').submit(function(event){
    
     preventDefaultForm(event);
     
+    $('#message').fadeOut();
     var mail = $('#email').val();
     var pass = $('#password').val();
     var msg = "";    
     var data = null;    
-    
-    $('#loginButton').prop('disabled', true);
-    $('#message').fadeOut();
 
     if (!isEmail(mail)) {
         msg += text12 + " ";
@@ -99,7 +104,10 @@ $('#loginForm').submit(function(event){
     $.ajax({  
         data: data,
         url: "authentication.html",
-        type: "POST",        
+        type: "POST",
+        beforeSend: function (xhr) {
+            $.isLoading({text: loader, position: "overlay"})
+        },
         success: function (response) {
             
             if(response == null || response == undefined){
@@ -115,8 +123,8 @@ $('#loginForm').submit(function(event){
                 $('#message').fadeIn();        
             };
         },
-        complete: function () {
-            $('#loginButton').prop('disabled', false);            
+        complete: function () {            
+            $.isLoading("hide");
         },
         error: function (jqXHR, status, error) {
             showError();
@@ -126,8 +134,7 @@ $('#loginForm').submit(function(event){
 });
 
 //==============================================================================
-function isEmail(email) {
-  var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+function isEmail(email) {  
   return regex.test(email);
 }
 
@@ -262,13 +269,16 @@ function bindEstablishmentDetailsForms(){
     });
     $("#updatePasswordCashierForm").bind("submit", function (event) {
         updatePasswordCashierFormSubmit(event);
-    });
+    });    
 }
 
 function bindAffiliateDetailsForms(){
     $("#updateAffiliateBasicInformationForm").bind("submit", function (event) {
         updateAffiliateBasicInformationFormSubmit(event);
-    });            
+    });
+    $("#updateAffiliatePasswordForm").submit(function (event) {
+        updateAffiliatePassword(event);
+    });
     $("#updateAffiliateTaxForm").bind("submit", function (event) {
         updateAffiliateTaxFormSubmit(event);
     });
@@ -280,7 +290,10 @@ function bindAffiliateDetailsForms(){
 function bindCompanyDetailsForms(){
     $("#updateCompanyBasicInformationForm").bind("submit", function (event) {
         updateCompanyBasicInformationFormSubmit(event);
-    });            
+    });   
+    $("#updateCompanyPasswordForm").submit(function (event) {
+        updateCompanyPassword(event);
+    });
     $("#updateCompanyTaxForm").bind("submit", function (event) {
         updateCompanyTaxFormSubmit(event);
     });
@@ -589,7 +602,7 @@ $("#profileFreelancerForm").submit(function(event){
                     type: "post",
                     data: data,
                     beforeSend: function (xhr) {
-                        $("#saveButton").attr("disabled", "disabled");
+                        $.isLoading({text: loader, position: "overlay"})
                     },
                     success: function (data) {
                         checkAndShowErrorRequest(data);
@@ -599,7 +612,7 @@ $("#profileFreelancerForm").submit(function(event){
                     }, error: function (e1, e2, e3) {
                         showError();
                     }, complete: function (jqXHR, textStatus) {
-                        $("#saveButton").removeAttr("disabled");
+                        $.isLoading("hide");
                     }
                 });
             }
@@ -684,7 +697,7 @@ $("#createNewAffiliate").submit(function(event){
     preventDefaultForm(event);    
     
     var formData = new FormData();
-    //formData.append('file', $('#file')[0].files[0]);       
+    var logo = $('#logo')[0].files[0];    
     
     var error = "";
     var name = $("#name").val();
@@ -696,6 +709,7 @@ $("#createNewAffiliate").submit(function(event){
     var gender = $("#gender").val();   
     var brand = $("#brand").val();
     var category = $("#category").val();    
+    var description = $("#description").val();    
     
     var taxContactName = $("#taxContactName").val();
     var taxContactLastName = $("#taxContactLastName").val();
@@ -760,6 +774,18 @@ $("#createNewAffiliate").submit(function(event){
     
     if(category == "" || category == null || String(category).length < 1){
         error += "<br>" + text193;
+    }
+    
+    if(description == "" || description == null || String(description).length < 30){
+        error += "<br>" + text346;
+    }    
+    
+    if(logo != undefined && logo.size > maxFileSizeUpload){
+        error += "<br>" + text345;
+    }
+    
+    if(logo != undefined && !validExtensions.test(logo.name)){                        
+        error += "<br>" + text347;        
     }
     
     if (taxContactName.length < 2) {
@@ -846,6 +872,8 @@ $("#createNewAffiliate").submit(function(event){
                 formData.append("person.gender.id", gender);
                 formData.append("brand", brand);
                 formData.append("category", category);
+                formData.append("description", description);
+                formData.append('logo', logo);       
                 formData.append("tax.contact.person.name", taxContactName);
                 formData.append("tax.contact.person.lastName", taxContactLastName);
                 formData.append("tax.contact.person.email", taxContactEmail);
@@ -872,7 +900,7 @@ $("#createNewAffiliate").submit(function(event){
                     processData: false,
                     contentType: false,
                     beforeSend: function (xhr) {
-                        $("#saveButton").removeAttr("disabled");
+                        $.isLoading({text: loader, position: "overlay"});
                     },
                     success: function (data) {
                         checkAndShowErrorRequest(data);                        
@@ -887,7 +915,7 @@ $("#createNewAffiliate").submit(function(event){
                     }, error: function (e1, e2, e3) {
                         showError();                                                
                     },complete: function (jqXHR, textStatus) {
-                        $("#saveButton").removeAttr("disabled");
+                        $.isLoading("hide");
                     }
                 });
             }
@@ -1014,7 +1042,7 @@ $("#createEstablishmentForm").submit(function (event) {
                     processData: false,
                     contentType: false,
                     beforeSend: function (xhr) {
-                        $("#saveButton").attr("disabled","disabled");                
+                        $.isLoading({text: loader, position: "overlay"});                        
                         formData.append("id", $("#id").val());
                         formData.append("type", $("#type").val());
                         formData.append("establishment_name", name);
@@ -1050,7 +1078,7 @@ $("#createEstablishmentForm").submit(function (event) {
                     }, error: function (e1, e2, e3) {
                         showError();
                     },complete: function (jqXHR, textStatus) {
-                        $("#saveButton").removeAttr("disabled");
+                        $.isLoading("hide");
                     }
                 });
             } 
@@ -1174,7 +1202,7 @@ function updateAffiliateSubmit(event){
                     type:"post",
                     data:data,
                     beforeSend: function (xhr) {
-                        $("#saveButton").removeAttr("disabled");
+                        $.isLoading({text: loader, position: "overlay"});
                     },
                     success: function (data) {
                         checkAndShowErrorRequest(data);                                                
@@ -1184,7 +1212,7 @@ function updateAffiliateSubmit(event){
                     }, error: function (e1, e2, e3) {
                         showError();                        
                     },complete: function (jqXHR, textStatus) {
-                        $("#saveButton").removeAttr("disabled");
+                        $.isLoading("hide");
                     }
                 });
             }
@@ -1251,7 +1279,7 @@ function updateEstablishmentFormSubmit(event){
                     type:"post",
                     data:data,
                     beforeSend: function (xhr) {
-                        $("#saveButtonEstablishment").removeAttr("disabled");
+                        $.isLoading({text: loader, position: "overlay"});
                     },
                     success: function (data) {
                         checkAndShowErrorRequest(data);
@@ -1262,7 +1290,7 @@ function updateEstablishmentFormSubmit(event){
                     }, error: function (e1, e2, e3) {
                         showError();                                                
                     },complete: function (jqXHR, textStatus) {
-                        $("#saveButtonEstablishment").removeAttr("disabled");
+                        $.isLoading("hide");
                     }
                 });
             } 
@@ -1332,7 +1360,7 @@ function updateResponsableFormSubmit(event){
                     type:"post",
                     data:data,
                     beforeSend: function (xhr) {
-                        $("#saveButtonResponsable").removeAttr("disabled");
+                        $.isLoading({text: loader, position: "overlay"})
                     },
                     success: function (data) {
                         checkAndShowErrorRequest(data);
@@ -1343,7 +1371,7 @@ function updateResponsableFormSubmit(event){
                     }, error: function (e1, e2, e3) {
                         showError();
                     },complete: function (jqXHR, textStatus) {
-                        $("#saveButtonResponsable").removeAttr("disabled");
+                        $.isLoading("hide");
                     }
                 });
 
@@ -1417,7 +1445,7 @@ function updateCashierInfomation(event){
                     type:"post",
                     data:data,
                     beforeSend: function (xhr) {
-                        $("#updateCahierButton").attr("disabled","disabled");
+                        $.isLoading({text: loader, position: "overlay"})
                     },
                     success: function (data) {
                         checkAndShowErrorRequest(data);
@@ -1427,7 +1455,7 @@ function updateCashierInfomation(event){
                     }, error: function (e1, e2, e3) {
                         showError();                                                
                     },complete: function (jqXHR, textStatus) {
-                        $("#updateCahierButton").removeAttr("disabled");
+                        $.isLoading("hide");
                     }
                 });
             }
@@ -1489,7 +1517,7 @@ function updatePasswordCashierFormSubmit(event) {
                     type: "post",
                     data:data,
                     beforeSend: function (xhr) {
-                        $("#updatePasswordCashierButton").attr("disabled", "disabled");
+                        $.isLoading({text: loader, position: "overlay"})
                     },
                     success: function (data) {
                         checkAndShowErrorRequest(data);
@@ -1499,7 +1527,7 @@ function updatePasswordCashierFormSubmit(event) {
                     }, error: function (e1, e2, e3) {
                         showError();                                                
                     },complete: function (jqXHR, textStatus) {
-                        $("#updatePasswordCashierButton").removeAttr("disabled");
+                        $.isLoading("hide");
                     }
                 });
             }
@@ -1590,7 +1618,7 @@ function createCashierFormSubmit(event){
                     type: "post",
                     data:data,
                     beforeSend: function (xhr) {
-                        $("#createCashierButton").attr("disabled", "disabled");                
+                        $.isLoading({text: loader, position: "overlay"})                
                     },
                     success: function (data) {
                         checkAndShowErrorRequest(data);
@@ -1600,7 +1628,7 @@ function createCashierFormSubmit(event){
                     }, error: function (e1, e2, e3) {
                         showError();                                                
                     },complete: function (jqXHR, textStatus) {
-                        $("#createCashierButton").removeAttr("disabled");
+                        $.isLoading("hide");
                     }
                 });
             }
@@ -1615,7 +1643,7 @@ $("#createNewCompanyForm").submit(function(event){
     preventDefaultForm(event);    
     
     var formData = new FormData();
-    //formData.append('file', $('#file')[0].files[0]);    
+    var logo = $('#logo')[0].files[0];    
     
     var error = "";
     var name = $("#name").val();
@@ -1628,6 +1656,7 @@ $("#createNewCompanyForm").submit(function(event){
     var category = $("#category").val();    
     var password = $("#password").val();
     var password2 = $("#password2").val();        
+    var description = $("#description").val();        
     
     var taxContactName = $("#taxContactName").val();
     var taxContactLastName = $("#taxContactLastName").val();
@@ -1672,6 +1701,18 @@ $("#createNewCompanyForm").submit(function(event){
     if (password.length < 5 || password.length > 8) {
         error += "<br>" + text136;
     }    
+    
+    if(description == "" || description == null || String(description).length < 30){
+        error += "<br>" + text346;
+    }    
+    
+    if(logo != undefined && logo.size > maxFileSizeUpload){
+        error += "<br>" + text345;
+    }
+    
+    if(logo != undefined && !validExtensions.test(logo.name)){                        
+        error += "<br>" + text347;        
+    }
     
     if (contactName.length < 2) {
         error += "<br>" + text280;
@@ -1758,6 +1799,8 @@ $("#createNewCompanyForm").submit(function(event){
                 formData.append("person.email", contactEmail);
                 formData.append("category", category);
                 formData.append("password", $.md5(String(password)));
+                formData.append("description", description);
+                formData.append('logo', logo);       
                 
                 formData.append("tax.contact.person.name", taxContactName);
                 formData.append("tax.contact.person.lastName", taxContactLastName);
@@ -1785,7 +1828,7 @@ $("#createNewCompanyForm").submit(function(event){
                     processData: false,
                     contentType: false,
                     beforeSend: function (xhr) {
-                        $("#saveButton").removeAttr("disabled");
+                        $.isLoading({text: loader, position: "overlay"})
                     },
                     success: function (data) {
                         checkAndShowErrorRequest(data);
@@ -1800,7 +1843,7 @@ $("#createNewCompanyForm").submit(function(event){
                     }, error: function (e1, e2, e3) {
                         showError();                        
                     },complete: function (jqXHR, textStatus) {
-                        $("#saveButton").removeAttr("disabled");                        
+                        $.isLoading("hide");
                     }
                 });
             }
@@ -1811,18 +1854,17 @@ $("#createNewCompanyForm").submit(function(event){
 function updateAffiliateBasicInformationFormSubmit(event){
     
     preventDefaultForm(event);
-    var formData = new FormData();    
-
+    var formData = new FormData(); 
+    var logo = $('#logo')[0].files[0];    
     var error = "";
     var name = $("#name").val();
     var lastName = $("#lastName").val();
     var email = $("#email").val();
-    var phone = $("#phone").val();
-    var password = $("#password").val();
-    var password2 = $("#password2").val();
+    var phone = $("#phone").val();    
     var gender = $("#gender").val();
     var brand = $("#brand").val();
     var category = $("#category").val();
+    var description = $("#description").val();
 
     if (name.length < 2) {
         error += "<br>" + text104;
@@ -1844,25 +1886,24 @@ function updateAffiliateBasicInformationFormSubmit(event){
         error += "<br>" + text112;
     }
 
-    if (password != password2) {
-        alertify.alert(text119);
-        return;
-    }
-
-    if (password.length < 4) {
-        error += "<br>" + text106;
-    }
-
-    if (password.length < 5 || password.length > 8) {
-        error += "<br>" + text136;
-    }
-
     if (brand.length < 2) {
         error += "<br>" + text272;
     }
 
     if (category == "" || category == null || String(category).length < 1) {
         error += "<br>" + text193;
+    }
+    
+    if(logo != undefined && logo.size > maxFileSizeUpload){
+        error += "<br>" + text345;
+    }
+    
+    if(logo != undefined && !validExtensions.test(logo.name)){                        
+        error += "<br>" + text347;        
+    }
+    
+    if(description == "" || description == null || String(description).length < 30){
+        error += "<br>" + text346;
     }
 
     if (error.length > 1) {
@@ -1881,16 +1922,18 @@ function updateAffiliateBasicInformationFormSubmit(event){
                     processData: false,
                     contentType: false,
                     beforeSend: function (xhr) {                        
-                        $("#buttonSaveAffiliate").attr("disabled", "disabled");
+                        $.isLoading({text: loader, position: "overlay"})
                         formData.append("affiliateId", $("#affiliateId").val());
                         formData.append("person.name", name);
                         formData.append("person.lastName", lastName);
                         formData.append("person.email", email);
                         formData.append("person.phone", String(phone));
-                        formData.append("password", $.md5(String(password)));
+                        
                         formData.append("person.gender.id", gender);
                         formData.append("brand", brand);
                         formData.append("category", category);
+                        formData.append('logo', logo);       
+                        formData.append("description", description);
                     },
                     success: function (data) {
                         checkAndShowErrorRequest(data);
@@ -1902,7 +1945,7 @@ function updateAffiliateBasicInformationFormSubmit(event){
                     }, error: function (e1, e2, e3) {
                         showError();
                     }, complete: function (jqXHR, textStatus) {
-                        $("#buttonSaveAffiliate").removeAttr("disabled");
+                        $.isLoading("hide");
                     }
                 });
             }
@@ -1997,7 +2040,7 @@ function updateAffiliateTaxFormSubmit(event){
                     processData: false,
                     contentType: false,
                     beforeSend: function (xhr) {
-                        $("#buttonSaveTaxInformation").attr("disabled", "disabled");
+                        $.isLoading({text: loader, position: "overlay"})
                         formData.append("affiliateId", $("#affiliateId").val());
                         formData.append("tax.contact.person.name", taxContactName);
                         formData.append("tax.contact.person.lastName", taxContactLastName);
@@ -2022,7 +2065,7 @@ function updateAffiliateTaxFormSubmit(event){
                     }, error: function (e1, e2, e3) {
                         showError();                        
                     }, complete: function (jqXHR, textStatus) {
-                        $("#buttonSaveTaxInformation").removeAttr("disabled");
+                        $.isLoading("hide");
                     }
                 });
             }
@@ -2073,7 +2116,7 @@ function updateAffiliateBankFormSubmit(event){
                     processData: false,
                     contentType: false,
                     beforeSend: function (xhr) {
-                        $("#saveButtonBank").attr("disabled", "disabled");
+                        $.isLoading({text: loader, position: "overlay"})
                         formData.append("affiliateId", $("#affiliateId").val());
                         formData.append("owner.account.bank", ownerAccountBank);
                         formData.append("bank", bank);
@@ -2090,7 +2133,7 @@ function updateAffiliateBankFormSubmit(event){
                     }, error: function (e1, e2, e3) {
                         showError();                        
                     }, complete: function (jqXHR, textStatus) {
-                        $("#saveButtonBank").removeAttr("disabled");
+                        $.isLoading("hide");
                     }
                 });
             }
@@ -2120,6 +2163,7 @@ function updateCompanyBasicInformationFormSubmit(event){
     
     preventDefaultForm(event);
     var formData = new FormData();
+    var logo = $('#logo')[0].files[0];    
     var error = "";
     var name = $("#name").val();
     var brand = $("#brand").val();
@@ -2129,8 +2173,7 @@ function updateCompanyBasicInformationFormSubmit(event){
     var contactPhone = $("#contactPhone").val();
     var contactEmail = $("#contactEmail").val();
     var category = $("#category").val();
-    var password = $("#password").val();
-    var password2 = $("#password2").val();
+    var description = $("#description").val();    
 
     if (name.length < 2) {
         error += "<br>" + text104;
@@ -2142,19 +2185,18 @@ function updateCompanyBasicInformationFormSubmit(event){
 
     if (category == "" || category == null || String(category).length < 1) {
         error += "<br>" + text193;
+    }  
+    
+    if(logo != undefined && logo.size > maxFileSizeUpload){
+        error += "<br>" + text345;
     }
-
-    if (password != password2) {
-        alertify.alert(text119);
-        return;
+    
+    if(logo != undefined && !validExtensions.test(logo.name)){                        
+        error += "<br>" + text347;        
     }
-
-    if (password.length < 4) {
-        error += "<br>" + text106;
-    }
-
-    if (password.length < 5 || password.length > 8) {
-        error += "<br>" + text136;
+    
+    if(description == "" || description == null || String(description).length < 30){
+        error += "<br>" + text346;
     }
 
     if (error.length > 1) {
@@ -2173,7 +2215,7 @@ function updateCompanyBasicInformationFormSubmit(event){
                     processData: false,
                     contentType: false,
                     beforeSend: function (xhr) {
-                        $("#buttonSaveBasicInformation").attr("disabled", "disabled");
+                        $.isLoading({text: loader, position: "overlay"})
                         formData.append("companyId", $("#companyId").val());
                         formData.append("name", name);
                         formData.append("brand", brand);
@@ -2183,7 +2225,8 @@ function updateCompanyBasicInformationFormSubmit(event){
                         formData.append("person.phone", String(contactPhone));
                         formData.append("person.email", contactEmail);
                         formData.append("category", category);
-                        formData.append("password", $.md5(String(password)));
+                        formData.append('logo', logo);       
+                        formData.append("description", description);
                     },
                     success: function (data) {
                         checkAndShowErrorRequest(data);
@@ -2193,7 +2236,7 @@ function updateCompanyBasicInformationFormSubmit(event){
                     }, error: function (e1, e2, e3) {
                         showError();
                     }, complete: function (jqXHR, textStatus) {
-                        $("#buttonSaveBasicInformation").removeAttr("disabled");
+                        $.isLoading("hide");
                     }
                 });
             }
@@ -2289,6 +2332,7 @@ function updateCompanyTaxFormSubmit(event){
                     processData: false,
                     contentType: false,
                     beforeSend: function (xhr) {
+                        $.isLoading({text: loader, position: "overlay"})
                         formData.append("companyId", $("#companyId").val());
                         formData.append("tax.contact.person.name", taxContactName);
                         formData.append("tax.contact.person.lastName", taxContactLastName);
@@ -2311,7 +2355,7 @@ function updateCompanyTaxFormSubmit(event){
                     }, error: function (e1, e2, e3) {
                         showError();                                                
                     },complete: function (jqXHR, textStatus) {
-                        $("#saveButton").removeAttr("disabled");
+                        $.isLoading("hide");
                     }
                 });
             }
@@ -2365,7 +2409,9 @@ function updateCompanyBankFormSubmit(event){
                     data: formData,
                     processData: false,
                     contentType: false,
-                    success: function (data) {
+                    beforeSend: function (xhr) {
+                        $.isLoading({text: loader, position: "overlay"})
+                    }, success: function (data) {
                         checkAndShowErrorRequest(data);
                         if (data.updated === true) {
                             showSuccess();
@@ -2373,10 +2419,129 @@ function updateCompanyBankFormSubmit(event){
                     }, error: function (e1, e2, e3) {
                         showError();                                                
                     },complete: function (jqXHR, textStatus) {
-                        $("#saveButton").removeAttr("disabled");
+                        $.isLoading("hide");
                     }
                 });
             }
         });
     }    
+}
+
+$("#updateAffiliatePasswordForm").submit(function(event){
+    updateAffiliatePassword(event);
+});
+
+function updateAffiliatePassword(event){
+    preventDefaultForm(event);
+    
+    var error = "";
+    var formData = new FormData(); 
+    var password = $("#password").val();
+    var password2 = $("#password2").val();
+    
+    if (password != password2) {
+        alertify.alert(text119);
+        return;
+    }
+
+    if (password.length < 4) {
+        error += "<br>" + text106;
+    }
+
+    if (password.length < 5 || password.length > 8) {
+        error += "<br>" + text136;
+    }    
+
+    if (error.length > 1) {
+        alertify.alert(text113 + "<br>" + error);
+    } else {
+        alertify.confirm(text290, function (e) {
+            if (e) {
+                formData.append("password", $.md5(String(password)));
+                formData.append("password2", $.md5(String(password2)));
+                $.ajax({
+                    cache: false,
+                    url: "updateAffiliatePasswordProcess.html",
+                    type: "post",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    beforeSend: function (xhr) {
+                        $.isLoading({text: loader, position: "overlay"})                        
+                    },success: function (data, textStatus, jqXHR) {
+                        checkAndShowErrorRequest(data);
+                        if (data.updated === true) {
+                            showSuccess();
+                        }
+                    },error: function (jqXHR, textStatus, errorThrown) {
+                        showError();
+                    },complete: function (jqXHR, textStatus) {
+                        $.isLoading("hide");
+                    }                    
+                });
+
+            }
+        });
+    }    
+    
+}
+
+$("#updateCompanyPasswordForm").submit(function(event){
+    updateCompanyPassword(event);
+});
+
+function updateCompanyPassword(event){
+    
+    preventDefaultForm(event);
+    
+    var error = "";
+    var formData = new FormData(); 
+    var password = $("#password").val();
+    var password2 = $("#password2").val();
+    
+    if (password != password2) {
+        alertify.alert(text119);
+        return;
+    }
+
+    if (password.length < 4) {
+        error += "<br>" + text106;
+    }
+
+    if (password.length < 5 || password.length > 8) {
+        error += "<br>" + text136;
+    }    
+
+    if (error.length > 1) {
+        alertify.alert(text113 + "<br>" + error);
+    } else {
+        alertify.confirm(text290, function (e) {
+            if (e) {
+                formData.append("password", $.md5(String(password)));
+                formData.append("password2", $.md5(String(password2)));
+                $.ajax({
+                    cache: false,
+                    url: "updateCompanyPasswordProcess.html",
+                    type: "post",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    beforeSend: function (xhr) {
+                        $.isLoading({text: loader, position: "overlay"})                        
+                    },success: function (data, textStatus, jqXHR) {
+                        checkAndShowErrorRequest(data);
+                        if (data.updated === true) {
+                            showSuccess();
+                        }
+                    },error: function (jqXHR, textStatus, errorThrown) {
+                        showError();
+                    },complete: function (jqXHR, textStatus) {
+                        $.isLoading("hide");
+                    }                    
+                });
+
+            }
+        });
+    }    
+    
 }

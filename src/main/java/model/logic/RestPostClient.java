@@ -17,7 +17,7 @@ public class RestPostClient {
 
     //==========================================================================        
     @Deprecated
-    public static String createFreelancer(HashMap<String, Object> parameters) throws IOException {
+    public static String createFreelancer(HashMap<String, Object> parameters) throws IOException, Exception {
 
         String returnString = null;
         RestClient rc = new RestClient(
@@ -46,7 +46,7 @@ public class RestPostClient {
 
     //==========================================================================    
     @Deprecated
-    public static String sendReceive(HashMap<String, Object> parameters, String uri) throws IOException {
+    public static String sendReceive(HashMap<String, Object> parameters, String uri) throws IOException, Exception {
 
         String returnString = null;
         RestClient rc = new RestClient(
@@ -74,7 +74,7 @@ public class RestPostClient {
     }
     
     //==========================================================================        
-    public static String sendReceive(HashMap<String, Object> parameters,String apiUrl,String version, String uri) throws IOException {
+    public static String sendReceive(HashMap<String, Object> parameters,String apiUrl,String version, String uri) throws IOException, Exception {
         
         String returnString = null;
         RestClient rc = new RestClient(
@@ -102,7 +102,7 @@ public class RestPostClient {
     }
     
     //==========================================================================        
-    public static String sendReceive(String apiUrl,String version, String uri) throws IOException {
+    public static String sendReceive(String apiUrl,String version, String uri) throws IOException, Exception {
         
         String returnString = null;
         RestClient rc = new RestClient(

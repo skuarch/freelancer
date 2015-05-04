@@ -1,19 +1,20 @@
 package controllers.application;
 
 import com.google.gson.Gson;
-import java.io.IOException;
 import java.util.HashMap;
+import java.util.Locale;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.beans.AuthenticationBean;
 import model.beans.FreelancerBasic;
 import model.logic.Constants;
 import model.logic.RestPostClient;
+import model.util.HandlerExceptionUtil;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.log4j.Logger;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -28,6 +29,9 @@ import org.springframework.web.servlet.ModelAndView;
 public class Authentication extends BaseController {
 
     private static final Logger logger = Logger.getLogger(Authentication.class);
+    
+    @Autowired
+    private MessageSource messageSource;
     @Autowired
     private HttpSession session;
     @Autowired
@@ -35,11 +39,10 @@ public class Authentication extends BaseController {
 
     //==========================================================================
     @RequestMapping(value = {"authentication", "/authentication"}, method = RequestMethod.POST)
-    public ModelAndView Authentication(@RequestParam("email") String email, @RequestParam("password") String password, HttpServletResponse response) {
+    public ModelAndView Authentication(@RequestParam("email") String email, @RequestParam("password") String password, HttpServletResponse response, Locale locale) {
         
-        HashMap parameters = null;
-        ModelAndView mav = new ModelAndView();
-        JSONObject jsono = null;
+        HashMap parameters;
+        ModelAndView mav = new ModelAndView();        
         JSONObject jsonReturn = null;
         String tmp = null;
         FreelancerBasic freelancerBasic = null;
@@ -96,8 +99,9 @@ public class Authentication extends BaseController {
             
             mav.addObject("json", new JSONObject(ab).toString());            
 
-        } catch (IOException | JSONException e) {
+        } catch (Exception e) {
             logger.error("authentication", e);
+            HandlerExceptionUtil.json(mav, messageSource, e, logger, locale, "text116");
         }
 
         return mav;

@@ -46,19 +46,7 @@
                                 <label><spring:message code="text162" /></label>
                                 <input name="phone" id="phone" placeholder="<spring:message code="text89"/>" value="${affiliate.person.getPhone()}" min="1" max="999999999999" class="form-control" type="number" required="required" tabindex="4" />
                             </div> 
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="form-group"> 
-                                <label><spring:message code="text159" /></label>
-                                <input name="password" id="password" placeholder="<spring:message code="text95"/>" maxlength="8" class="form-control" type="password" required="required" tabindex="5" />
-                            </div> 
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="form-group"> 
-                                <label><spring:message code="text160" /></label>
-                                <input name="password2" id="password2" placeholder="<spring:message code="text95"/>" maxlength="8" class="form-control" type="password" required="required" tabindex="6"/>
-                            </div> 
-                        </div>
+                        </div>                        
                         <div class="col-lg-6">
                             <div class="form-group"> 
                                 <label><spring:message code="text86" /></label>
@@ -84,13 +72,28 @@
                                 </select>
                             </div> 
                         </div>
-                    </div>                     
+                        <div class="col-lg-6">
+                            <div class="form-group"> 
+                                <label><spring:message code="text344"/> </label>
+                                <input name="logo" id="logo" placeholder="" maxlength="55" class="form-control" type="file" tabindex="8" />
+                            </div> 
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label><spring:message code="text342" /></label>                                                
+                                <textarea id="description" name="description" class="form-control" cols="1" rows="6" placeholder="<spring:message code="text343" />">${affiliate.getDescription()}</textarea>
+                            </div>
+                        </div>
+                    </div> 
+                    <button type="button" class="btn btn-block" data-toggle="modal" data-target="#DetailModal">
+                        <spring:message code="text348" />
+                    </button>        
                     <button type="submit" id="buttonSaveAffiliate" class="btn btn-success btn-block btn-lg">
                         <spring:message code="text325"/>
-                    </button>            
+                    </button> 
                 </form>
-            </div><!-- end panel-body -->
-        </div> 
+            </div><!-- end panel-body -->        
+        </div>
 
         <div class="panel panel-default">
             <div class="panel-heading">
@@ -277,5 +280,37 @@
             </div>
         </div>
     </div>
+</div>
+<div class="modal fade" id="DetailModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">                    
+                    <spring:message code="text348" />
+                </h4>
+            </div>
+            <div class="modal-body" id="outputDetail">
+                <form id="updateAffiliatePasswordForm" name="updateAffiliatePasswordForm" method="post" action="">
+                    <div class="form-group"> 
+                        <label><spring:message code="text159" /></label>
+                        <input name="password" id="password" placeholder="<spring:message code="text95"/>" maxlength="8" class="form-control" type="password" required="required"/>
+                    </div> 
+                    <div class="form-group"> 
+                        <label><spring:message code="text160" /></label>
+                        <input name="password2" id="password2" placeholder="<spring:message code="text95"/>" maxlength="8" class="form-control" type="password" required="required"/>
+                    </div> 
+                    <button class="btn btn-block btn-primary">
+                        <spring:message code="text348" />
+                    </button>
+                </form>
+            </div>
+            <div class="modal-footer">                
+                <button type="button" class="btn btn-primary" data-dismiss="modal">                    
+                    <spring:message code="text248" />
+                </button>
+            </div>
+        </div>
+    </div>                
 </div>
 <script type="text/javascript">eval("${js}");</script>        

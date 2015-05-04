@@ -3,7 +3,7 @@ package model.beans;
 import java.io.Serializable;
 
 /**
- *
+ * basic version of Freelancer.
  * @author skuarch
  */
 public class FreelancerBasic implements Serializable {

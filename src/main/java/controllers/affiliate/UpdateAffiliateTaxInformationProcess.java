@@ -46,10 +46,10 @@ public class UpdateAffiliateTaxInformationProcess extends BaseController {
             Locale locale
     ){
 
-        HashMap<String, Object> parameters = null;
-        String json = null;
-        ModelAndView mav = new ModelAndView("application/json");
-        JSONObject jsono = new JSONObject();
+        HashMap<String, Object> parameters;
+        String json;
+        ModelAndView mav = null;
+        JSONObject jsono;
 
         try {
             
@@ -75,6 +75,7 @@ public class UpdateAffiliateTaxInformationProcess extends BaseController {
                     Constants.API_FIRST_VERSION,
                     Constants.URI_AFFILIATE_UPDATE_TAX_INFORMATION);
             jsono = new JSONObject(json);
+            mav = new ModelAndView("application/json");
             mav.addObject("json", jsono);
             
         } catch (Exception e) {

@@ -2,7 +2,6 @@ package controllers.company;
 
 import com.google.gson.Gson;
 import controllers.application.BaseController;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Locale;
 import javax.servlet.http.HttpSession;
@@ -11,7 +10,6 @@ import model.logic.Constants;
 import model.logic.RestPostClient;
 import model.util.HandlerExceptionUtil;
 import org.apache.log4j.Logger;
-import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
@@ -59,7 +57,7 @@ public class CompanyListTable extends BaseController {
             companies = new Gson().fromJson(json, Company[].class);
             mav.addObject("companies", companies);
 
-        } catch (IOException | JSONException e) {
+        } catch (Exception e) {
             HandlerExceptionUtil.alert(mav, messageSource, e, logger, locale);
         }
 

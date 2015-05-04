@@ -68,7 +68,7 @@ public class CreateFreelancerProcess extends BaseController {
             jsono = new JSONObject(json);
             mav.addObject("json", jsono);
 
-        } catch (IOException | JSONException e) {
+        } catch (Exception e) {
             HandlerExceptionUtil.json(mav, messageSource, e, logger, locale, "text116");
         }
 

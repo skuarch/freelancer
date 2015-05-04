@@ -1,17 +1,18 @@
 package controllers.affiliate;
 
 import controllers.application.BaseController;
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.util.HashMap;
 import java.util.Locale;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.beans.FreelancerBasic;
 import model.logic.Constants;
-import model.logic.RestPostClient;
+import model.util.AffiliateUtil;
 import model.util.ApplicationUtil;
+import model.util.FileUtil;
 import model.util.FreelancerUtil;
 import model.util.HandlerExceptionUtil;
 import org.apache.log4j.Logger;
@@ -35,8 +36,11 @@ public class CreateNewAffiliateProcess extends BaseController {
     private MessageSource messageSource;
     @Autowired
     private HttpSession session;
+    @Autowired
+    ServletContext context;
     private static final Logger logger = Logger.getLogger(CreateNewAffiliateProcess.class);
 
+    //==========================================================================
     @RequestMapping(value = {"createNewAffiliateProcess", "/createNewAffiliateProcess"})
     public ModelAndView createNewAffiliate(
             @RequestParam("person.name") String personName,
@@ -47,6 +51,8 @@ public class CreateNewAffiliateProcess extends BaseController {
             @RequestParam("person.gender.id") short personGenderId,
             @RequestParam("brand") String brand,
             @RequestParam String category,
+            @RequestParam(value = "logo", required = false) MultipartFile logoMultiPartFile,
+            @RequestParam("description") String description,
             @RequestParam("tax.contact.person.name") String taxContactPersonName,
             @RequestParam("tax.contact.person.lastName") String taxContactPersonLastName,
             @RequestParam("tax.contact.person.email") String taxContactPersonEmail,
@@ -63,46 +69,33 @@ public class CreateNewAffiliateProcess extends BaseController {
             @RequestParam("bank") String bank,
             @RequestParam("clabe") String clabe,
             @RequestParam("email.notifications") String emailNotifications,
-            @RequestParam(value = "file", required = false) MultipartFile file,
             HttpServletResponse response,
+            HttpServletRequest request,
             Locale locale) {
 
         ModelAndView mav = getModelAndViewJson();
         HashMap<String, Object> parameters = null;
-        String json = null;
-        JSONObject jsono = null;
-        FreelancerBasic freelancerBasic = null;
+        String json;
+        JSONObject jsono;
+        FreelancerBasic freelancerBasic;
+        File logoFile = null;
+        boolean hasLogoFile = false;
 
         try {
 
-            //upload file //change this
-            if (file != null) {
+            //basic configuration
+            setHeaderNoChache(response);
 
-                byte[] bytes = file.getBytes();
-
-                // Creating the directory to store file
-                String rootPath = "/home/skuarch/Documents/";
-                File dir = new File(rootPath + File.separator);
-                if (!dir.exists()) {
-                    dir.mkdirs();
-                }
-
-                // Create the file on server
-                File serverFile = new File(dir.getAbsolutePath()
-                        + File.separator + "elArchivo");
-                BufferedOutputStream stream = new BufferedOutputStream(
-                        new FileOutputStream(serverFile));
-                stream.write(bytes);
-                stream.close();
-
-                logger.info("Server File Location="
-                        + serverFile.getAbsolutePath());
-
+            // transfer file if file is not null
+            if (logoMultiPartFile != null) {
+                logoFile = FileUtil.transferFileWithOtherName(logoMultiPartFile, Constants.PATH_UPLOADS_TMP,"affiliate_logo");
+                hasLogoFile = true;
             }
 
-            setHeaderNoChache(response);
+            //get freelancer from session, this is who created the affliate
             freelancerBasic = FreelancerUtil.getFreelancerBasic(session);
 
+            //create parameters
             parameters = ApplicationUtil.createParameters(
                     personName,
                     personLastName,
@@ -112,6 +105,7 @@ public class CreateNewAffiliateProcess extends BaseController {
                     personGenderId,
                     brand,
                     category,
+                    description,
                     taxContactPersonName,
                     taxContactPersonLastName,
                     taxContactPersonEmail,
@@ -131,19 +125,26 @@ public class CreateNewAffiliateProcess extends BaseController {
                     freelancerBasic.getId()
             );
 
-            json = RestPostClient.sendReceive(
-                    parameters,
-                    Constants.API_URL,
-                    Constants.API_FIRST_VERSION,
-                    Constants.URI_FREELANCER_CREATE_AFFILIATE);
+            //the request has a file
+            if (hasLogoFile) {
+                //send parameters and upload the file
+                json = AffiliateUtil.sendParametersAndUploadFile(parameters, Constants.URI_FREELANCER_CREATE_AFFILIATE, logoFile, "logoFile");
+            } else {
+                //only send parameters
+                json = AffiliateUtil.sendParameters(parameters, Constants.URI_FREELANCER_CREATE_AFFILIATE);
+            }
+
             jsono = new JSONObject(json);
             mav.addObject("json", jsono);
 
         } catch (Exception e) {
             HandlerExceptionUtil.json(mav, messageSource, e, logger, locale, "text116");
         } finally {
-            parameters = null;
+            //free some memory            
             freelancerBasic = null;
+
+            // file is temporal then it should be delete
+            FileUtil.deleteFile(logoFile);
         }
 
         return mav;

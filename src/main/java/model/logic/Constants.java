@@ -10,6 +10,10 @@ public class Constants {
     public static final short COMPANY = 2;
     public static final int INTERVAL_SESSION_CHECK = 60000;
     public static final int INCREASE_COUNTER = 60;
+    public static final String PATH_UPLOADS_TMP = "/opt/freelancer/uploads/";
+    public static final int CONNECTION_TIMEOUT = 2000;
+    public static final int READ_TIMEOUT = 2000;
+    public static final int MAX_FILE_SIZE_UPLOAD = 5242880; // 5 mb
     
     public static final String API_URL = "http://localhost/api-rec";
     public static final String API_FIRST_VERSION = "/v1";
@@ -23,6 +27,7 @@ public class Constants {
     public static final String URI_FREELANCER_UPDATE_PASSWORD = "/freelancer/update/password";
     public static final String URI_AFFILIATE_CREATE = "/affiliate/create";
     public static final String URI_AFFILIATE_CREATE_ESTABLISHMENT = "/affiliate/create/establishment";
+    public static final String URI_AFFILIATE_UPDATE_PASSWORD = "/affiliate/update/password";
     public static final String URI_AFFILIATE_UPDATE_BASIC_INFORMATION = "/affiliate/update/basic/information";
     public static final String URI_AFFILIATE_UPDATE_TAX_INFORMATION = "/affiliate/update/tax/information";
     public static final String URI_AFFILIATE_UPDATE_BANK_INFORMATION = "/affiliate/update/bank/information";
@@ -44,6 +49,7 @@ public class Constants {
     public static final String URI_COMPANY_UPDATE_BASIC_INFORMATION = "/company/update/basic/information";   
     public static final String URI_COMPANY_UPDATE_TAX_INFORMATION = "/company/update/tax/information";
     public static final String URI_COMPANY_UPDATE_BANK_INFORMATION = "/company/update/bank/information";
+    public static final String URI_COMPANY_UPDATE_PASSWORD = "/company/update/password";
 
     public static short getAFFILIATE() {
         return AFFILIATE;
@@ -179,6 +185,14 @@ public class Constants {
 
     public static String getURI_COMPANY_CREATE_ESTABLISHMENT() {
         return URI_COMPANY_CREATE_ESTABLISHMENT;
+    }
+
+    public static int getMAX_FILE_SIZE_UPLOAD() {
+        return MAX_FILE_SIZE_UPLOAD;
+    }
+    
+    public static int getMaxFileSizeUpload() {
+        return MAX_FILE_SIZE_UPLOAD;
     }
     
     

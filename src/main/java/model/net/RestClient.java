@@ -58,8 +58,8 @@ public class RestClient {
         hurlc = (HttpURLConnection) url.openConnection();
         //hurlc.setRequestProperty("Content-Type", "application/json");
         //hurlc.setRequestProperty("Accept", "application/json");
-        hurlc.setReadTimeout(10000);
-        hurlc.setConnectTimeout(15000);
+        hurlc.setReadTimeout(100000);
+        hurlc.setConnectTimeout(100000);
         hurlc.setRequestMethod("POST");
         hurlc.setDoInput(true);
         hurlc.setDoOutput(true);
@@ -88,10 +88,8 @@ public class RestClient {
 
         } catch (IOException e) {
             throw e;
-        } finally {
-
         }
-
+        
     }
 
     //==========================================================================
@@ -108,8 +106,8 @@ public class RestClient {
         try {
 
             stringBuilder = new StringBuilder();
-            inputStream = hurlc.getInputStream();            
-            bufferedReader = new BufferedReader(new InputStreamReader(inputStream,"UTF-8"));            
+            inputStream = hurlc.getInputStream();
+            bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
             while ((tmp = bufferedReader.readLine()) != null) {
                 stringBuilder.append(tmp);
             }
@@ -146,7 +144,7 @@ public class RestClient {
     /**
      * close all streams.
      */
-    public void closeStreams() {
+    public void closeStreams() throws Exception {
 
         try {
             closeBufferedReader(bufferedReader);
@@ -154,7 +152,37 @@ public class RestClient {
             closeOutputStream(outputStream);
             closeBufferedWriter(bufferedWriter);
         } catch (Exception e) {
-            e.printStackTrace();
+            throw e;
+        }
+
+    }
+
+    //==========================================================================
+    /**
+     * set property to HttpUrlConnection.
+     *
+     * @param key String
+     * @param value String
+     * @throws Exception if hurlc is null
+     */
+    public void setRequestProperty(String key, String value) throws Exception {
+
+        if(key == null || key.length() < 1){
+            throw new IllegalArgumentException("key is null or empty");
+        }
+        
+        if(value == null || value.length() < 1){
+            throw new IllegalArgumentException("value is null or empty");
+        }
+        
+        try {
+            if (hurlc != null) {
+                hurlc.setRequestProperty(key, value);
+            } else {
+                throw new Exception("hurlc is null");
+            }
+        } catch (Exception e) {
+            throw e;
         }
 
     }
@@ -202,7 +230,7 @@ public class RestClient {
 
     //==========================================================================
     /**
-     * close the outputStream.
+     * close outputStream.
      *
      * @param outputStream
      */
@@ -243,6 +271,8 @@ public class RestClient {
     //==========================================================================
     /**
      * close BufferedReader.
+     * @param bufferedReader
+     * @throws Exception 
      */
     public static void closeBufferedReader(BufferedReader bufferedReader) throws Exception {
 

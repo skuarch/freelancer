@@ -11,7 +11,9 @@ import javax.servlet.http.HttpSession;
 import model.beans.FreelancerBasic;
 import model.logic.Constants;
 import model.logic.RestPostClient;
+import model.util.AffiliateUtil;
 import model.util.ApplicationUtil;
+import model.util.FileUtil;
 import model.util.FreelancerUtil;
 import model.util.HandlerExceptionUtil;
 import org.apache.log4j.Logger;
@@ -49,6 +51,8 @@ public class CreateNewCompanyProcess extends BaseController {
             @RequestParam("person.email") String personEmail,
             @RequestParam("category") String category,
             @RequestParam("password") String password,
+            @RequestParam(value = "logo", required = false) MultipartFile logoMultiPartFile,
+            @RequestParam("description") String description,
             @RequestParam("tax.contact.person.name") String taxContactPersonName,
             @RequestParam("tax.contact.person.lastName") String taxContactPersonLastName,
             @RequestParam("tax.contact.person.email") String taxContactPersonEmail,
@@ -74,32 +78,16 @@ public class CreateNewCompanyProcess extends BaseController {
         String json = null;
         JSONObject jsono = null;
         FreelancerBasic freelancerBasic = null;
+        File logoFile = null;
+        boolean hasLogoFile = false;
 
         try {
-
-            //upload file //change this
-            if (file != null) {
-
-                byte[] bytes = file.getBytes();
-
-                // Creating the directory to store file
-                String rootPath = "/home/skuarch/Documents/";
-                File dir = new File(rootPath + File.separator);
-                if (!dir.exists()) {
-                    dir.mkdirs();
-                }
-
-                // Create the file on server
-                File serverFile = new File(dir.getAbsolutePath()
-                        + File.separator + "elArchivo");
-                BufferedOutputStream stream = new BufferedOutputStream(
-                        new FileOutputStream(serverFile));
-                stream.write(bytes);
-                stream.close();
-
-                logger.info("Server File Location="
-                        + serverFile.getAbsolutePath());
-
+            
+            
+            // transfer file if file is not null
+            if (logoMultiPartFile != null) {
+                logoFile = FileUtil.transferFileWithOtherName(logoMultiPartFile, Constants.PATH_UPLOADS_TMP,"company_logo");
+                hasLogoFile = true;
             }
 
             setHeaderNoChache(response);
@@ -115,6 +103,7 @@ public class CreateNewCompanyProcess extends BaseController {
                     personEmail,
                     category,
                     password,
+                    description,
                     taxContactPersonName,
                     taxContactPersonLastName,
                     taxContactPersonEmail,
@@ -135,10 +124,15 @@ public class CreateNewCompanyProcess extends BaseController {
             );
             
 
-            json = RestPostClient.sendReceive(parameters,
-                    Constants.API_URL,
-                    Constants.API_FIRST_VERSION,
-                    Constants.URI_COMPANY_CREATE);
+            //the request has a file
+            if (hasLogoFile) {
+                //send parameters and upload the file
+                json = AffiliateUtil.sendParametersAndUploadFile(parameters, Constants.URI_COMPANY_CREATE, logoFile, "logoFile");
+            } else {
+                //only send parameters
+                json = AffiliateUtil.sendParameters(parameters, Constants.URI_COMPANY_CREATE);
+            }
+            
             jsono = new JSONObject(json);
             mav.addObject("json", jsono);
 

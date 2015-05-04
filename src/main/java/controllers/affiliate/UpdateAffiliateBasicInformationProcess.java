@@ -1,21 +1,22 @@
 package controllers.affiliate;
 
 import controllers.application.BaseController;
-import java.io.IOException;
+import java.io.File;
 import java.util.HashMap;
 import java.util.Locale;
 import model.logic.Constants;
-import model.logic.RestPostClient;
+import model.util.AffiliateUtil;
 import model.util.ApplicationUtil;
+import model.util.FileUtil;
 import model.util.HandlerExceptionUtil;
 import org.apache.log4j.Logger;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -31,46 +32,64 @@ public class UpdateAffiliateBasicInformationProcess extends BaseController {
 
     //==========================================================================
     @RequestMapping(value = {"updateAffiliateBasicInformationProcess", "/updateAffiliateBasicInformationProcess"})
-    public ModelAndView updateAffiliateBasicInformation (
+    public ModelAndView updateAffiliateBasicInformation(
             @RequestParam("affiliateId") long affiliateId,
             @RequestParam("person.name") String personName,
             @RequestParam("person.lastName") String personLastName,
             @RequestParam("person.email") String personEmail,
-            @RequestParam("person.phone") String personPhone,
-            @RequestParam("password") String password,
+            @RequestParam("person.phone") String personPhone,            
             @RequestParam("person.gender.id") short personGenderId,
             @RequestParam("brand") String brand,
             @RequestParam String category,
+            @RequestParam(value = "logo", required = false) MultipartFile logoMultiPartFile,
+            @RequestParam("description") String description,
             Locale locale) {
-        
-        HashMap<String, Object> parameters = null;
-        String json = null;
-        ModelAndView mav = new ModelAndView("application/json");
-        JSONObject jsono = new JSONObject();
+
+        HashMap<String, Object> parameters;
+        String json;
+        ModelAndView mav = null;
+        JSONObject jsono;
+        File logoFile = null;
+        boolean hasLogoFile = false;
 
         try {
+
+            // transfer file if file is not null
+            if (logoMultiPartFile != null) {
+                logoFile = FileUtil.transferFileWithOtherName(logoMultiPartFile, Constants.PATH_UPLOADS_TMP,"affiliate_logo");
+                hasLogoFile = true;
+            }
 
             parameters = ApplicationUtil.createParameters(
                     affiliateId,
                     personName,
                     personLastName,
                     personEmail,
-                    personPhone,
-                    password,
+                    personPhone,                    
                     personGenderId,
                     brand,
-                    category
+                    category,
+                    description
             );
-            json = RestPostClient.sendReceive(
-                    parameters,
-                    Constants.API_URL,
-                    Constants.API_FIRST_VERSION,
-                    Constants.URI_AFFILIATE_UPDATE_BASIC_INFORMATION);
+
+            //the request has a file
+            if (hasLogoFile) {
+                //send parameters and upload the file
+                json = AffiliateUtil.sendParametersAndUploadFile(parameters, Constants.URI_AFFILIATE_UPDATE_BASIC_INFORMATION, logoFile, "logoFile");
+            } else {
+                //only send parameters
+                json = AffiliateUtil.sendParameters(parameters, Constants.URI_AFFILIATE_UPDATE_BASIC_INFORMATION);
+            }
+
+            mav = new ModelAndView("application/json");
             jsono = new JSONObject(json);
             mav.addObject("json", jsono);
 
         } catch (Exception e) {
             HandlerExceptionUtil.json(mav, messageSource, e, logger, locale, "text116");
+        } finally {
+            // file is temporal then it should be delete
+            FileUtil.deleteFile(logoFile);
         }
 
         return mav;
