@@ -31,8 +31,7 @@ public class CompanyDetailsForm extends BaseController {
     private static final Logger logger = Logger.getLogger(CompanyDetailsForm.class);
 
     @Autowired
-    private MessageSource messageSource;
-    
+    private MessageSource messageSource;    
     @Autowired
     private HttpSession session;
 

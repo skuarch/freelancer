@@ -3,10 +3,12 @@ package controllers.company;
 import java.util.Locale;
 import controllers.application.BaseController;
 import java.util.HashMap;
+import javax.servlet.http.HttpSession;
 import model.logic.Constants;
 import model.logic.RestPostClient;
 import model.util.ApplicationUtil;
 import model.util.HandlerExceptionUtil;
+import model.util.SessionUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -27,11 +29,12 @@ public class UpdateCompanyBankInformationProcess extends BaseController {
 
     @Autowired
     private MessageSource messageSource;    
+    @Autowired
+    private HttpSession session;
 
     //==========================================================================
     @RequestMapping(value = {"/updateCompanyBankInformationProcess", "updateCompanyBankInformationProcess"})
-    public ModelAndView methodName(
-            @RequestParam("companyId") long id,
+    public ModelAndView methodName(            
             @RequestParam("ownerAccountBank") String ownerAccountBank,
             @RequestParam("bank") String bank,
             @RequestParam("clabe") String clabe,
@@ -41,12 +44,15 @@ public class UpdateCompanyBankInformationProcess extends BaseController {
         ModelAndView mav = getModelAndViewJson();
         HashMap<String, Object> parameters = null;
         String json = null;
-        JSONObject jsono = null;        
+        JSONObject jsono = null; 
+        long companyId;
 
         try {
 
+            companyId = SessionUtil.getLongParameter(session, "companyId");
+            
             parameters = ApplicationUtil.createParameters(
-                    id,
+                    companyId,
                     ownerAccountBank,
                     bank,
                     clabe,

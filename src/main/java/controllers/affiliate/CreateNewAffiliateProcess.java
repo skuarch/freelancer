@@ -128,10 +128,10 @@ public class CreateNewAffiliateProcess extends BaseController {
             //the request has a file
             if (hasLogoFile) {
                 //send parameters and upload the file
-                json = AffiliateUtil.sendParametersAndUploadFile(parameters, Constants.URI_FREELANCER_CREATE_AFFILIATE, logoFile, "logoFile");
+                json = AffiliateUtil.sendParametersAndUploadFile(parameters, Constants.URI_AFFILIATE_CREATE, logoFile, "logoFile");
             } else {
                 //only send parameters
-                json = AffiliateUtil.sendParameters(parameters, Constants.URI_FREELANCER_CREATE_AFFILIATE);
+                json = AffiliateUtil.sendParameters(parameters, Constants.URI_AFFILIATE_CREATE);
             }
 
             jsono = new JSONObject(json);

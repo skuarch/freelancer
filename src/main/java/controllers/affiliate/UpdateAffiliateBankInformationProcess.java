@@ -4,10 +4,12 @@ import controllers.application.BaseController;
 import java.util.HashMap;
 import java.util.Locale;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import model.logic.Constants;
 import model.logic.RestPostClient;
 import model.util.ApplicationUtil;
 import model.util.HandlerExceptionUtil;
+import model.util.SessionUtil;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,14 +27,16 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class UpdateAffiliateBankInformationProcess extends BaseController {
 
+    private static final Logger logger = Logger.getLogger(UpdateAffiliateBankInformationProcess.class);
+    
     @Autowired
     private MessageSource messageSource;
-    private static final Logger logger = Logger.getLogger(UpdateAffiliateBankInformationProcess.class);
+    @Autowired
+    private HttpSession session;    
     
     //==========================================================================
     @RequestMapping(value = {"/updateAffiliateBankInformationProcess", "updateAffiliateBankInformationProcess"})
-    public ModelAndView updateAffiliateBankInformation(
-            @RequestParam("affiliateId") long affiliateId,
+    public ModelAndView updateAffiliateBankInformation(            
             @RequestParam("owner.account.bank") String ownerAccountBank,
             @RequestParam("bank") String bank,
             @RequestParam("clabe") String clabe,
@@ -44,10 +48,13 @@ public class UpdateAffiliateBankInformationProcess extends BaseController {
         HashMap<String, Object> parameters = null;
         String json = null;
         ModelAndView mav = new ModelAndView("application/json");
-        JSONObject jsono = new JSONObject();
+        JSONObject jsono;
+        short affiliateId;
 
         try {
 
+            affiliateId = SessionUtil.getShortParameter(session, "affiliateId");
+            
             parameters = ApplicationUtil.createParameters(
                     affiliateId,
                     ownerAccountBank,

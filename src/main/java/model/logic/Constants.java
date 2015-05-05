@@ -18,13 +18,15 @@ public class Constants {
     public static final String API_URL = "http://localhost/api-rec";
     public static final String API_FIRST_VERSION = "/v1";
     public static final String URI_AUTHENTICATION = "/authentication";
+    
     public static final String URI_FREELANCER_CREATE = "/freelancer/create";    
     public static final String URI_FREELANCER_AUTHENTICATION = "/authentication/freelancer";
     public static final String URI_FREELANCER_GET_AFFILIATES = "/freelancer/get/affiliates";
     public static final String URI_FREELANCER_GET_COMPANIES = "/freelancer/get/companies";
     public static final String URI_FREELANCER_UPDATE = "/freelancer/update";
-    public static final String URI_FREELANCER_CREATE_AFFILIATE = "/freelancer/create/affiliate";
     public static final String URI_FREELANCER_UPDATE_PASSWORD = "/freelancer/update/password";
+    //public static final String URI_FREELANCER_CREATE_AFFILIATE = "/affiliate/create";    
+    
     public static final String URI_AFFILIATE_CREATE = "/affiliate/create";
     public static final String URI_AFFILIATE_CREATE_ESTABLISHMENT = "/affiliate/create/establishment";
     public static final String URI_AFFILIATE_UPDATE_PASSWORD = "/affiliate/update/password";
@@ -34,15 +36,21 @@ public class Constants {
     public static final String URI_AFFILIATE_UPDATE = "/affiliate/update";
     public static final String URI_AFFILIATE_LIST = "/affiliate/list";
     public static final String URI_AFFILIATE_GET = "/affiliate/get";
+    
     public static final String URI_CATEGORY_GET = "/category/get";    
+    
     public static final String URI_ESTABLISHMENT_CREATE = "/establishment/create"; 
     public static final String URI_ESTABLISHMENT_GET = "/establishment/get"; 
     public static final String URI_ESTABLISHMENT_UPDATE = "/establishment/update"; 
+    
     public static final String URI_RESPONSABLE_UPDATE = "/responsable/update"; 
+    public static final String URI_RESPONSABLE_UPDATE_PASSWORD = "/responsable/update/password"; 
+    
     public static final String URI_CASHIER_GET = "/cashier/get"; 
     public static final String URI_CASHIER_UPDATE = "/cashier/update"; 
     public static final String URI_CASHIER_UPDATE_PASSWORD = "/cashier/update/password";     
     public static final String URI_CASHIER_CREATE = "/cashier/create";     
+    
     public static final String URI_COMPANY_GET = "/company/get";   
     public static final String URI_COMPANY_CREATE = "/company/create";   
     public static final String URI_COMPANY_CREATE_ESTABLISHMENT = "/company/create/establishment";   
@@ -113,10 +121,6 @@ public class Constants {
 
     public static String getURI_FREELANCER_UPDATE() {
         return URI_FREELANCER_UPDATE;
-    }
-
-    public static String getURI_FREELANCER_CREATE_AFFILIATE() {
-        return URI_FREELANCER_CREATE_AFFILIATE;
     }
 
     public static String getURI_FREELANCER_UPDATE_PASSWORD() {

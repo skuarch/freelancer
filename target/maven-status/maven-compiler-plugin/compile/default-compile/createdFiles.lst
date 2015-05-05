@@ -22,6 +22,7 @@ controllers/application/TestNotificationsForm.class
 model/beans/Cashier.class
 model/beans/Company.class
 model/logic/I18N.class
+controllers/company/UpdateCompanyPasswordProcess.class
 controllers/cashier/UpdateCashierProccess.class
 model/logic/Approved.class
 model/logic/RestClientUploadFile.class
@@ -50,6 +51,7 @@ controllers/affiliate/UpdateAffiliatePasswordProcess.class
 model/beans/Responsable.class
 controllers/establishment/UpdateEstablishmentFormProccess.class
 controllers/company/CompanyDetailsForm.class
+controllers/responsable/UpdateResponsablePassword.class
 controllers/affiliate/UpdateAffiliateBasicInformationProcess.class
 controllers/affiliate/CreateNewAffiliate.class
 controllers/company/CompanyDetails.class

@@ -7,12 +7,12 @@ import java.util.HashMap;
 import javax.servlet.http.HttpSession;
 import model.beans.FreelancerBasic;
 import model.logic.Constants;
-import model.logic.RestPostClient;
 import model.util.AffiliateUtil;
 import model.util.ApplicationUtil;
 import model.util.FileUtil;
 import model.util.FreelancerUtil;
 import model.util.HandlerExceptionUtil;
+import model.util.SessionUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -40,7 +40,7 @@ public class UpdateCompanyBasicInformationProcess extends BaseController {
     //==========================================================================
     @RequestMapping(value = {"/updateCompanyBasicInformationProcess", "updateCompanyBasicInformationProcess"})
     public ModelAndView methodName(
-            @RequestParam("companyId") long companyId,
+            //@RequestParam("companyId") long companyId,
             @RequestParam("name") String name,
             @RequestParam("brand") String brand,
             @RequestParam("person.name") String personName,
@@ -60,9 +60,12 @@ public class UpdateCompanyBasicInformationProcess extends BaseController {
         FreelancerBasic freelancerBasic = null;
         File logoFile = null;
         boolean hasLogoFile = false;
+        short companyId;
 
         try {
 
+            companyId = SessionUtil.getShortParameter(session, "companyId");
+            
             freelancerBasic = FreelancerUtil.getFreelancerBasic(session);
 
             // transfer file if file is not null

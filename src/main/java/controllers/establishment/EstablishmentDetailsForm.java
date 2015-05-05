@@ -78,6 +78,7 @@ public class EstablishmentDetailsForm {
             mav.addObject("establishmentId", establishmentId);
             mav.addObject("establishment", establishment);
             mav.addObject("categories", categories);
+            SessionUtil.setAttribute(session, "responsableId", String.valueOf(establishment.getResponsable().getId()));
 
         } catch (Exception e) {
             HandlerExceptionUtil.alert(mav, messageSource, e, logger, locale);

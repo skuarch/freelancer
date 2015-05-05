@@ -27,8 +27,7 @@
                             <spring:message code="text236" />
                         </h1>
                     </div>
-                </div>                
-                <input type="hidden" id="affiliateId" name="affiliateId" value="${affiliateId}" />
+                </div>                                
                 <div id="output"></div>
             </div>
         </div><!-- /#page-wrapper --> 

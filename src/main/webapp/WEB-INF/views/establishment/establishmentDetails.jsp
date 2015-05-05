@@ -28,7 +28,7 @@
                         </h1>
                     </div>
                 </div>
-                <input type="hidden" id="establishment_id" name="establishment_id" value="${establishmentId}" />
+                
                 <div id="output"></div>
                 <script type="text/javascript">eval("${js}");</script>        
             </div>

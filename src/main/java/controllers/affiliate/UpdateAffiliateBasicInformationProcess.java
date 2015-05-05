@@ -4,11 +4,13 @@ import controllers.application.BaseController;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Locale;
+import javax.servlet.http.HttpSession;
 import model.logic.Constants;
 import model.util.AffiliateUtil;
 import model.util.ApplicationUtil;
 import model.util.FileUtil;
 import model.util.HandlerExceptionUtil;
+import model.util.SessionUtil;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,14 +28,16 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class UpdateAffiliateBasicInformationProcess extends BaseController {
 
+    private static final Logger logger = Logger.getLogger(UpdateAffiliateBasicInformationProcess.class);
+    
     @Autowired
     private MessageSource messageSource;
-    private static final Logger logger = Logger.getLogger(UpdateAffiliateBasicInformationProcess.class);
+    @Autowired
+    private HttpSession session;    
 
     //==========================================================================
     @RequestMapping(value = {"updateAffiliateBasicInformationProcess", "/updateAffiliateBasicInformationProcess"})
-    public ModelAndView updateAffiliateBasicInformation(
-            @RequestParam("affiliateId") long affiliateId,
+    public ModelAndView updateAffiliateBasicInformation(            
             @RequestParam("person.name") String personName,
             @RequestParam("person.lastName") String personLastName,
             @RequestParam("person.email") String personEmail,
@@ -51,6 +55,7 @@ public class UpdateAffiliateBasicInformationProcess extends BaseController {
         JSONObject jsono;
         File logoFile = null;
         boolean hasLogoFile = false;
+        short affiliateId;
 
         try {
 
@@ -60,6 +65,8 @@ public class UpdateAffiliateBasicInformationProcess extends BaseController {
                 hasLogoFile = true;
             }
 
+            affiliateId = SessionUtil.getShortParameter(session, "affiliateId");
+            
             parameters = ApplicationUtil.createParameters(
                     affiliateId,
                     personName,

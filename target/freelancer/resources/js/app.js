@@ -247,8 +247,7 @@ function establishmentDetailsForm(){
     $("#output").html(loader);      
     $.ajax({
         cache:false,
-        url:"establishmentDetailsForm.html",
-        data: {establishmentId:$("#establishmentId").val()},
+        url:"establishmentDetailsForm.html",        
         type:"post",        
         success:function(data){
             $("#output").html(data);  
@@ -264,6 +263,9 @@ function bindEstablishmentDetailsForms(){
     $("#updateEstablishmentForm").bind("submit", function (event) {
         updateEstablishmentFormSubmit(event);
     });            
+    $("#updateResponsablePasswordForm").submit(function (event) {
+        updateResponsablePassword(event);
+    });
     $("#updateResponsableForm").bind("submit", function (event) {
         updateResponsableFormSubmit(event);
     });
@@ -1284,8 +1286,7 @@ function updateEstablishmentFormSubmit(event){
                     success: function (data) {
                         checkAndShowErrorRequest(data);
                         if(data.updated == true){
-                            showSuccess();                            
-                            establishmentDetailsForm();
+                            showSuccess();
                         }                        
                     }, error: function (e1, e2, e3) {
                         showError();                                                
@@ -1312,9 +1313,7 @@ function updateResponsableFormSubmit(event){
     preventDefaultForm(event);
     
     var error = "";        
-    var data = $("#updateResponsableForm").serializeArray();  
-    data[5].value = $.md5(String(data[5].value));
-    data[6].value = $.md5(String(data[6].value));
+    var data = $("#updateResponsableForm").serializeArray();      
     
     var resName = $("#responsable_name").val();
     if(resName == "" || resName == null || String(resName).length < 2){
@@ -1335,16 +1334,6 @@ function updateResponsableFormSubmit(event){
     if(!isEmail(resEmail)){
         error += "<br>" + text212;
     }
-    
-    var resPassword = $("#responsable_password").val();
-    if(resPassword == "" || String(resPassword).length < 4 || String(resPassword).length > 8){
-        error += "<br>" + text196;
-    }
-    
-    var resPassword2 = $("#responsable_password2").val();
-    if(resPassword != resPassword2){        
-        error += "<br>" + text213;
-    }
 
     if (error.length > 1) {
         alertify.alert("<div style='text-align: left'>" + text113 + "<br>" + error  + "</div>");        
@@ -1360,13 +1349,12 @@ function updateResponsableFormSubmit(event){
                     type:"post",
                     data:data,
                     beforeSend: function (xhr) {
-                        $.isLoading({text: loader, position: "overlay"})
+                        $.isLoading({text: loader, position: "overlay"});
                     },
                     success: function (data) {
                         checkAndShowErrorRequest(data);
                         if(data.updated == true){
-                            showSuccess();                            
-                            establishmentDetailsForm();
+                            showSuccess();                                                        
                         }
                     }, error: function (e1, e2, e3) {
                         showError();
@@ -1922,8 +1910,7 @@ function updateAffiliateBasicInformationFormSubmit(event){
                     processData: false,
                     contentType: false,
                     beforeSend: function (xhr) {                        
-                        $.isLoading({text: loader, position: "overlay"})
-                        formData.append("affiliateId", $("#affiliateId").val());
+                        $.isLoading({text: loader, position: "overlay"})                        
                         formData.append("person.name", name);
                         formData.append("person.lastName", lastName);
                         formData.append("person.email", email);
@@ -2040,8 +2027,7 @@ function updateAffiliateTaxFormSubmit(event){
                     processData: false,
                     contentType: false,
                     beforeSend: function (xhr) {
-                        $.isLoading({text: loader, position: "overlay"})
-                        formData.append("affiliateId", $("#affiliateId").val());
+                        $.isLoading({text: loader, position: "overlay"})                        
                         formData.append("tax.contact.person.name", taxContactName);
                         formData.append("tax.contact.person.lastName", taxContactLastName);
                         formData.append("tax.contact.person.email", taxContactEmail);
@@ -2332,8 +2318,7 @@ function updateCompanyTaxFormSubmit(event){
                     processData: false,
                     contentType: false,
                     beforeSend: function (xhr) {
-                        $.isLoading({text: loader, position: "overlay"})
-                        formData.append("companyId", $("#companyId").val());
+                        $.isLoading({text: loader, position: "overlay"})                        
                         formData.append("tax.contact.person.name", taxContactName);
                         formData.append("tax.contact.person.lastName", taxContactLastName);
                         formData.append("tax.contact.person.email", taxContactEmail);
@@ -2396,8 +2381,7 @@ function updateCompanyBankFormSubmit(event){
         
         alertify.confirm(text290, function (e) {
 
-            if (e) {                
-                formData.append("companyId", $("#companyId").val());
+            if (e) {                                
                 formData.append("ownerAccountBank", ownerAccountBank);
                 formData.append("bank", bank);
                 formData.append("clabe", String(clabe));
@@ -2522,6 +2506,66 @@ function updateCompanyPassword(event){
                 $.ajax({
                     cache: false,
                     url: "updateCompanyPasswordProcess.html",
+                    type: "post",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    beforeSend: function (xhr) {
+                        $.isLoading({text: loader, position: "overlay"})                        
+                    },success: function (data, textStatus, jqXHR) {
+                        checkAndShowErrorRequest(data);
+                        if (data.updated === true) {
+                            showSuccess();
+                        }
+                    },error: function (jqXHR, textStatus, errorThrown) {
+                        showError();
+                    },complete: function (jqXHR, textStatus) {
+                        $.isLoading("hide");
+                    }                    
+                });
+
+            }
+        });
+    }    
+    
+}
+
+$("#updateResponsablePasswordForm").submit(function(event){
+    updateResponsablePassword(event);
+});
+
+function updateResponsablePassword(event){
+    
+    preventDefaultForm(event);
+    
+    var error = "";
+    var formData = new FormData(); 
+    var password = $("#password").val();
+    var password2 = $("#password2").val();
+    
+    if (password != password2) {
+        alertify.alert(text119);
+        return;
+    }
+
+    if (password.length < 4) {
+        error += "<br>" + text106;
+    }
+
+    if (password.length < 5 || password.length > 8) {
+        error += "<br>" + text136;
+    }    
+
+    if (error.length > 1) {
+        alertify.alert(text113 + "<br>" + error);
+    } else {
+        alertify.confirm(text290, function (e) {
+            if (e) {
+                formData.append("password", $.md5(String(password)));
+                formData.append("password2", $.md5(String(password2)));
+                $.ajax({
+                    cache: false,
+                    url: "updateResponsablePasswordProcess.html",
                     type: "post",
                     data: formData,
                     processData: false,

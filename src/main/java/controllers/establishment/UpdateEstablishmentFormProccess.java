@@ -3,10 +3,12 @@ package controllers.establishment;
 import controllers.application.BaseController;
 import java.util.HashMap;
 import java.util.Locale;
+import javax.servlet.http.HttpSession;
 import model.logic.Constants;
 import model.logic.RestPostClient;
 import model.util.ApplicationUtil;
 import model.util.HandlerExceptionUtil;
+import model.util.SessionUtil;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,14 +25,16 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class UpdateEstablishmentFormProccess extends BaseController {
 
+    private static final Logger logger = Logger.getLogger(UpdateEstablishmentFormProccess.class);
+    
     @Autowired
     private MessageSource messageSource;
-    private static final Logger logger = Logger.getLogger(UpdateEstablishmentFormProccess.class);
+    @Autowired
+    private HttpSession session;    
     
     //==========================================================================
     @RequestMapping(value = {"/updateEstablishmentFormProccess", "updateEstablishmentFormProccess"})
-    public ModelAndView updateEstablishmentFormProccess(
-            @RequestParam long establishmentId,
+    public ModelAndView updateEstablishmentFormProccess(            
             @RequestParam String name, 
             @RequestParam int[] category,
             @RequestParam String subcategory,
@@ -47,8 +51,11 @@ public class UpdateEstablishmentFormProccess extends BaseController {
         JSONObject jsono = null;
         HashMap parameters = null;
         String json = null;
+        short establishmentId;
 
         try {            
+            
+            establishmentId = SessionUtil.getShortParameter(session, "establishmentId");
             
             parameters = ApplicationUtil.createParametersUpdateEstablishment(
                     establishmentId, 

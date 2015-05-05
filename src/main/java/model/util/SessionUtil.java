@@ -167,5 +167,30 @@ public class SessionUtil {
         return user;
 
     }
+    
+    //==========================================================================
+    public static void setAttribute(HttpSession session, String name, String value){
+        
+        if (session == null) {
+            throw new IllegalArgumentException("session is null");
+        }
+        
+        if (name == null || name.length() < 1) {
+            throw new IllegalArgumentException("name is null");
+        }
+        
+        if (value == null || value.length() < 1) {
+            throw new IllegalArgumentException("value is null");
+        }
+        
+        try {
+        
+            session.setAttribute(name, value);
+            
+        } catch (Exception e) {
+            throw e;
+        }
+        
+    }
 
 }

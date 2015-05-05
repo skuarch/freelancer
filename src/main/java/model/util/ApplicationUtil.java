@@ -55,7 +55,7 @@ public class ApplicationUtil {
             hm.put("person.lastName", String.valueOf(personLastName));
             hm.put("person.email", String.valueOf(personEmail));
             hm.put("person.phone", String.valueOf(personPhone));
-            hm.put("password", MD5Util.getHash(String.valueOf(personPassword)));
+            hm.put("password", String.valueOf(personPassword));
             hm.put("person.gender.id", personGenderId);
             hm.put("brand", brand);
             String[] cat = category.split(",");
@@ -138,7 +138,7 @@ public class ApplicationUtil {
             for (int i = 0; i < cat.length; i++) {
                 hm.put("category[" + i + "].id", cat[i]);
             }
-            hm.put("password", MD5Util.getHash(String.valueOf(password)));
+            hm.put("password", String.valueOf(password));
             hm.put("description", description);
             
             hm.put("contact.person.name", taxContactPersonName);
@@ -510,7 +510,37 @@ public class ApplicationUtil {
             String name,
             String lastName,
             String phone,
-            String email,
+            String email,                        
+            long gender
+    ) throws Exception {
+
+        HashMap hm = new HashMap();
+
+        try {
+
+            //avoid some html tags  
+            hm.put("id", id);
+            hm.put("person.name", name);
+            hm.put("person.lastName", lastName);                        
+            hm.put("person.phone", phone);
+            hm.put("person.email", email);
+            hm.put("person.gender.id", gender);
+
+        } catch (Exception e) {
+            throw e;
+        }
+
+        return hm;
+
+    }
+    
+    //==========================================================================
+    public static HashMap<String, Object> createParametersUpdateCashier(
+            long id,
+            String name,
+            String lastName,
+            String phone,
+            String email, 
             String password,
             long gender
     ) throws Exception {
@@ -522,7 +552,7 @@ public class ApplicationUtil {
             //avoid some html tags  
             hm.put("id", id);
             hm.put("person.name", name);
-            hm.put("person.lastName", lastName);
+            hm.put("person.lastName", lastName);            
             hm.put("password", password);
             hm.put("person.phone", phone);
             hm.put("person.email", email);

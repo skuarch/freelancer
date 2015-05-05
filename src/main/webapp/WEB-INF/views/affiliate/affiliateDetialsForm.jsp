@@ -11,8 +11,7 @@
 <jsp:include page="../application/noCache.jsp"/>
 
 <div class="row">
-    <div class="col-lg-12">
-        <input type="hidden" id="affiliateId" name="affiliateId" value="${affiliateId}" />
+    <div class="col-lg-12">        
         <div class="panel panel-default">
             <div class="panel-heading"> 
                 <spring:message code="text322"/>                

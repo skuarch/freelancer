@@ -3,10 +3,12 @@ package controllers.affiliate;
 import controllers.application.BaseController;
 import java.util.HashMap;
 import java.util.Locale;
+import javax.servlet.http.HttpSession;
 import model.logic.Constants;
 import model.logic.RestPostClient;
 import model.util.ApplicationUtil;
 import model.util.HandlerExceptionUtil;
+import model.util.SessionUtil;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,14 +25,16 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class UpdateAffiliateTaxInformationProcess extends BaseController {
 
+    private static final Logger logger = Logger.getLogger(UpdateAffiliateTaxInformationProcess.class);
+    
     @Autowired
     private MessageSource messageSource;
-    private static final Logger logger = Logger.getLogger(UpdateAffiliateTaxInformationProcess.class);
+    @Autowired
+    private HttpSession session;    
     
     //==========================================================================
     @RequestMapping(value = {"/updateAffiliateTaxInformationProcess", "updateAffiliateTaxInformationProcess"})
-    public ModelAndView updateAffiliateTaxInformation(
-            @RequestParam("affiliateId") long affiliateId,
+    public ModelAndView updateAffiliateTaxInformation(            
             @RequestParam("tax.contact.person.name") String taxContactPersonName,
             @RequestParam("tax.contact.person.lastName") String taxContactPersonLastName,
             @RequestParam("tax.contact.person.email") String taxContactPersonEmail,
@@ -50,8 +54,11 @@ public class UpdateAffiliateTaxInformationProcess extends BaseController {
         String json;
         ModelAndView mav = null;
         JSONObject jsono;
+        short affiliateId;
 
         try {
+            
+            affiliateId = SessionUtil.getShortParameter(session, "affiliateId");
             
             parameters = ApplicationUtil.createParameters(
                     affiliateId,

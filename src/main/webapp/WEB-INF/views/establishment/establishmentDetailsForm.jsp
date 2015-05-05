@@ -12,8 +12,7 @@
 <div class="row">
     <div class="col-lg-12">        
         <div class="row">
-            <form action="" role="form" method="post" id="updateEstablishmentForm" name="updateEstablishmentForm" data-toggle="validator">
-                <input type="hidden" name="establishmentId" id="establishmentId" value="${establishmentId}"/>
+            <form action="" role="form" method="post" id="updateEstablishmentForm" name="updateEstablishmentForm" data-toggle="validator">                
                 <div class="col-lg-12">
                     <div id="message" class="alert alert-warning">
                         <spring:message code="text100" />
@@ -104,8 +103,7 @@
                         <spring:message code="text178"/>
                     </div>    
                     <div class="panel-body">
-                        <form action="" method="post" id="updateResponsableForm" name="updateResponsableForm">
-                            <input type="hidden" id="responsable_id" name="responsable_id" value="${establishment.responsable.id}" />
+                        <form action="" method="post" id="updateResponsableForm" name="updateResponsableForm">                            
                             <div class="row">                                    
                                 <div class="col-lg-6">
                                     <div class="form-group"> 
@@ -130,19 +128,7 @@
                                         <label><spring:message code="text184" /></label>
                                         <input name="responsable_email" id="responsable_email" value="${establishment.responsable.person.getEmail()}" placeholder="<spring:message code="text91" />" maxlength="50" class="form-control" type="email" required="required" tabindex="12" />
                                     </div> 
-                                </div>  
-                                <div class="col-lg-6">
-                                    <div class="form-group"> 
-                                        <label><spring:message code="text185" /></label>
-                                        <input name="responsable_password" id="responsable_password" placeholder="<spring:message code="text95"/>" maxlength="8" class="form-control" type="password" required="required" tabindex="13" />
-                                    </div> 
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group"> 
-                                        <label><spring:message code="text186" /></label>
-                                        <input name="responsable_password2" id="responsable_password2" placeholder="<spring:message code="text95"/>" maxlength="8" class="form-control" type="password" required="required" tabindex="14"/>
-                                    </div> 
-                                </div>
+                                </div>                                  
                                 <div class="col-lg-6">
                                     <div class="form-group"> 
                                         <label><spring:message code="text86" /></label>
@@ -153,7 +139,10 @@
                                         </div> 
                                     </div>
                                 </div>                                
-                                <button type="submit" id="saveButtonResponsable" class="btn btn-block btn-success btn-lg" tabindex="23">
+                                <button type="button" class="btn btn-block" data-toggle="modal" data-target="#DetailModalResponsablePassword">
+                                <spring:message code="text348" />
+                            </button>                    
+                            <button type="submit" id="saveButtonResponsable" class="btn btn-block btn-success btn-lg" tabindex="23">
                                 <spring:message code="text252" />
                             </button> 
                         </form>
@@ -254,6 +243,38 @@
             <div class="modal-footer">                
                 <button type="button" class="btn btn-primary" data-dismiss="modal">
                     <spring:message code="text250" />                    
+                </button>
+            </div>
+        </div>
+    </div>                
+</div>
+<div class="modal fade" id="DetailModalResponsablePassword" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">                    
+                    <spring:message code="text348" />
+                </h4>
+            </div>
+            <div class="modal-body" id="outputDetail">
+                <form id="updateResponsablePasswordForm" name="updateResponsablePasswordForm" method="post" action="">
+                    <div class="form-group"> 
+                        <label><spring:message code="text159" /></label>
+                        <input name="password" id="password" placeholder="<spring:message code="text95"/>" maxlength="8" class="form-control" type="password" required="required"/>
+                    </div> 
+                    <div class="form-group"> 
+                        <label><spring:message code="text160" /></label>
+                        <input name="password2" id="password2" placeholder="<spring:message code="text95"/>" maxlength="8" class="form-control" type="password" required="required"/>
+                    </div> 
+                    <button class="btn btn-block btn-primary">
+                        <spring:message code="text348" />
+                    </button>
+                </form>
+            </div>
+            <div class="modal-footer">                
+                <button type="button" class="btn btn-primary" data-dismiss="modal">                    
+                    <spring:message code="text248" />
                 </button>
             </div>
         </div>

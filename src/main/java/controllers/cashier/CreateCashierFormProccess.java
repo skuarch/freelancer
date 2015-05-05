@@ -46,7 +46,7 @@ public class CreateCashierFormProccess extends BaseController {
     
         try {            
             
-            parameters = ApplicationUtil.createParametersUpdateResponsable(
+            parameters = ApplicationUtil.createParametersUpdateCashier(
                     establishmentId,
                     cashier_name,
                     cashier_lastName,

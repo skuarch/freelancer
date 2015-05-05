@@ -3,10 +3,12 @@ package controllers.company;
 import java.util.Locale;
 import controllers.application.BaseController;
 import java.util.HashMap;
+import javax.servlet.http.HttpSession;
 import model.logic.Constants;
 import model.logic.RestPostClient;
 import model.util.ApplicationUtil;
 import model.util.HandlerExceptionUtil;
+import model.util.SessionUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -26,12 +28,13 @@ public class UpdateCompanyTaxInformationProcess extends BaseController {
     private static final Logger logger = Logger.getLogger(UpdateCompanyTaxInformationProcess.class);
 
     @Autowired
-    private MessageSource messageSource;            
+    private MessageSource messageSource;     
+    @Autowired
+    private HttpSession session;
 
     //==========================================================================
     @RequestMapping(value = {"/updateCompanyTaxInformationProcess"})
-    public ModelAndView methodName(
-            @RequestParam("companyId") long id,
+    public ModelAndView methodName(            
             @RequestParam("tax.contact.person.name") String taxContactPersonName,
             @RequestParam("tax.contact.person.lastName") String taxContactPersonLastName,
             @RequestParam("tax.contact.person.email") String taxContactPersonEmail,
@@ -46,15 +49,18 @@ public class UpdateCompanyTaxInformationProcess extends BaseController {
             @RequestParam("address.zipCode") String addressZipCode,
             Locale locale){
         
-        HashMap<String, Object> parameters = null;
+        HashMap<String, Object> parameters;
         String json = null;
         ModelAndView mav = new ModelAndView("application/json");
-        JSONObject jsono = new JSONObject();        
+        JSONObject jsono;        
+        long companyId;
         
         try {            
 
+            companyId = SessionUtil.getLongParameter(session, "companyId");
+            
             parameters = ApplicationUtil.createParametersTaxInformation(
-                    id,
+                    companyId,
                     taxContactPersonName,
                     taxContactPersonLastName,
                     taxContactPersonEmail,

@@ -4,12 +4,14 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
+import javax.servlet.http.HttpSession;
 import model.beans.Affiliate;
 import model.beans.Category;
 import model.logic.Constants;
 import model.logic.RestPostClient;
 import model.util.ApplicationUtil;
 import model.util.HandlerExceptionUtil;
+import model.util.SessionUtil;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,13 +28,16 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class AffiliateDetailsForm {
 
-    @Autowired
-    private MessageSource messageSource;
     private static final Logger logger = Logger.getLogger(AffiliateDetailsForm.class);
+    
+    @Autowired
+    private MessageSource messageSource;    
+    @Autowired
+    private HttpSession session;    
 
     //==========================================================================
     @RequestMapping(value = "affiliateDetailsForm")
-    public ModelAndView affiliateDetailsForm(@RequestParam long affiliateId, Locale locale) {
+    public ModelAndView affiliateDetailsForm(Locale locale) {
 
         ModelAndView mav = null;
         Affiliate affiliate = null;
@@ -42,9 +47,12 @@ public class AffiliateDetailsForm {
         Category[] categories = null;
         JSONArray jsona = null;
         ArrayList<Category> selectedCategories = null;
+        short affiliateId;
 
         try {
 
+            affiliateId = SessionUtil.getShortParameter(session, "affiliateId");
+            
             if (affiliateId < 1) {
                 mav = new ModelAndView("application/systemWelcome");                
                 return mav;
