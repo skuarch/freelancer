@@ -1,16 +1,13 @@
 package controllers.company;
 
 import controllers.application.BaseController;
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.util.HashMap;
 import java.util.Locale;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.beans.FreelancerBasic;
 import model.logic.Constants;
-import model.logic.RestPostClient;
 import model.util.AffiliateUtil;
 import model.util.ApplicationUtil;
 import model.util.FileUtil;
@@ -93,7 +90,7 @@ public class CreateNewCompanyProcess extends BaseController {
             setHeaderNoChache(response);
             freelancerBasic = FreelancerUtil.getFreelancerBasic(session);
 
-            parameters = ApplicationUtil.createParameters(
+            parameters = ApplicationUtil.createParametersCompany(
                     name,
                     brand,
                     personName,
@@ -120,7 +117,7 @@ public class CreateNewCompanyProcess extends BaseController {
                     bank,
                     clabe,
                     emailNotifications,
-                    freelancerBasic.getId()
+                    freelancerBasic.getPersonId()
             );
             
 

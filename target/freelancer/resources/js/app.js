@@ -1821,7 +1821,7 @@ $("#createNewCompanyForm").submit(function(event){
                     success: function (data) {
                         checkAndShowErrorRequest(data);
                         if (data.created == 'true') {                            
-                            showSuccess();
+                            alertify.success(text164);
                             alertify.confirm(text164 + "<br/> " + text257, function (e, str) {
                                 if (e) {
                                     $.redirect('redirector.html', {url:'createEstablishment.html',companyId: data.id, type:2}, 'POST');

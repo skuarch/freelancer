@@ -102,6 +102,23 @@ public class FreelancerUtil {
         return hm;
 
     }
+    
+    //==========================================================================
+    public static HashMap<String, Object> createHashMapFreelancerGetCompanies(long personId) {
+
+        HashMap hm = new HashMap();
+
+        try {
+            
+            hm.put("person.id", personId);            
+
+        } catch (Exception e) {
+            throw e;
+        }
+        
+        return hm;
+
+    }
 
     //==========================================================================
     public static FreelancerBasic getFreelancerBasic(HttpSession session) {

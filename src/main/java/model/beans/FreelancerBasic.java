@@ -24,6 +24,7 @@ public class FreelancerBasic implements Serializable {
     private String state;
     private String key;
     private long personId;
+    private long personType;
 
     public FreelancerBasic() {
     }
@@ -154,6 +155,14 @@ public class FreelancerBasic implements Serializable {
 
     public void setPersonId(long personId) {
         this.personId = personId;
+    }
+
+    public long getPersonType() {
+        return personType;
+    }
+
+    public void setPersonType(long personType) {
+        this.personType = personType;
     }
 
 }

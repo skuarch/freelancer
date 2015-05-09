@@ -1,13 +1,8 @@
 package model.util;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import model.beans.Category;
-import model.logic.Constants;
-import org.apache.commons.io.FileUtils;
-import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -17,7 +12,7 @@ public class ApplicationUtil {
 
     //==========================================================================
     //company
-    public static HashMap<String, Object> createParameters(
+    public static HashMap<String, Object> createParametersAffiliate(
             String personName,
             String personLastName,
             String personEmail,
@@ -43,7 +38,7 @@ public class ApplicationUtil {
             String bank,
             String clabe,
             String emailNotifications,
-            long freelancerId
+            long creatorPersonId            
     ) throws Exception {
 
         HashMap hm = new HashMap();
@@ -82,7 +77,7 @@ public class ApplicationUtil {
             hm.put("clabe", clabe);
             hm.put("emailNotifications", emailNotifications);
 
-            hm.put("freelancer.id", freelancerId);
+            hm.put("creatorId", creatorPersonId);            
 
         } catch (Exception e) {
             throw e;
@@ -93,7 +88,7 @@ public class ApplicationUtil {
     }
 
     //==========================================================================
-    public static HashMap<String, Object> createParameters(
+    public static HashMap<String, Object> createParametersCompany(
             String name,
             String brand,
             String personName,
@@ -120,7 +115,7 @@ public class ApplicationUtil {
             String bank,
             String clabe,
             String emailNotifications,
-            long freelancerId
+            long creatorPersonId
     ) throws Exception {
 
         HashMap hm = new HashMap();
@@ -159,7 +154,7 @@ public class ApplicationUtil {
             hm.put("clabe", clabe);
             hm.put("emailNotifications", emailNotifications);
 
-            hm.put("freelancer.id", freelancerId);
+            hm.put("creatorId", creatorPersonId);
 
         } catch (Exception e) {
             throw e;

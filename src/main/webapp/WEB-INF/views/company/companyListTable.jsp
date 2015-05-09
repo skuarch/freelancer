@@ -43,7 +43,7 @@
                                         ${c.getRegistrationDate()}
                                     </td>        
                                     <td>
-                                        <button class="btn btn-primary" onclick="javascript:redirectData('redirector.html', {url:'createEstablishment.html', id:${c.getId()}, type: <c:out value="${cons.getCompany()}"/> })">
+                                        <button class="btn btn-primary" onclick="javascript:redirectData('redirector.html', {url:'createEstablishment.html', companyId:${c.getId()}, type: <c:out value="${cons.getCompany()}"/> })">
                                             <spring:message code="text234" />
                                         </button>
                                         <button class="btn btn-success" onclick="javascript:redirectData('redirector.html',{url:'companyDetails.html', companyId:${c.getId()}})">

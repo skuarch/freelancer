@@ -45,7 +45,7 @@ public class CompanyListTable extends BaseController {
 
             mav = new ModelAndView("company/companyListTable");
             freelancerBasic = FreelancerUtil.getFreelancerBasic(session);
-            parameters = FreelancerUtil.createHashMapFreelancerGetAffiliates(freelancerBasic.getId());
+            parameters = FreelancerUtil.createHashMapFreelancerGetCompanies(freelancerBasic.getPersonId());
 
             json = RestPostClient.sendReceive(
                     parameters,

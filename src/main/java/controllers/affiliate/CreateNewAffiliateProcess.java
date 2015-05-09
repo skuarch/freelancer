@@ -96,7 +96,7 @@ public class CreateNewAffiliateProcess extends BaseController {
             freelancerBasic = FreelancerUtil.getFreelancerBasic(session);
 
             //create parameters
-            parameters = ApplicationUtil.createParameters(
+            parameters = ApplicationUtil.createParametersAffiliate(
                     personName,
                     personLastName,
                     personEmail,
@@ -122,7 +122,7 @@ public class CreateNewAffiliateProcess extends BaseController {
                     bank,
                     clabe,
                     emailNotifications,
-                    freelancerBasic.getId()
+                    freelancerBasic.getPersonId()                    
             );
 
             //the request has a file

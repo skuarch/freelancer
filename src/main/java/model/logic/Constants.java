@@ -15,6 +15,16 @@ public class Constants {
     public static final int READ_TIMEOUT = 2000;
     public static final int MAX_FILE_SIZE_UPLOAD = 5242880; // 5 mb
     
+    public static final short PERSON_TYPE_ADMNIN = 1;
+    public static final short PERSON_TYPE_AFFILIATE = 2;
+    public static final short PERSON_TYPE_FREELANCER = 3;
+    public static final short PERSON_TYPE_CASHIER = 4;
+    public static final short PERSON_TYPE_RESPONSABLE = 5;
+    public static final short PERSON_TYPE_CONTACT = 6;
+    public static final short PERSON_TYPE_CONTACT_COMPANY = 7;
+    public static final short PERSON_TYPE_PARTNER = 8;
+    
+    
     public static final String API_URL = "http://localhost/api-rec";
     public static final String API_FIRST_VERSION = "/v1";
     public static final String URI_AUTHENTICATION = "/authentication";

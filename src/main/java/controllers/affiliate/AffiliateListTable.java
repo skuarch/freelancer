@@ -44,8 +44,9 @@ public class AffiliateListTable extends BaseController {
         try {
 
             mav = new ModelAndView("affiliate/affiliateListTable");
-            freelancerBasic = FreelancerUtil.getFreelancerBasic(session);
-            parameters = FreelancerUtil.createHashMapFreelancerGetAffiliates(freelancerBasic.getId());
+            freelancerBasic = FreelancerUtil.getFreelancerBasic(session);            
+            parameters = new HashMap<>();
+            parameters.put("person.id", freelancerBasic.getPersonId());
 
             json = RestPostClient.sendReceive(
                     parameters,
