@@ -13,7 +13,7 @@ public class Constants {
     public static final String PATH_UPLOADS_TMP = "/opt/freelancer/uploads/";
     public static final int CONNECTION_TIMEOUT = 2000;
     public static final int READ_TIMEOUT = 2000;
-    public static final int MAX_FILE_SIZE_UPLOAD = 5242880; // 5 mb
+    public static final int MAX_FILE_SIZE_UPLOAD = 1048576; // 1 mb
     
     public static final short PERSON_TYPE_ADMNIN = 1;
     public static final short PERSON_TYPE_AFFILIATE = 2;
