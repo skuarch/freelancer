@@ -50,9 +50,9 @@ public class CreateCashierFormProccess extends BaseController {
                     establishmentId,
                     cashier_name,
                     cashier_lastName,
-                    cashier_password,
                     cashier_phone,
                     cashier_email,
+                    cashier_password,
                     cashier_gender);
             
             json  = RestPostClient.sendReceive(

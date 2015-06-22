@@ -74,7 +74,7 @@ public class Authentication extends BaseController {
             parameters.put("password", password);
 
             tmp = RestPostClient.sendReceive(parameters, Constants.URI_FREELANCER_AUTHENTICATION); 
-            
+            System.out.println("cjhanclas " + tmp);            
             if (tmp != null && tmp.length() > 0) {
                 
                 jsonReturn = new JSONObject(tmp);                 

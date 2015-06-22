@@ -1,13 +1,12 @@
 package controllers.freelancer;
 
 import controllers.application.BaseController;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Locale;
+import model.logic.Constants;
 import model.logic.RestPostClient;
 import model.util.HandlerExceptionUtil;
 import org.apache.log4j.Logger;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -47,7 +46,7 @@ public class CreateFreelancerProcess extends BaseController {
         HashMap<String, Object> parameters = null;
         String json = null;
         ModelAndView mav = new ModelAndView("application/json");
-        JSONObject jsono = new JSONObject();
+        JSONObject jsono;
 
         try {
             
@@ -63,8 +62,13 @@ public class CreateFreelancerProcess extends BaseController {
                     addressCity,
                     addressState
             );            
-            
-            json = RestPostClient.createFreelancer(parameters);
+
+            json = RestPostClient.sendReceive(
+                    parameters, 
+                    Constants.API_URL, 
+                    Constants.API_FIRST_VERSION,
+                    Constants.URI_FREELANCER_CREATE);
+            System.out.println("que mierdas " + json);
             jsono = new JSONObject(json);
             mav.addObject("json", jsono);
 

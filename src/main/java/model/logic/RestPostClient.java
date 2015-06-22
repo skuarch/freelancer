@@ -25,7 +25,7 @@ public class RestPostClient {
                 + Constants.API_FIRST_VERSION
                 + Constants.URI_FREELANCER_CREATE
         );
-
+        
         try {
             
             rc.initConnection();

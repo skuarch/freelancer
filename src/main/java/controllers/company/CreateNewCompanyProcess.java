@@ -89,6 +89,14 @@ public class CreateNewCompanyProcess extends BaseController {
 
             setHeaderNoChache(response);
             freelancerBasic = FreelancerUtil.getFreelancerBasic(session);
+            
+            //check if freelancer has id
+            if(freelancerBasic.getId() < 0){
+                jsono = new JSONObject(json);
+                mav.addObject("json", jsono);
+                HandlerExceptionUtil.json(mav, messageSource, new Exception("freelancerBasic.getId() is less than 0"), logger, locale, "text116");
+                return mav;
+            }
 
             parameters = ApplicationUtil.createParametersCompany(
                     name,

@@ -179,7 +179,7 @@
                     <div class="col-lg-6">
                         <ul class="list-inline banner-social-buttons">
                             <li>
-                                <a href="http://contact.regaloenclave.com" class="btn btn-default btn-lg">
+                                <a href="http://regaloenclave.com/contact" class="btn btn-default btn-lg">
                                     <i class="fa fa-phone fa-fw"></i> 
                                     <span class="network-name">
                                         <spring:message code="text128" />
