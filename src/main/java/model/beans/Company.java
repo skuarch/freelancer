@@ -30,7 +30,9 @@ public class Company implements Serializable {
     private List<Establishment> establishment;
     private List<Category> category = new ArrayList<>();
     private String registrationDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-
+    private String website;
+    private String facebook;
+    
     private byte isSoftDeleted = 0;
 
     public long getId() {
@@ -183,6 +185,22 @@ public class Company implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
+    }
+
+    public String getFacebook() {
+        return facebook;
+    }
+
+    public void setFacebook(String facebook) {
+        this.facebook = facebook;
     }
 
 }

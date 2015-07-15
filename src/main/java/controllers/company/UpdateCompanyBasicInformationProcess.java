@@ -50,6 +50,8 @@ public class UpdateCompanyBasicInformationProcess extends BaseController {
             @RequestParam("person.email") String personEmail,
             @RequestParam("category") String category,
             @RequestParam(value = "logo", required = false) MultipartFile logoMultiPartFile,
+            @RequestParam("website") String website,
+            @RequestParam("facebook") String facebook,
             @RequestParam("description") String description,
             Locale locale) {
 
@@ -84,6 +86,8 @@ public class UpdateCompanyBasicInformationProcess extends BaseController {
                     personPhone,
                     personEmail,
                     category,
+                    website,
+                    facebook,
                     description,
                     freelancerBasic.getId()
             );

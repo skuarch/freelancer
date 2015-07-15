@@ -77,6 +77,18 @@
                                 <input name="logo" id="logo" placeholder="" maxlength="55" class="form-control" type="file" tabindex="8" />
                             </div> 
                         </div>
+                        <div class="col-lg-6">
+                            <div class="form-group"> 
+                                <label>Website</label>
+                                <input name="website" id="website" value="${affiliate.getWebsite()}" class="form-control" type="text" maxlength="500" tabindex="9" />
+                            </div> 
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group"> 
+                                <label>Facebook</label>
+                                <input name="facebook" id="facebook" value="${affiliate.getFacebook()}" class="form-control" type="text" maxlength="500" tabindex="10" />
+                            </div> 
+                        </div>
                         <div class="col-lg-12">
                             <div class="form-group">
                                 <label><spring:message code="text342" /></label>                                                
@@ -266,8 +278,11 @@
                                             ${e.getRegistrationDate()}
                                         </td>
                                         <td>
-                                            <button type="button" class="btn btn-primary btn-block" onclick="javascript:redirectData('redirector.html', {url: 'establishmentDetails.html', establishmentId:${e.getId()}})">                                        
+                                            <button type="button" class="btn btn-primary" onclick="javascript:redirectData('redirector.html', {url: 'establishmentDetails.html', establishmentId:${e.getId()}})">                                        
                                                 <spring:message code="text240" />
+                                            </button>
+                                            <button type="button" class="btn btn-danger" onclick="javascript:deleteEstablishment(${e.getId()}, affiliateDetailsForm)">
+                                               <spring:message code="text349" />
                                             </button>
                                         </td>
                                     </tr>

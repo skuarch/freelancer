@@ -46,6 +46,8 @@ public class UpdateAffiliateBasicInformationProcess extends BaseController {
             @RequestParam("brand") String brand,
             @RequestParam String category,
             @RequestParam(value = "logo", required = false) MultipartFile logoMultiPartFile,
+            @RequestParam("website") String website,
+            @RequestParam("facebook") String facebook,
             @RequestParam("description") String description,
             Locale locale) {
 
@@ -76,6 +78,8 @@ public class UpdateAffiliateBasicInformationProcess extends BaseController {
                     personGenderId,
                     brand,
                     category,
+                    website,
+                    facebook,
                     description
             );
 

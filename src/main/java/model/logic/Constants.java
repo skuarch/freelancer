@@ -52,6 +52,7 @@ public class Constants {
     public static final String URI_ESTABLISHMENT_CREATE = "/establishment/create"; 
     public static final String URI_ESTABLISHMENT_GET = "/establishment/get"; 
     public static final String URI_ESTABLISHMENT_UPDATE = "/establishment/update"; 
+    public static final String URI_ESTABLISHMENT_DELETE = "/establishment/delete"; 
     
     public static final String URI_RESPONSABLE_UPDATE = "/responsable/update"; 
     public static final String URI_RESPONSABLE_UPDATE_PASSWORD = "/responsable/update/password"; 
@@ -68,6 +69,8 @@ public class Constants {
     public static final String URI_COMPANY_UPDATE_TAX_INFORMATION = "/company/update/tax/information";
     public static final String URI_COMPANY_UPDATE_BANK_INFORMATION = "/company/update/bank/information";
     public static final String URI_COMPANY_UPDATE_PASSWORD = "/company/update/password";
+    public static final String URI_COMPANY_GET_BY_CREATOR = "/company/get/by/creator/";   
+    
 
     public static short getAFFILIATE() {
         return AFFILIATE;

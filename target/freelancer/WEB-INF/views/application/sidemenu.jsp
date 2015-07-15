@@ -33,42 +33,26 @@
                 <!-- /.nav-second-level -->
             </li>
             <li>
-                <a href="#">
-                    <i class="fa fa-group"></i> 
-                    <spring:message code="text140" />
-                    <span class="fa arrow"></span>
+                <a href="createNewAffiliate.html">
+                    <spring:message code="text147" />
                 </a>
-                <ul class="nav nav-second-level">
-                    <li>
-                        <a href="createNewAffiliate.html">
-                            <spring:message code="text147" />
-                        </a>
-                    </li>
-                    <li>
-                        <a href="createNewCompanyAffiliate.html">
-                            <spring:message code="text163" />
-                        </a>
-                    </li>
-                    <li>
-                        <a href="affiliatesList.html">
-                            <spring:message code="text155" />
-                        </a>
-                    </li>
-                    <li>
-                        <a href="companiesList.html">
-                            <spring:message code="text285" />
-                        </a>
-                    </li>
-                </ul>
-                <!-- /.nav-second-level -->
             </li>
-            <!-- <li>
-                <a href="forms.html">
-                    <i class="fa fa-edit fa-fw"></i> 
-                    <spring:message code="text141" />
-                </a>                
+            <li>
+                <a href="createNewCompanyAffiliate.html">
+                    <spring:message code="text163" />
+                </a>
             </li>
-        </ul> -->
+            <li>
+                <a href="affiliatesList.html">
+                    <spring:message code="text155" />
+                </a>
+            </li>
+            <li>
+                <a href="companiesList.html">
+                    <spring:message code="text285" />
+                </a>
+            </li>
+        </ul> 
     </div>
     <!-- /.sidebar-collapse -->
 </div>

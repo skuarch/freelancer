@@ -4,7 +4,6 @@ model/util/MD5Util.class
 controllers/dashboard/Dashboard.class
 model/beans/TransactionType.class
 model/beans/Product.class
-model/beans/Warehouse.class
 model/logic/StaticContext.class
 controllers/company/UpdateCompanyTaxInformationProcess.class
 model/beans/PersonType.class
@@ -38,7 +37,6 @@ model/util/ApplicationUtil.class
 model/beans/Location.class
 controllers/affiliate/AffiliateDetails.class
 model/net/RestClientMultiPartFile.class
-model/beans/Address_anteriror.class
 controllers/company/CreateNewCompanyAffiliate.class
 controllers/application/NoScript.class
 model/beans/Person.class
@@ -52,6 +50,7 @@ model/beans/Responsable.class
 controllers/establishment/UpdateEstablishmentFormProccess.class
 controllers/company/CompanyDetailsForm.class
 controllers/responsable/UpdateResponsablePassword.class
+controllers/establishment/DeleteEstablishmentProcess.class
 controllers/affiliate/CreateNewAffiliate.class
 controllers/affiliate/UpdateAffiliateBasicInformationProcess.class
 controllers/company/CompanyDetails.class

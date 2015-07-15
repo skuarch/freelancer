@@ -30,6 +30,8 @@ public class Affiliate implements Serializable {
     private List<Category> category = new ArrayList<>();
     private byte isSoftDeleted = 0;
     private String registrationDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+    private String website;
+    private String facebook;
 
     public Affiliate() {
     }
@@ -176,6 +178,22 @@ public class Affiliate implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
+    }
+
+    public String getFacebook() {
+        return facebook;
+    }
+
+    public void setFacebook(String facebook) {
+        this.facebook = facebook;
     }
 
 }

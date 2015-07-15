@@ -112,6 +112,18 @@
                                                 <input name="logo" id="logo" placeholder="" maxlength="55" class="form-control" type="file" tabindex="8" />
                                             </div> 
                                         </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group"> 
+                                                <label>Website</label>
+                                                <input name="website" id="website" class="form-control" type="text" maxlength="500" tabindex="9" />
+                                            </div> 
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group"> 
+                                                <label>Facebook</label>
+                                                <input name="facebook" id="facebook" class="form-control" type="text" maxlength="500" tabindex="10" />
+                                            </div> 
+                                        </div>
                                         <div class="col-lg-12">
                                             <div class="form-group">
                                                 <label><spring:message code="text342" /></label>                                                

@@ -100,17 +100,17 @@
                                                 <input name="latitude" id="latitude" class="form-control" type="number" tabindex="8" />
                                             </div> 
                                         </div>
-                                            <div class="col-lg-6">
+                                        <div class="col-lg-6">
                                             <div class="form-group"> 
                                                 <label>Longitude</label>
                                                 <input name="longitude" id="longitude" class="form-control" type="number" tabindex="8" />
                                             </div> 
                                         </div>
+                                            </div> 
+                                        </div>
+                                            </div> 
+                                        </div>
                                     </div>                                
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="panel panel-success">

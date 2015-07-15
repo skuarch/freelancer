@@ -110,7 +110,7 @@ public class FreelancerUtil {
 
         try {
             
-            hm.put("person.id", personId);            
+            hm.put("creatorId", personId);            
 
         } catch (Exception e) {
             throw e;

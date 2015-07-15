@@ -86,9 +86,9 @@
                                         <label><spring:message code="text321" /></label>
                                         <input name="longitude" id="longitude" value="${establishment.longitude}" class="form-control" type="number" tabindex="8" />
                                     </div> 
-                                </div>
+                                </div>                                
                             </div>                             
-                            <button type="submit" id="saveButtonEstablishment" class="btn btn-block btn-success btn-lg" tabindex="23">
+                            <button type="submit" id="saveButtonEstablishment" class="btn btn-block btn-success btn-lg" tabindex="11">
                                 <spring:message code="text251" />                                
                             </button>     
                         </div>
@@ -108,31 +108,31 @@
                                 <div class="col-lg-6">
                                     <div class="form-group"> 
                                         <label><spring:message code="text181" /></label>
-                                        <input name="responsable_name" id="responsable_name" value="${establishment.responsable.person.getName()}" placeholder="<spring:message code="text179" />" maxlength="60" class="form-control"  type="text" required="required" tabindex="9"/>
+                                        <input name="responsable_name" id="responsable_name" value="${establishment.responsable.person.getName()}" placeholder="<spring:message code="text179" />" maxlength="60" class="form-control"  type="text" required="required" tabindex="12"/>
                                     </div> 
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="form-group"> 
                                         <label><spring:message code="text182" /></label>
-                                        <input name="responsable_lastName" id="responsable_lastName" value="${establishment.responsable.person.getLastName()}" maxlength="60" class="form-control" type="text" required="required" tabindex="10"/>
+                                        <input name="responsable_lastName" id="responsable_lastName" value="${establishment.responsable.person.getLastName()}" maxlength="60" class="form-control" type="text" required="required" tabindex="13"/>
                                     </div> 
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="form-group"> 
                                         <label><spring:message code="text183" /></label>
-                                        <input name="responsable_phone" id="responsable_phone" value="${establishment.responsable.person.getPhone()}" placeholder="<spring:message code="text180"/>" min="1" max="999999999999" class="form-control" type="number" required="required" tabindex="11" />
+                                        <input name="responsable_phone" id="responsable_phone" value="${establishment.responsable.person.getPhone()}" placeholder="<spring:message code="text180"/>" min="1" max="999999999999" class="form-control" type="number" required="required" tabindex="14" />
                                     </div> 
                                 </div>                                                                                                                                            
                                 <div class="col-lg-6">
                                     <div class="form-group"> 
                                         <label><spring:message code="text184" /></label>
-                                        <input name="responsable_email" id="responsable_email" value="${establishment.responsable.person.getEmail()}" placeholder="<spring:message code="text91" />" maxlength="50" class="form-control" type="email" required="required" tabindex="12" />
+                                        <input name="responsable_email" id="responsable_email" value="${establishment.responsable.person.getEmail()}" placeholder="<spring:message code="text91" />" maxlength="50" class="form-control" type="email" required="required" tabindex="15" />
                                     </div> 
                                 </div>                                  
                                 <div class="col-lg-6">
                                     <div class="form-group"> 
                                         <label><spring:message code="text86" /></label>
-                                        <select id="responsable_gender" name="responsable_gender" class="form-control" tabindex="15">
+                                        <select id="responsable_gender" name="responsable_gender" class="form-control" tabindex="16">
                                             <option value="1" <c:if test="${establishment.responsable.person.gender.getName() == 'male' }" > selected </c:if> > <spring:message code="text97" /></option>
                                             <option value="2" <c:if test="${establishment.responsable.person.gender.getName() == 'female' }" > selected </c:if> > <spring:message code="text98" /></option>
                                             </select>
@@ -142,7 +142,7 @@
                                 <button type="button" class="btn btn-block" data-toggle="modal" data-target="#DetailModalResponsablePassword">
                                 <spring:message code="text348" />
                             </button>                    
-                            <button type="submit" id="saveButtonResponsable" class="btn btn-block btn-success btn-lg" tabindex="23">
+                            <button type="submit" id="saveButtonResponsable" class="btn btn-block btn-success btn-lg" tabindex="17">
                                 <spring:message code="text252" />
                             </button> 
                         </form>
