@@ -152,13 +152,13 @@
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group"> 
-                                <label><spring:message code="text331"/></label>
+                                <label><spring:message code="text332"/></label>
                                 <input name="taxCompanyName" id="taxCompanyName" placeholder="<spring:message code="text79"/>" maxlength="55" value="${affiliate.getTaxCompanyName()}" class="form-control" type="text" required="required" tabindex="15" />
                             </div> 
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group"> 
-                                <label><spring:message code="text332"/></label>
+                                <label><spring:message code="text310"/></label>
                                 <input name="taxContactPhone" id="taxContactPhone" placeholder="<spring:message code="text89"/>" value="${affiliate.contact.person.getPhone()}"  min="1" max="999999999999" class="form-control" type="number" required="required" tabindex="16" />
                             </div> 
                         </div>
